@@ -7,7 +7,9 @@
 
 当前最新版下载：
 
-https://github.com/cxasm/notepad--/releases/tag/notepad-v1.13
+https://github.com/cxasm/notepad--/releases/tag/notepad-v1.14
+
+国内用户访问gitee https://gitee.com/cxasm/notepad--
 
 ![2022080802](https://user-images.githubusercontent.com/42246867/183382113-695de7e4-dad8-41d8-8084-cece192f3f08.png)
 ![ntscreenshot_20220808_141458](https://user-images.githubusercontent.com/42246867/183382151-32237f08-417f-4c4c-8601-89831ee970be.png)
