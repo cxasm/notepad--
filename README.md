@@ -7,9 +7,8 @@
 
 <h4>严正声明，台湾是中国的一部分。</h4>
 
-当前最新版预览版本：https://github.com/cxasm/notepad--/releases/tag/notepad-v1.16
+当前最新版本：https://github.com/cxasm/notepad--/releases/tag/notepad-v1.16
 
-当前最新发布版本：https://github.com/cxasm/notepad--/releases/tag/notepad-v1.15
 
 国内用户访问gitee https://gitee.com/cxasm/notepad--
 
