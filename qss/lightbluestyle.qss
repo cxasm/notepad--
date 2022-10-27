@@ -1,0 +1,288 @@
+.QPushButton{
+border-style:none;
+border:1px solid #C0DCF2;
+color:#386487;
+padding:3px;
+min-height:15px;
+border-radius:3px;
+}
+
+.QPushButton:hover{
+background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F2F9FF,stop:1 #DAEFFF);
+}
+
+.QPushButton:pressed{
+background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #DEF0FE,stop:1 #C0DEF6);
+}
+
+QTabBar QToolButton[accessibleName="Scroll Left"]{border:0px;background-color:#EAF7FF;}
+
+QTabBar QToolButton[accessibleName="Scroll Right"]{border:0px;background-color:#EAF7FF;}
+
+
+QToolButton#leftBt,#leftSaveBt,#rightBt,#rightSaveBt,#leftReload,#rightReload,#toolButton,#subToolButton,#addToolButton,#selectDir,#toolButtonBrowse,#definedFilterExt,#proLangBt{
+border-style:none;
+border:1px solid #C0DCF2;
+background-color:#EAF7FF;
+color:#386487;
+padding:1px;
+min-height:8px;
+border-radius:1px;
+}
+
+
+QToolButton#leftBt:hover,#leftSaveBt:hover,#rightBt:hover,#rightSaveBt:hover,#leftReload:hover,#rightReload:hover,#toolButton:hover,#subToolButton:hover,#addToolButton:hover,#selectDir:hover,#toolButtonBrowse:hover,#definedFilterExt:hover,#proLangBt:hover{
+background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F2F9FF,stop:1 #DAEFFF);
+}
+
+
+QToolButton:pressed{
+background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #DEF0FE,stop:1 #C0DEF6);
+}
+
+QToolBar,QMessageBox,QHeaderView::section{
+		background-color:#EAF7FF;
+		border: none;
+		padding: 1px;
+}
+
+QComboBox,QLineEdit,QSpinBox{
+	background-color:#EAF7FF;
+	border:1px solid #C0DCF2;
+	padding: 1px;
+}
+
+QTreeWidget{
+   background-color:#EAF7FF;
+   border:1px solid #C0DCF2;
+}
+	
+QTreeWidget::item
+{
+height:22px
+}
+
+QTreeView::item::selected
+{
+background-color:#00CCFF;
+}
+
+QListWidget{
+	background-color:#EAF7FF;
+	border:1px solid #C0DCF2;
+}
+
+QComboBox::down-arrow,QDateEdit[calendarPopup="true"]::down-arrow,QTimeEdit[calendarPopup="true"]::down-arrow,QDateTimeEdit[calendarPopup="true"]::down-arrow{
+image:url(:/qss/lightblue/add_bottom.png);
+width:10px;
+height:10px;
+right:2px;
+}
+
+QComboBox::drop-down,QDateEdit::drop-down,QTimeEdit::drop-down,QDateTimeEdit::drop-down{
+subcontrol-origin:padding;
+subcontrol-position:top right;
+width:15px;
+border-left-width:0px;
+border-left-style:solid;
+border-top-right-radius:3px;
+border-bottom-right-radius:3px;
+border-left-color:#C0DCF2;
+}
+
+QComboBox::drop-down:on{
+top:1px;
+}
+	
+QWidget#tab_find,#tab_replace,#tab_dirfind,#tab_mark,#addDelName,#changeExt{
+	background-color:#EAF7FF;
+}
+
+QTimeEdit::up-button,QDateEdit::up-button,QDateTimeEdit::up-button,QDoubleSpinBox::up-button,QSpinBox::up-button{
+image:url(:/qss/lightblue/add_top.png);
+width:10px;
+height:10px;
+padding:2px 5px 0px 0px;
+}
+
+QTimeEdit::down-button,QDateEdit::down-button,QDateTimeEdit::down-button,QDoubleSpinBox::down-button,QSpinBox::down-button{
+image:url(:/qss/lightblue/add_bottom.png);
+width:10px;
+height:10px;
+padding:0px 5px 2px 0px;
+}
+
+QTabWidget{
+  border:none;
+}
+
+QTabBar::tab{ 
+		background-color:#EAF7FF;
+		margin-top:1px; 
+		margin-right:1px; 
+		margin-left:1px; 
+		margin-bottom:2px; 
+		padding:1px;
+		min-width:50px;
+}
+
+QTabBar::tab:selected{ 
+		background-color:rgb(255,255,255);
+		border-top:3px solid;
+		border-top-color:#FAAA3C;
+		margin-top:1px; 
+		margin-right:1px; 
+		margin-left:1px; 
+		margin-bottom:2px; 
+		padding:0px;
+}
+
+QTabBar::close-button{ 
+		image: url(\":/notepad/closeTabButton.png\");
+}
+QTabBar::close-button:hover{ 
+		image: url(\":/notepad/closeTabButton_hover.png\");
+}
+
+
+/*设置垂直滚动条基本样式*/
+QScrollBar:vertical {
+    width: 10px;
+    background: rgba(0,0,0,0%);
+    margin: 0px,0px,0px,0px;
+    /*留出9px给上面和下面的箭头*/
+    padding-top: 9px;
+    padding-bottom: 9px;
+	background-color:#EAF7FF; 
+}
+
+QScrollBar::handle:vertical {
+    width: 10px;
+    background: rgba(0,0,0,25%);
+    /*滚动条两端变成椭圆 */
+    border-radius: 4px;
+    min-height: 20;
+}
+
+QScrollBar::handle:vertical:hover {
+    width: 10px;
+    /*鼠标放到滚动条上的时候，颜色变深*/
+    background: rgba(0,0,0,50%);
+    border-radius: 4px;
+    min-height: 20;
+}
+
+/*这个应该是设置下箭头的，3.png就是箭头*/
+QScrollBar::add-line:vertical 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/3.png);
+    subcontrol-position: bottom;
+}
+
+
+/*设置上箭头 */
+QScrollBar::sub-line:vertical 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/1.png);
+    subcontrol-position: top;
+}
+
+/*当鼠标放到下箭头上的时候 */
+QScrollBar::add-line:vertical:hover 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/4.png);
+    subcontrol-position: bottom;
+}
+
+/*当鼠标放到下箭头上的时候*/
+QScrollBar::sub-line:vertical:hover 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/2.png);
+    subcontrol-position: top;
+}
+
+
+
+/*当滚动条滚动的时候，上面的部分和下面的部分*/
+QScrollBar::sub-page {
+    background: rgba(0,0,0,10%);
+    border-radius: 4px;
+}
+
+QScrollBar::add-page 
+{
+    background: rgba(0,0,0,10%);
+    border-radius: 4px;
+}
+
+/*设置水平滚动条基本样式*/
+QScrollBar:horizontal {
+    height: 10px;
+    background: rgba(0,0,0,0%);
+    margin: 0px,0px,0px,0px;
+    /*留出9px给上面和下面的箭头*/
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+QScrollBar::handle:horizontal {
+    height: 10px;
+    background: rgba(0,0,0,25%);
+    /*滚动条两端变成椭圆 */
+    border-radius: 4px;
+    min-height: 20;
+}
+
+QScrollBar::handle:horizontal:hover {
+    height: 10px;
+    /*鼠标放到滚动条上的时候，颜色变深*/
+    background: rgba(0,0,0,50%);
+    border-radius: 4px;
+    min-height: 20;
+}
+
+/*这个应该是设置下箭头的，3.png就是箭头*/
+QScrollBar::add-line:horizontal 
+{
+    height: 10px;
+    width: 10px;
+    border-image: url(:/Resources/img/5.png);
+    subcontrol-position: right;
+}
+
+
+/*设置上箭头 */
+QScrollBar::sub-line:horizontal 
+{
+    height: 10px;
+    width: 10px;
+    border-image: url(:/Resources/img/6.png);
+    subcontrol-position: left;
+}
+
+QMainWindow::separator
+{ 
+	height:1px; 
+    margin: 0px;
+    padding: 0px;
+    background:#FF0000;
+}
+
+QDockWidget{
+    border:0px solid red;
+}
+
+QDockWidget::title {
+    background:#EAF7FF;
+    padding-top:0px;
+}
+
+

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TextFind</class>
+ <widget class="QWidget" name="TextFind">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>161</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TextFind</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="RealCompare.qrc">
+    <normaloff>:/Resources/img/main.png</normaloff>:/Resources/img/main.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Find Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Find Text</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="textLineEdit"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="pushPrevButton">
+       <property name="text">
+        <string>Find Prev</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushNextButton">
+       <property name="text">
+        <string>Find Next</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushCloseButton">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="RealCompare.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushPrevButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TextFind</receiver>
+   <slot>slot_findPrev()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>94</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushNextButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TextFind</receiver>
+   <slot>slot_findNext()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>230</x>
+     <y>123</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushCloseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>TextFind</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>348</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_findPrev()</slot>
+  <slot>slot_findNext()</slot>
+ </slots>
+</ui>
