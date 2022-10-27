@@ -13,6 +13,8 @@
 
 最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.16
 
+国内用户请访问gitee https://gitee.com/cxasm/notepad--
+
 ### 编译说明：
 
 1）使用qtcreator 或 vs  先打开qscint/src/qscintilla.pro 。先编译出这个qscintlla的依赖库。
@@ -22,8 +24,6 @@
 代码刚刚整理上线（初次上线，可能有垃圾代码）。
 删除了商业的对比功能和注册功能（这部分有商业原因，请理解），除此以外，所有功能全部保留。
 
-
-![输入图片说明](ntscreenshot_20221008_103827.png)
 
 ![输入图片说明](2.png)
 
