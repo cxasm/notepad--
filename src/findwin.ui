@@ -1,0 +1,1495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FindWin</class>
+ <widget class="QMainWindow" name="FindWin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>589</width>
+    <height>360</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>610</width>
+    <height>360</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="RealCompare.qrc">
+    <normaloff>:/Resources/edit/global/notebook.png</normaloff>:/Resources/edit/global/notebook.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_17">
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>2</number>
+    </property>
+    <property name="rightMargin">
+     <number>2</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="findinfilesTab">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_find">
+       <attribute name="title">
+        <string>find</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Find what :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="findComboBox">
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="maxCount">
+               <number>512</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QCheckBox" name="findBackwardBox">
+                <property name="text">
+                 <string>Backward direction</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="findMatchWholeBox">
+                <property name="text">
+                 <string>Match whole word only</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="findMatchCaseBox">
+                <property name="text">
+                 <string>Match case</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="findWrapBox">
+                <property name="text">
+                 <string>Wrap around</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Search Mode</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="2" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QRadioButton" name="findModeRegularBt">
+                   <property name="text">
+                    <string>Regular expression</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="findModeNormalBt">
+                 <property name="text">
+                  <string>Normal</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="findModeExtendBt">
+                 <property name="text">
+                  <string>Extend(\n,\r,\t,\0,\x...)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QPushButton" name="findTextNext">
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Find Next(F3)</string>
+            </property>
+            <property name="shortcut">
+             <string>F3</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="countBt">
+            <property name="text">
+             <string>Counter(T)</string>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+T</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="findAllinCourrent">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Find All in Current 
+ Document</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="findAllinAllOpen">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Find All in All Opened 
+ Documents</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="findClearBt">
+            <property name="text">
+             <string>Clear Result</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="findCloseBt">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Close</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_replace">
+       <attribute name="title">
+        <string>Replace</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Find what :</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="replaceTextBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>300</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+                <property name="maxCount">
+                 <number>512</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>Replace with :</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="replaceWithBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>300</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="editable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QCheckBox" name="replaceBackwardBox">
+                <property name="text">
+                 <string>Backward direction</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="replaceMatchWholeBox">
+                <property name="text">
+                 <string>Match whole word only</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="replaceMatchCaseBox">
+                <property name="text">
+                 <string>Match case</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="replaceWrapBox">
+                <property name="text">
+                 <string>Wrap around</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>Search Mode</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_3">
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="replaceModeNormalBox">
+                 <property name="text">
+                  <string>Normal</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                 <item>
+                  <widget class="QRadioButton" name="replaceModeRegularBt">
+                   <property name="text">
+                    <string>Regular expression</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="replaceModeExtendBox">
+                 <property name="text">
+                  <string>Extend(\n,\r,\t,\0,\x...)</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <widget class="QPushButton" name="replaceFindNextBox">
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Find Next</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="replaceBt">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Replace</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="replaceAllBt">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Replace All</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="replaceAllinAllOpenBt">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>34</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Replace All in All Opened 
+ Documents</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="replaceCloseBt">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>176</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Close</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_dirfind">
+       <attribute name="title">
+        <string>Dir Find</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Dest Dir :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="destFindDir">
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="selectDir">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Select</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Find what :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="dirFindWhat">
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="maxCount">
+               <number>512</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Replace with :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="dirReplaceWhat">
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
+            <item>
+             <widget class="QCheckBox" name="dealFileType">
+              <property name="text">
+               <string>File Type</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="fileType">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>250</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>*.c:*.cpp:*.h</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_13">
+            <item>
+             <widget class="QCheckBox" name="dirFindMatchWholeBox">
+              <property name="text">
+               <string>Match whole word only</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="dirFindMatchCaseBox">
+              <property name="text">
+               <string>Match case</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_12">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_16">
+              <item>
+               <widget class="QGroupBox" name="groupBox_4">
+                <property name="title">
+                 <string>Search Mode</string>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_6">
+                 <item row="0" column="0">
+                  <widget class="QRadioButton" name="dirFindModeNormalBox">
+                   <property name="text">
+                    <string>Normal</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <layout class="QHBoxLayout" name="horizontalLayout_13">
+                   <item>
+                    <widget class="QRadioButton" name="dirFindModeRegularBt">
+                     <property name="text">
+                      <string>Regular expression</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QRadioButton" name="dirFindModeExtendBox">
+                   <property name="text">
+                    <string>Extend(\n,\r,\t,\0,\x...)</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="title">
+               <string>Options</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_14">
+               <item>
+                <widget class="QCheckBox" name="skipChildDirs">
+                 <property name="text">
+                  <string>Skip child dirs</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="skipHideFile">
+                 <property name="text">
+                  <string>Skip hide file</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="skipBinary">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Skip binary file</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_12">
+                 <property name="spacing">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <widget class="QCheckBox" name="skipFileMaxSize">
+                   <property name="text">
+                    <string>Skip Big file exceed</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="maxFileSizeSpinBox">
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>30</number>
+                   </property>
+                   <property name="value">
+                    <number>20</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>MB</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_15">
+          <item>
+           <widget class="QPushButton" name="dirFindAll">
+            <property name="minimumSize">
+             <size>
+              <width>158</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>160</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Find All</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dirReplaceAll">
+            <property name="minimumSize">
+             <size>
+              <width>158</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Replace In File</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clearBt">
+            <property name="minimumSize">
+             <size>
+              <width>158</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Clear Result</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dirClose">
+            <property name="minimumSize">
+             <size>
+              <width>158</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Close</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_mark">
+       <attribute name="title">
+        <string>Mark</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Mark What</string>
+              </property>
+     </widget>
+    </item>
+            <item>
+             <widget class="QComboBox" name="markTextBox">
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="maxCount">
+               <number>512</number>
+              </property>
+             </widget>
+            </item>
+   </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="QCheckBox" name="markMatchWholeBox">
+              <property name="text">
+               <string>Match whole word only</string>
+              </property>
+  </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="markMatchCaseBox">
+              <property name="text">
+               <string>Match case</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="title">
+             <string>Search Mode</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="2" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QRadioButton" name="markModeRegularBt">
+                 <property name="text">
+                  <string>Regular expression</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="0">
+              <widget class="QRadioButton" name="markModeNormalBox">
+               <property name="text">
+                <string>Normal</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QRadioButton" name="markModeExtendBox">
+               <property name="text">
+                <string>Extend(\n,\r,\t,\0,\x...)</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_12">
+          <item>
+           <widget class="QPushButton" name="markAllBox">
+            <property name="maximumSize">
+             <size>
+              <width>188</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Mark All</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="markClearBox">
+            <property name="maximumSize">
+             <size>
+              <width>188</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Clear Mark</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="markCloseBt">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>188</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Close</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>findComboBox</tabstop>
+  <tabstop>findTextNext</tabstop>
+  <tabstop>findAllinCourrent</tabstop>
+  <tabstop>findAllinAllOpen</tabstop>
+  <tabstop>findCloseBt</tabstop>
+  <tabstop>findBackwardBox</tabstop>
+  <tabstop>findMatchWholeBox</tabstop>
+  <tabstop>findMatchCaseBox</tabstop>
+  <tabstop>findWrapBox</tabstop>
+  <tabstop>findModeNormalBt</tabstop>
+  <tabstop>findModeRegularBt</tabstop>
+  <tabstop>findinfilesTab</tabstop>
+  <tabstop>replaceTextBox</tabstop>
+  <tabstop>replaceWithBox</tabstop>
+  <tabstop>replaceBackwardBox</tabstop>
+  <tabstop>replaceMatchWholeBox</tabstop>
+  <tabstop>replaceMatchCaseBox</tabstop>
+  <tabstop>replaceWrapBox</tabstop>
+  <tabstop>replaceModeRegularBt</tabstop>
+  <tabstop>replaceModeNormalBox</tabstop>
+  <tabstop>replaceFindNextBox</tabstop>
+  <tabstop>replaceBt</tabstop>
+  <tabstop>replaceAllBt</tabstop>
+  <tabstop>replaceAllinAllOpenBt</tabstop>
+  <tabstop>replaceCloseBt</tabstop>
+  <tabstop>destFindDir</tabstop>
+  <tabstop>selectDir</tabstop>
+  <tabstop>dirFindWhat</tabstop>
+  <tabstop>dirReplaceWhat</tabstop>
+  <tabstop>dealFileType</tabstop>
+  <tabstop>fileType</tabstop>
+  <tabstop>dirFindMatchWholeBox</tabstop>
+  <tabstop>dirFindMatchCaseBox</tabstop>
+  <tabstop>dirFindModeRegularBt</tabstop>
+  <tabstop>dirFindModeNormalBox</tabstop>
+  <tabstop>skipChildDirs</tabstop>
+  <tabstop>skipHideFile</tabstop>
+  <tabstop>skipBinary</tabstop>
+  <tabstop>skipFileMaxSize</tabstop>
+  <tabstop>maxFileSizeSpinBox</tabstop>
+  <tabstop>dirFindAll</tabstop>
+  <tabstop>dirReplaceAll</tabstop>
+  <tabstop>dirClose</tabstop>
+  <tabstop>markTextBox</tabstop>
+  <tabstop>markMatchWholeBox</tabstop>
+  <tabstop>markMatchCaseBox</tabstop>
+  <tabstop>markModeRegularBt</tabstop>
+  <tabstop>markModeNormalBox</tabstop>
+  <tabstop>markAllBox</tabstop>
+  <tabstop>markClearBox</tabstop>
+  <tabstop>markCloseBt</tabstop>
+ </tabstops>
+ <resources>
+  <include location="RealCompare.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>findTextNext</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_findNext()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>457</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findCloseBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>222</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>169</x>
+     <y>327</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findAllinAllOpen</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_findAllInOpenDoc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>164</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>327</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findAllinCourrent</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_findAllInCurDoc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>488</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>548</x>
+     <y>328</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceFindNextBox</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_replaceFindNext()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>602</x>
+     <y>302</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceCloseBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>182</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>600</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_replace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>84</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>598</x>
+     <y>204</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceAllBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_replaceAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>597</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceAllinAllOpenBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_replaceAllInOpenDoc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>153</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>599</x>
+     <y>115</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>markAllBox</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_markAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>478</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>501</x>
+     <y>-4</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>markClearBox</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_clearMark()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>84</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>594</x>
+     <y>-5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>markCloseBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>404</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dirClose</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>170</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectDir</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_dirSelectDest()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>502</x>
+     <y>332</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dirFindAll</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_dirFindAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>507</x>
+     <y>60</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dirReplaceAll</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_dirReplaceAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>463</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>333</x>
+     <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>countBt</sender>
+   <signal>clicked()</signal>
+   <receiver>FindWin</receiver>
+   <slot>slot_findCount()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>502</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>366</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_findNext()</slot>
+  <slot>slot_findCount()</slot>
+  <slot>slot_findAllInCurDoc()</slot>
+  <slot>slot_findAllInOpenDoc()</slot>
+  <slot>slot_replace()</slot>
+  <slot>slot_replaceFindNext()</slot>
+  <slot>slot_replaceAll()</slot>
+  <slot>slot_replaceAllInOpenDoc()</slot>
+  <slot>slot_markAll()</slot>
+  <slot>slot_clearMark()</slot>
+  <slot>slot_dirFindAll()</slot>
+  <slot>slot_dirReplaceAll()</slot>
+  <slot>slot_dirSelectDest()</slot>
+  <slot>sign_clearResult()</slot>
+ </slots>
+</ui>

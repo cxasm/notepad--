@@ -1,0 +1,193 @@
+QTabBar::tab{ 
+		background-color:rgb(224,224,224);
+		margin-top:1px; 
+		margin-right:1px; 
+		margin-left:1px; 
+		margin-bottom:2px; 
+		padding:1px;
+		min-width:50px;
+}
+
+QTabBar::tab:selected{ 
+		background-color:rgb(255,255,255);
+		border-top:3px solid;
+		border-top-color:#FAAA3C;
+		margin-top:1px; 
+		margin-right:1px; 
+		margin-left:1px; 
+		margin-bottom:2px; 
+		padding:0px;
+}
+QTabBar::close-button{ 
+		image: url(\":/notepad/closeTabButton.png\");
+}
+QTabBar::close-button:hover{ 
+		image: url(\":/notepad/closeTabButton_hover.png\");
+}
+
+QToolBar,QMessageBox,QHeaderView::section{ 
+		background-color:rgba(255, 255, 255, 255); 
+		border: none; 
+		padding: 1px; 
+}
+
+QTabBar QToolButton[accessibleName="Scroll Left"]{border:0px;background-color:#F0F0F0;}
+
+QTabBar QToolButton[accessibleName="Scroll Right"]{border:0px;background-color:#F0F0F0;}
+
+
+QTreeWidget{ 
+		background-color:rgba(255, 255, 255, 255); 
+		border:1px solid #C0DCF2;
+}
+
+QTreeWidget::item
+{
+height:22px;
+/*background-color:rgba(255, 255, 255, 255); */
+} 
+QTreeView::item::selected
+{
+background-color:#00CCFF;
+}
+
+/*设置垂直滚动条基本样式*/
+QScrollBar:vertical {
+    width: 10px;
+    background: rgba(0,0,0,0%);
+    margin: 0px,0px,0px,0px;
+    /*留出9px给上面和下面的箭头*/
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+QScrollBar::handle:vertical {
+    width: 10px;
+    background: rgba(0,0,0,25%);
+    /*滚动条两端变成椭圆 */
+    border-radius: 4px;
+    min-height: 20;
+}
+
+QScrollBar::handle:vertical:hover {
+    width: 10px;
+    /*鼠标放到滚动条上的时候，颜色变深*/
+    background: rgba(0,0,0,50%);
+    border-radius: 4px;
+    min-height: 20;
+}
+
+/*这个应该是设置下箭头的，3.png就是箭头*/
+QScrollBar::add-line:vertical 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/3.png);
+    subcontrol-position: bottom;
+}
+
+
+/*设置上箭头 */
+QScrollBar::sub-line:vertical 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/1.png);
+    subcontrol-position: top;
+}
+
+/*当鼠标放到下箭头上的时候 */
+QScrollBar::add-line:vertical:hover 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/4.png);
+    subcontrol-position: bottom;
+}
+
+/*当鼠标放到下箭头上的时候*/
+QScrollBar::sub-line:vertical:hover 
+{
+    height: 9px;
+    width: 10px;
+    border-image: url(:/Resources/img/2.png);
+    subcontrol-position: top;
+}
+
+
+
+/*当滚动条滚动的时候，上面的部分和下面的部分*/
+QScrollBar::sub-page {
+    background: rgba(0,0,0,10%);
+    border-radius: 4px;
+}
+
+QScrollBar::add-page 
+{
+    background: rgba(0,0,0,10%);
+    border-radius: 4px;
+}
+
+/*设置水平滚动条基本样式*/
+QScrollBar:horizontal {
+    height: 10px;
+    background: rgba(0,0,0,0%);
+    margin: 0px,0px,0px,0px;
+    /*留出9px给上面和下面的箭头*/
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+QScrollBar::handle:horizontal {
+    height: 10px;
+    background: rgba(0,0,0,25%);
+    /*滚动条两端变成椭圆 */
+    border-radius: 4px;
+    min-height: 20;
+}
+
+QScrollBar::handle:horizontal:hover {
+    height: 10px;
+    /*鼠标放到滚动条上的时候，颜色变深*/
+    background: rgba(0,0,0,50%);
+    border-radius: 4px;
+    min-height: 20;
+}
+
+/*这个应该是设置下箭头的，3.png就是箭头*/
+QScrollBar::add-line:horizontal 
+{
+    height: 10px;
+    width: 10px;
+    border-image: url(:/Resources/img/5.png);
+    subcontrol-position: right;
+}
+
+
+/*设置上箭头 */
+QScrollBar::sub-line:horizontal 
+{
+    height: 10px;
+    width: 10px;
+    border-image: url(:/Resources/img/6.png);
+    subcontrol-position: left;
+}
+
+QMainWindow::separator
+{ 
+		height:1px; 
+    margin: 0px;
+    padding: 0px;
+    background:#FF0000;
+}
+
+QDockWidget{
+    border:0px solid red;
+}
+
+QDockWidget::title {
+    background:#f0f0f0;
+    padding-top:0px;
+}
+
+
