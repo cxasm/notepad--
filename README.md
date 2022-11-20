@@ -15,11 +15,13 @@
 
 由于github访问经常断网，几乎没法提交代码。国内用户请访问 https://gitee.com/cxasm/notepad--
 
-国内下载地址：
+ **国内下载地址：**
 
 最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.17
+
 最新开发预览版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.18
-做中国人自己的免费编辑器，离不开您的支持，请通过微信捐赠我们。
+
+ **做中国人自己的免费编辑器，离不开您的支持，请通过微信捐赠我们。**
 
 ![6688](https://user-images.githubusercontent.com/42246867/202892430-e4738634-4e37-4c4a-9120-a1665af41eb4.png)
 
