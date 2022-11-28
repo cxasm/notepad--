@@ -36,6 +36,8 @@
 
 代码上线不久，删除了商业的对比功能和注册功能（这部分有商业原因，请理解），除此以外，所有功能全部保留。
 
+![1](https://user-images.githubusercontent.com/42246867/204190705-4f57393d-6a97-43a3-a5eb-5b0d5e72b2fb.png)
+
 ![2](https://user-images.githubusercontent.com/42246867/202892445-d544e9af-5fe4-4823-8a0c-ebcf127352d6.png)
 
 ![3](https://user-images.githubusercontent.com/42246867/202892507-6024cd57-9600-4eb6-8bca-a27881b10dce.png)
