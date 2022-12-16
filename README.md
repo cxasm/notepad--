@@ -13,6 +13,8 @@
 
 最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.19
 
+最新开发版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.20
+
 由于github访问经常断网，几乎没法提交代码。国内用户请访问 https://gitee.com/cxasm/notepad--
 
  **国内下载地址：**
