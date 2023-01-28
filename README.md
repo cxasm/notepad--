@@ -11,17 +11,16 @@
 
 您可以在这个项目提交bug或反馈问题。
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.19
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.21
 
-最新开发版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.20
 
 由于github访问经常断网，几乎没法提交代码。国内用户请访问 https://gitee.com/cxasm/notepad--
 
  **国内下载地址：**
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.18
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.21
 
-最新开发预览版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.19
+最新开发预览版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.21
 
  **做中国人自己的免费编辑器，离不开您的支持，请通过微信捐赠我们。**
 
