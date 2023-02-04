@@ -1,12 +1,11 @@
 ﻿#include "donate.h"
 
-donate::donate(QWidget *parent)
-	: QWidget(parent)
+Donate::Donate(QWidget *parent): QWidget(parent)
 {
 	ui.setupUi(this);
 }
 
-donate::~donate()
+Donate::~Donate()
 {
 
 }

@@ -29,6 +29,7 @@
 QsciLexerBatch::QsciLexerBatch(QObject *parent)
     : QsciLexer(parent)
 {
+    m_commentSymbol = "REM";
 }
 
 

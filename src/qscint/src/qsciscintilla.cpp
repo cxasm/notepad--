@@ -1,4 +1,4 @@
-// This module implements the "official" high-level API of the Qt port of
+﻿// This module implements the "official" high-level API of the Qt port of
 // Scintilla.  It is modelled on QTextEdit - a method of the same name should
 // behave in the same way.
 //
@@ -127,7 +127,9 @@ QsciScintilla::QsciScintilla(QWidget *parent)
     setMatchedBraceForegroundColor(Qt::blue);
     setUnmatchedBraceForegroundColor(Qt::red);
 
-    setAnnotationDisplay(AnnotationStandard);
+	//下面这个不能随意放开，否则在一个长行的情况下，进行替换操作将非常慢
+	//20221123用户反馈替换非常慢，对比ndd后查找得到的问题。
+    setAnnotationDisplay(AnnotationHidden);
     setLexer();
 
     // Set the visible policy.  These are the same as SciTE's defaults
@@ -1721,6 +1723,9 @@ FindState& QsciScintilla::getLastFindState()
 
 
 // Find the first occurrence of a string.
+//show:会保证找到的自动，在当前屏幕上可见，这个默认是true，注意该操作非常耗时。
+//在批量查找或者替换的时候，如果不需要可见，最好修改为不可见。否则在替换一个长行，长行中存在几百个的情况，速度会非常慢。
+//本来只需要2s的操作，结果会需要30s。
 bool QsciScintilla::findFirst(const QString &expr, bool re, bool cs, bool wo,
         bool wrap, bool forward, FindNextType findNextType, int line, int index, bool show, bool posix,
         bool cxx11)
@@ -1857,7 +1862,8 @@ bool QsciScintilla::doFind()
         pos = simpleFind();
     }
 
-    if (pos == -1)
+	//替换boost正则库后，返回值不只有-1，可能-2-3，负数都是错误
+    if (pos < 0)
     {
         // Restore the original selection.
         if (findState.status == FindState::FindingInSelection)
@@ -3707,9 +3713,11 @@ void QsciScintilla::handleUpdateUI(int)
 		if (line != oldLine)
 		{
 			oldLine = line;
-			emit cursorPosChange(line, newPos);
+			emit cursorPosChange(line, newPos);	
+        }
     }
-    }
+
+	addHotSpot();
 
     if (braceMode != NoBraceMatch)
         braceMatch();

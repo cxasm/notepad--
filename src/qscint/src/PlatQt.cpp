@@ -1,4 +1,4 @@
-// This module implements the portability layer for the Qt port of Scintilla.
+﻿// This module implements the portability layer for the Qt port of Scintilla.
 //
 // Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
@@ -389,14 +389,16 @@ void SurfaceImpl::RoundedRectangle(PRectangle rc, ColourDesired fore,
 void SurfaceImpl::AlphaRectangle(PRectangle rc, int cornerSize, int style)
 {
     Q_ASSERT(painter);
-
+	painter->save();
     painter->setBrush((Qt::BrushStyle)style);
+	painter->setBackgroundMode(Qt::OpaqueMode);
 
     const int radius = (cornerSize ? 25 : 0);
 
     painter->drawRoundedRect(
         QRectF(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top),
         radius, radius, Qt::RelativeSize);
+	painter->restore();
 }
 
 void SurfaceImpl::AlphaRectangle(PRectangle rc, int cornerSize,

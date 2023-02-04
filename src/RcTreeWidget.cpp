@@ -45,18 +45,9 @@ void RcTreeWidget::slot_ShowPopMenu(const QPoint& pos)
 		}
 
 		QAction* action = menu->addAction(tr("Show File in Explorer"), this, [&]() {
-			QString path, cmd;
-
-			path = QString("%1/%2").arg(m_rootDir).arg(curItem->data(0, Qt::ToolTipRole).toString());
-			#ifdef _WIN32
-				path = path.replace("/", "\\");
-				cmd = QString("explorer.exe /select,%1").arg(path);
-			#else
-				path = path.replace("\\", "/");
-				cmd = QString("open -R %1").arg(path);
-			#endif
-				QProcess process;
-				process.startDetached(cmd);
+			QString path = QString("%1/%2").arg(m_rootDir).arg(curItem->data(0, Qt::ToolTipRole).toString());
+			showFileInExplorer(path);
+	
 			});
 
 		//没有名称表示是对齐的item，不存在对应的文件，只是占位

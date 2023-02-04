@@ -29,14 +29,16 @@
 #include "Qsci/qsciscintilla.h"
 #include "Qsci/qsciscintillabase.h"
 
-int QsciLexer::s_defaultFontSize = 14;
+int QsciLexer::s_defaultFontSize = 12;
+
+int QsciLexer::m_themesId = 0;
 
 #if defined(Q_OS_WIN)
 QFont QsciLexer::s_defaultLangFont("Courier New", QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
 QFont QsciLexer::s_defaultLangFont("Menlo", s_defaultFontSize);
 #else
-QFont QsciLexer::s_defaultLangFont("Bitstream Vera Sans", 9);
+QFont QsciLexer::s_defaultLangFont("Courier 10 Pitch", 12);
 #endif
 
 // The ctor.
@@ -57,7 +59,8 @@ QsciLexer::QsciLexer(QObject *parent)
 
     // Set the default fore and background colours.
     QPalette pal = QApplication::palette();
-    defColor = pal.text().color();
+    //defColor = pal.text().color();
+	defColor = QColor(Qt::black);
     defPaper = pal.base().color();
 
     // Putting this on the heap means we can keep the style getters const.
@@ -131,8 +134,12 @@ void QsciLexer::setStyleDefaults() const
     if (!style_map->style_data_set)
     {
         for (int i = 0; i <= QsciScintillaBase::STYLE_MAX; ++i)
+        {
             if (!description(i).isEmpty())
-                styleData(i);
+            {
+                setThemesDefaultStyleData(i);
+            }
+        }
 
         style_map->style_data_set = true;
     }
@@ -152,6 +159,9 @@ QsciLexer::StyleData &QsciLexer::styleData(int style) const
 {
     StyleData &sd = style_map->style_data[style];
 
+    //如果是非默认主题,则无条件的把所有属性都设置为默认值
+    //这样一来，默认都是默认风格，只有文件中存在配置值的才是其它指定风格
+ 
     // See if this is a new style by checking if the colour is valid.
     if (!sd.color.isValid())
     {
@@ -160,10 +170,43 @@ QsciLexer::StyleData &QsciLexer::styleData(int style) const
         sd.font = defaultFont(style);
         sd.eol_fill = defaultEolFill(style);
     }
-
+   
     return sd;
 }
 
+// Return a reference to a style's data, setting up the defaults if needed.
+QsciLexer::StyleData& QsciLexer::setThemesDefaultStyleData(int style) const
+{
+
+    StyleData& sd = style_map->style_data[style];
+
+    //如果是非默认主题,则无条件的把所有属性都设置为默认值
+    //这样一来，默认都是GLobal的默认风格，只有文件中存在配置值的才是其它指定风格
+    if (L_GLOBAL != lexerId())
+    {
+        // See if this is a new style by checking if the colour is valid.
+        if (m_themesId != 0 || !sd.color.isValid())
+        {
+            sd.color = defaultColor();
+            sd.paper = defaultPaper();
+            sd.font = defaultFont();
+            sd.eol_fill = defaultEolFill(style);
+        }
+    }
+    else
+    {
+        //Global本身是个例外，它不能全部使用默认风格。而是要使用它自定义的风格。
+        if (m_themesId != 0 || !sd.color.isValid())
+        {
+            sd.color = defaultColor(style);
+            sd.paper = defaultPaper(style);
+            sd.font = defaultFont(style);
+            sd.eol_fill = defaultEolFill(style);
+        }
+    }
+
+    return sd;
+}
 
 // Set the APIs associated with the lexer.
 void QsciLexer::setAPIs(QsciAbstractAPIs *apis)
@@ -408,6 +451,58 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
     QString key, full_key;
     QStringList fdesc;
 
+    //原来是先读取默认值，在读取配置值。加入主题后，得先读取配置的默认值。
+    //因为非默认主题的初始样式值，就该是默认样式值。只有读取配置的默认值，后面初始化样式时，
+    //才能获取到真正的样式默认值。
+    if (m_themesId != 0)
+    {
+        key = QString("%1/%2/").arg(prefix).arg(language());
+
+        // Read the default foreground colour.
+        full_key = key + "defaultcolor";
+
+        ok = qs.contains(full_key);
+        num = qs.value(full_key).toString().toInt(&ok, 16);
+
+        if (ok)
+            setDefaultColor(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff));
+        else
+            rc = false;
+
+        // Read the default background colour.
+        full_key = key + "defaultpaper";
+
+        ok = qs.contains(full_key);
+        num = qs.value(full_key).toString().toInt(&ok, 16);
+
+        if (ok)
+            setDefaultPaper(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff));
+        else
+            rc = false;
+
+        // Read the default font.  First try the deprecated format that uses an
+        // integer point size.
+        full_key = key + "defaultfont";
+
+        ok = qs.contains(full_key);
+        fdesc = qs.value(full_key).toStringList();
+
+        if (ok && fdesc.count() == 5)
+        {
+            QFont f;
+
+            f.setFamily(fdesc[0]);
+            f.setPointSize(fdesc[1].toInt());
+            f.setBold(fdesc[2].toInt());
+            f.setItalic(fdesc[3].toInt());
+            f.setUnderline(fdesc[4].toInt());
+
+            setDefaultFont(f);
+        }
+        else
+            rc = false;
+    }
+
     setStyleDefaults();
 
     // Read the styles.
@@ -423,7 +518,7 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
         full_key = key + "color";
 
         ok = qs.contains(full_key);
-        num = qs.value(full_key).toInt();
+        num = qs.value(full_key).toString().toInt(&ok, 16);
 
         if (ok)
             setColor(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff), i);
@@ -465,14 +560,14 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
 
         // Now try the newer font format that uses a floating point point size.
         // It is not an error if it doesn't exist.
-        full_key = key + "font2";
+        //full_key = key + "font2";
 
-        ok = qs.contains(full_key);
-        fdesc = qs.value(full_key).toStringList();
+       // ok = qs.contains(full_key);
+       // fdesc = qs.value(full_key).toStringList();
 
-        if (ok)
+        /*if (ok)
         {
-            // Allow for future versions with more fields.
+             Allow for future versions with more fields.
             if (fdesc.count() >= 5)
             {
                 QFont f;
@@ -489,14 +584,14 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
             {
                 rc = false;
             }
-        }
+        }*/
 
-#if 0 //不读取背景颜色，和主题保存一致
+#if 1 //不读取背景颜色，和主题保存一致
         // Read the background colour.
         full_key = key + "paper";
 
         ok = qs.contains(full_key);
-        num = qs.value(full_key).toInt();
+        num = qs.value(full_key).toString().toInt(&ok,16);
 
         if (ok)
             setPaper(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff), i);
@@ -513,71 +608,47 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
 
     refreshProperties();
 
-    // Read the rest.
-    key = QString("%1/%2/").arg(prefix).arg(language());
-
-    // Read the default foreground colour.
-    full_key = key + "defaultcolor";
-
-    ok = qs.contains(full_key);
-    num = qs.value(full_key).toInt();
-
-    if (ok)
-        setDefaultColor(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff));
-    else
-        rc = false;
-
-#if 0
-    // Read the default background colour.
-    full_key = key + "defaultpaper";
-
-    ok = qs.contains(full_key);
-    num = qs.value(full_key).toInt();
-
-    if (ok)
-        setDefaultPaper(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff));
-    else
-        rc = false;
-#endif
-
-    // Read the default font.  First try the deprecated format that uses an
-    // integer point size.
-    full_key = key + "defaultfont";
-
-    ok = qs.contains(full_key);
-    fdesc = qs.value(full_key).toStringList();
-
-    if (ok && fdesc.count() == 5)
+    //只有默认主题才需要读取默认值。非默认主题，最前面已经读取过了。
+    if (m_themesId == 0)
     {
-        QFont f;
+        // Read the rest.
+        key = QString("%1/%2/").arg(prefix).arg(language());
 
-        f.setFamily(fdesc[0]);
-        f.setPointSize(fdesc[1].toInt());
-        f.setBold(fdesc[2].toInt());
-        f.setItalic(fdesc[3].toInt());
-        f.setUnderline(fdesc[4].toInt());
+        // Read the default foreground colour.
+        full_key = key + "defaultcolor";
 
-        setDefaultFont(f);
-    }
-    else
-        rc = false;
+        ok = qs.contains(full_key);
+        num = qs.value(full_key).toString().toInt(&ok, 16);
 
-    // Now try the newer font format that uses a floating point point size.  It
-    // is not an error if it doesn't exist.
-    full_key = key + "defaultfont2";
+        if (ok)
+            setDefaultColor(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff));
+        else
+            rc = false;
 
-    ok = qs.contains(full_key);
-    fdesc = qs.value(full_key).toStringList();
+        // Read the default background colour.
+        full_key = key + "defaultpaper";
 
-    if (ok)
-    {
-        // Allow for future versions with more fields.
-        if (fdesc.count() >= 5)
+        ok = qs.contains(full_key);
+        num = qs.value(full_key).toString().toInt(&ok, 16);
+
+        if (ok)
+            setDefaultPaper(QColor((num >> 16) & 0xff, (num >> 8) & 0xff, num & 0xff));
+        else
+            rc = false;
+
+        // Read the default font.  First try the deprecated format that uses an
+        // integer point size.
+        full_key = key + "defaultfont";
+
+        ok = qs.contains(full_key);
+        fdesc = qs.value(full_key).toStringList();
+
+        if (ok && fdesc.count() == 5)
         {
             QFont f;
 
             f.setFamily(fdesc[0]);
-            f.setPointSizeF(fdesc[1].toDouble());
+            f.setPointSize(fdesc[1].toInt());
             f.setBold(fdesc[2].toInt());
             f.setItalic(fdesc[3].toInt());
             f.setUnderline(fdesc[4].toInt());
@@ -585,10 +656,36 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
             setDefaultFont(f);
         }
         else
-        {
             rc = false;
-        }
     }
+
+    // Now try the newer font format that uses a floating point point size.  It
+    // is not an error if it doesn't exist.
+    //full_key = key + "defaultfont2";
+
+    //ok = qs.contains(full_key);
+    //fdesc = qs.value(full_key).toStringList();
+
+    //if (ok)
+    //{
+    //    // Allow for future versions with more fields.
+    //    if (fdesc.count() >= 5)
+    //    {
+    //        QFont f;
+
+    //        f.setFamily(fdesc[0]);
+    //        f.setPointSizeF(fdesc[1].toDouble());
+    //        f.setBold(fdesc[2].toInt());
+    //        f.setItalic(fdesc[3].toInt());
+    //        f.setUnderline(fdesc[4].toInt());
+
+    //        setDefaultFont(f);
+    //    }
+    //    else
+    //    {
+    //        rc = false;
+    //    }
+    //}
 
     full_key = key + "autoindentstyle";
 
@@ -629,7 +726,7 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
         c = color(i);
         num = (c.red() << 16) | (c.green() << 8) | c.blue();
 
-        qs.setValue(key + "color", num);
+        qs.setValue(key + "color", QString::number(num, 16));
 
         // Write the end-of-line fill.
         qs.setValue(key + "eolfill", eolFill(i));
@@ -649,16 +746,16 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
         qs.setValue(key + "font", fdesc);
 
         // Write the font using the newer format.
-        fdesc[1] = fmt.arg(f.pointSizeF());
+        //fdesc[1] = fmt.arg(f.pointSizeF());
 
-        qs.setValue(key + "font2", fdesc);
+        //qs.setValue(key + "font2", fdesc);
 
-#if 0 //背景颜色和主题皮肤保存一致，故不写入背景颜色
+#if 1 //背景颜色和主题皮肤保存一致，故不写入背景颜色
         // Write the background colour.
         c = paper(i);
         num = (c.red() << 16) | (c.green() << 8) | c.blue();
 
-        qs.setValue(key + "paper", num);
+        qs.setValue(key + "paper", QString::number(num, 16));
 #endif
     }
 
@@ -674,13 +771,13 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
     // Write the default foreground colour.
     num = (defColor.red() << 16) | (defColor.green() << 8) | defColor.blue();
 
-    qs.setValue(key + "defaultcolor", num);
+    qs.setValue(key + "defaultcolor", QString::number(num,16));
 
-#if 0
+#if 1
     // Write the default background colour.
     num = (defPaper.red() << 16) | (defPaper.green() << 8) | defPaper.blue();
 
-    qs.setValue(key + "defaultpaper", num);
+    qs.setValue(key + "defaultpaper", QString::number(num, 16));
 #endif
 
     // Write the default font using the deprecated format.
@@ -696,9 +793,9 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
     qs.setValue(key + "defaultfont", fdesc);
 
     // Write the font using the newer format.
-    fdesc[1] = fmt.arg(defFont.pointSizeF());
+    //fdesc[1] = fmt.arg(defFont.pointSizeF());
 
-    qs.setValue(key + "defaultfont2", fdesc);
+   //qs.setValue(key + "defaultfont2", fdesc);
 
     qs.setValue(key + "autoindentstyle", autoIndStyle);
 
@@ -816,4 +913,39 @@ const char* QsciLexer::getUserDefineKeywords()
 
 	return m_userDefineKeyword.data();
 
+}
+
+QByteArray QsciLexer::getCommentLineSymbol()
+{
+    return m_commentSymbol;
+}
+
+void QsciLexer::setCommentLineSymbol(QByteArray comment)
+{
+    m_commentSymbol = comment;
+}
+
+QByteArray QsciLexer::getCommentStart()
+{
+    return m_commentStart;
+}
+
+QByteArray QsciLexer::getCommentEnd()
+{
+    return m_commentEnd;
+}
+
+void QsciLexer::setCommentStart(QByteArray commentStart)
+{
+    m_commentStart = commentStart;
+}
+
+void QsciLexer::setCommentEnd(QByteArray commentEnd)
+{
+    m_commentEnd = commentEnd;
+}
+
+void QsciLexer::setCurThemes(int themesId)
+{
+    m_themesId = themesId;
 }

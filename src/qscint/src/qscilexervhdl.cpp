@@ -31,6 +31,9 @@ QsciLexerVHDL::QsciLexerVHDL(QObject *parent)
       fold_comments(true), fold_compact(true), fold_atelse(true),
       fold_atbegin(true), fold_atparenth(true)
 {
+    m_commentSymbol = "--";
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 

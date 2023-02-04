@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
+    <width>553</width>
     <height>176</height>
    </rect>
   </property>
@@ -18,9 +18,24 @@
   </property>
   <property name="windowIcon">
    <iconset resource="RealCompare.qrc">
-    <normaloff>:/Resources/img/main.png</normaloff>:/Resources/img/main.png</iconset>
+    <normaloff>:/Resources/edit/global/ndd.ico</normaloff>:/Resources/edit/global/ndd.ico</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
    <item>
     <widget class="QTextBrowser" name="output">
      <property name="horizontalScrollBarPolicy">

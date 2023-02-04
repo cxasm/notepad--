@@ -5,6 +5,18 @@
 #include <QTreeWidgetItem>
 #include <qscilexer.h>
 
+//#define TEST_PRE
+
+#ifdef TEST_PRE
+static const char* VersionStr = u8"(内部测试非稳定) v1.22.0";
+#else
+
+static const char* VersionStr = "v1.22.0";
+#endif // TEST_PRE
+
+
+//#define NO_PLUGIN 1
+
 #define CMP_CODE_NOEQUAL
 
 enum RC_DIRECTION
@@ -59,6 +71,7 @@ enum CODE_ID {
 	KOI8_R,//俄罗斯
 	TSCII,//泰国
 	TIS_620,//泰文
+	BIG5,//繁体中文
 	CODE_END //最后一个标志,在UI上是显示一个UNKNOWN，这是一个特殊
 };
 
@@ -134,3 +147,25 @@ enum UserLangMother
 };
 
 QString getUserLangDirPath();
+
+//在这定义一次即可。
+//#define uos 1
+
+#ifdef Q_OS_WIN
+#undef uos
+#endif
+
+#ifdef ubu
+#undef uos
+#endif
+
+#ifdef uos
+#undef ubu
+#endif
+
+#ifdef Q_OS_MAC
+#undef uos
+#endif
+
+void showFileInExplorer(QString path);
+QString tranFileSize(qint64 fileSize);

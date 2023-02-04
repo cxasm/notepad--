@@ -29,6 +29,7 @@
 QsciLexerYAML::QsciLexerYAML(QObject *parent)
     : QsciLexer(parent), fold_comments(false)
 {
+    m_commentSymbol = "#";
 }
 
 

@@ -1,4 +1,4 @@
-// This defines the interface to the QsciLexer class.
+ï»¿// This defines the interface to the QsciLexer class.
 //
 // Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
@@ -38,7 +38,7 @@ class QsciAbstractAPIs;
 class QsciScintilla;
 
 
-//Òª×¢ÒâÓëcommon.hµÄ±£³ÖÒ»ÖÂ¡£
+//è¦æ³¨æ„ä¸common.hçš„ä¿æŒä¸€è‡´ã€‚
 enum LangType {
 	L_UNKNOWN=-1,L_PHP=0, L_C, L_CPP, L_CS, L_OBJC, L_JAVA, L_RC, \
 	L_HTML, L_XML, L_MAKEFILE, L_PASCAL, L_BATCH, L_INI, L_ASCII, L_USER, \
@@ -53,10 +53,10 @@ enum LangType {
 	L_CSOUND, L_ERLANG, L_ESCRIPT, L_FORTH, L_LATEX, \
 	L_MMIXAL, L_NIM, L_NNCRONTAB, L_OSCRIPT, L_REBOL, \
 	L_REGISTRY, L_RUST, L_SPICE, L_TXT2TAGS, L_VISUALPROLOG, L_TYPESCRIPT, \
-	L_EDIFACT, L_MARKDOWN, L_OCTAVE, L_PO, L_POV, L_IDL, L_GO, L_TXT, \
+	L_EDIFACT, L_MARKDOWN, L_OCTAVE, L_PO, L_POV, L_IDL, L_GO, L_GLOBAL, L_TXT, \
 	// Don't use L_JS, use L_JAVASCRIPT instead
 	// The end of enumated language type, so it should be always at the end
-	L_EXTERNAL = 100, L_USER_DEFINE=200,L_USER_TXT,L_USER_CPP //ÓÃ»§×Ô¶¨ÒåË³ĞòÓëUserLangMother±£´æÒ»ÖÂ
+	L_EXTERNAL = 100, L_USER_DEFINE=200,L_USER_TXT,L_USER_CPP //ç”¨æˆ·è‡ªå®šä¹‰é¡ºåºä¸UserLangMotherä¿å­˜ä¸€è‡´
 };
 
 //! \brief The QsciLexer class is an abstract class used as a base for language
@@ -114,7 +114,7 @@ public:
 
 	void setLexerTag(QString tag);
 
-	//¶ÔÍâµÄÏÔÊ¾Ãû³Æ¡£±ÈÈçhtml¿ÉÒÔ½âÎöasp£¬Ê¹ÓÃhtmlµÄlexer()£¬µ«ÊÇ¶ÔÍâtagÊÇasp
+	//å¯¹å¤–çš„æ˜¾ç¤ºåç§°ã€‚æ¯”å¦‚htmlå¯ä»¥è§£æaspï¼Œä½¿ç”¨htmlçš„lexer()ï¼Œä½†æ˜¯å¯¹å¤–tagæ˜¯asp
 	QString lexerTag();
 
     //! Returns the identifier (i.e. a QsciScintillaBase::SCLEX_* value) of the
@@ -193,9 +193,9 @@ public:
     //! from 1.  0 is returned if there is no such set.
     virtual const char *keywords(int set);
 
-	void setIsUserDefineKeywords(bool isUserDefine=false); //Ê¹ÓÃÓÃ»§×Ô¶¨ÒåµÄ¹Ø¼ü×Ö
+	void setIsUserDefineKeywords(bool isUserDefine=false); //ä½¿ç”¨ç”¨æˆ·è‡ªå®šä¹‰çš„å…³é”®å­—
 
-	const char* getUserDefineKeywords();//»ñÈ¡ÓÃ»§×Ô¶¨Òå¹Ø¼ü×Ö
+	const char* getUserDefineKeywords();//è·å–ç”¨æˆ·è‡ªå®šä¹‰å…³é”®å­—
 
     //! Returns the number of the style used for whitespace.  The default
     //! implementation returns 0 which is the convention adopted by most
@@ -302,8 +302,20 @@ public:
                const char *prefix = "/Scintilla") const;
 
 	StyleData &styleData(int style) const;
+    StyleData& setThemesDefaultStyleData(int style) const;
 
 	void resetStyleDefaults();
+
+    QByteArray getCommentLineSymbol();
+    void setCommentLineSymbol(QByteArray comment);
+
+    QByteArray getCommentStart();
+    QByteArray getCommentEnd();
+
+    void setCommentStart(QByteArray commentStart);
+    void setCommentEnd(QByteArray commentEnd);
+
+    static void setCurThemes(int themesId);
 
 public slots:
     //! The auto-indentation style is set to \a autoindentstyle.
@@ -362,9 +374,17 @@ protected:
     //!
     virtual bool writeProperties(QSettings &qs,const QString &prefix) const;
 
-	bool m_isUserDefineKeyword; //ÊÇ·ñÊ¹ÓÃÓÃ»§×Ô¶¨Òå¹Ø¼ü×Ö¡£Ä¬ÈÏfalse
+	bool m_isUserDefineKeyword; //æ˜¯å¦ä½¿ç”¨ç”¨æˆ·è‡ªå®šä¹‰å…³é”®å­—ã€‚é»˜è®¤false
 
-	QByteArray m_userDefineKeyword;//ÓÃ»§×Ô¶¨ÒåµÄ¹Ø¼ü×Ö
+	QByteArray m_userDefineKeyword;//ç”¨æˆ·è‡ªå®šä¹‰çš„å…³é”®å­—
+
+    QByteArray m_commentSymbol;
+    QByteArray m_commentStart;
+    QByteArray m_commentEnd;
+
+    //å½“å‰ä¸»é¢˜id
+    static int m_themesId;
+
 private:
 
 

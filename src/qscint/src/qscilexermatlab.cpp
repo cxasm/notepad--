@@ -28,6 +28,7 @@
 QsciLexerMatlab::QsciLexerMatlab(QObject *parent)
     : QsciLexer(parent)
 {
+    m_commentSymbol = "%";
 }
 
 

@@ -82,7 +82,7 @@ int Scintilla_LinkLexers() {
 	LINK_LEXER(lmASY);
 	LINK_LEXER(lmAU3);
 	LINK_LEXER(lmAVE);
-	LINK_LEXER(lmAVS);
+	//LINK_LEXER(lmAVS);
 	LINK_LEXER(lmBaan);
 	LINK_LEXER(lmBash);
 	LINK_LEXER(lmBatch);

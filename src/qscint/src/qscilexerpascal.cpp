@@ -31,6 +31,8 @@ QsciLexerPascal::QsciLexerPascal(QObject *parent)
       fold_comments(false), fold_compact(true), fold_preproc(false),
       smart_highlight(true)
 {
+    m_commentStart = "{";
+    m_commentEnd = "}";
 }
 
 

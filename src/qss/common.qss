@@ -1,0 +1,97 @@
+.QPushButton{
+border-style:none;
+border:1px solid #C0DCF2;
+color:#000000;
+background-color:#E1E1E1;
+padding:3px;
+min-height:15px;
+min-width:50px;
+border-radius:3px;
+}
+
+.QPushButton:hover{
+background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F2F9FF,stop:1 #DAEFFF);
+}
+
+QTabBar::tab{ 
+		background-color:rgb(224,224,224);
+		margin-top:1px; 
+		margin-right:1px; 
+		margin-left:1px; 
+		margin-bottom:2px; 
+		padding:1px;
+		min-width:50px;
+}
+
+QTabBar::tab:selected{ 
+		background-color:rgb(255,255,255);
+		border-top:3px solid;
+		border-top-color:#FAAA3C;
+		margin-top:1px; 
+		margin-right:1px; 
+		margin-left:1px; 
+		margin-bottom:2px; 
+		padding:0px;
+}
+QTabBar::close-button{ 
+		image: url(\":/notepad/closeTabButton.png\");
+}
+QTabBar::close-button:hover{ 
+		image: url(\":/notepad/closeTabButton_hover.png\");
+}
+
+QToolBar,QMessageBox,QHeaderView::section{ 
+		background-color:rgba(255, 255, 255, 255); 
+		border: none; 
+		padding: 1px; 
+}
+
+QTabBar QToolButton[accessibleName="Scroll Left"]{border:0px;background-color:#F0F0F0;}
+
+QTabBar QToolButton[accessibleName="Scroll Right"]{border:0px;background-color:#F0F0F0;}
+
+
+QTreeWidget{ 
+		background-color:rgba(255, 255, 255, 255);
+		border:1px solid #C0DCF2;
+}
+
+QTreeWidget::item
+{
+height:22px;
+} 
+
+QTreeView::item::selected
+{
+background-color:#00CCFF;
+}
+
+QTreeView#resultTreeView{ 
+	background-color:#444444;
+	border:1px solid #C0DCF2;
+}
+
+QListWidget#filelistWidget{ 
+	color:#ffffff;
+	background-color:#444444;
+	border:1px solid #C0DCF2;
+}
+
+QMainWindow::separator
+{ 
+		height:1px; 
+    margin: 0px;
+    padding: 0px;
+    background:#FF0000;
+}
+
+QDockWidget{
+    border:0px solid red;
+}
+
+QDockWidget::title {
+    background:#f0f0f0;
+    padding-top:0px;
+}
+
+

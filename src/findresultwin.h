@@ -21,7 +21,8 @@ public:
 
 	void appendResultsToShow(FindRecords * record);
 	void appendResultsToShow(QVector<FindRecords*>* record, int hits, QString whatFind);
-
+	int  getDefaultFontSize();
+	void setDefaultFontSize(int defSize);
 signals:
 	void itemDoubleClicked(const QModelIndex &index);
 	void showMsg(QString &msg);
@@ -32,6 +33,9 @@ private slots:
 	void slot_copyContents();
 	void slot_copyItemContents();
 	void slot_selectSection();
+	void slot_treeView_pressed(QModelIndex modeIndex);
+	void slot_fontZoomIn();
+	void slot_fontZoomOut();
 public slots:
 	void slot_clearAllContents();
 
@@ -51,4 +55,8 @@ private:
 
 	QStandardItemModel* m_model;
 	NdStyledItemDelegate* m_delegate;
+
+	QWidget* m_parent;
+	int m_defaultFontSize;
+	bool m_defFontSizeChange;
 };

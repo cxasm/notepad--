@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1585</width>
+    <width>1458</width>
     <height>789</height>
    </rect>
   </property>
@@ -78,7 +78,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1585</width>
+     <width>1458</width>
      <height>23</height>
     </rect>
    </property>
@@ -96,6 +96,7 @@
     <addaction name="actionClose"/>
     <addaction name="actionClose_All"/>
     <addaction name="separator"/>
+    <addaction name="actionClear_History"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="layoutDirection">
@@ -143,7 +144,6 @@
      </property>
      <addaction name="actionDuplicate_Current_Line"/>
      <addaction name="actionRemove_Duplicate_Lines"/>
-     <addaction name="actionRemove_Consecutive_Duplicate_Lines"/>
      <addaction name="actionSplit_Lines"/>
      <addaction name="actionJoin_Lines"/>
      <addaction name="actionMove_Up_Current_Line"/>
@@ -182,10 +182,25 @@
     <property name="title">
      <string>Search(&amp;S)</string>
     </property>
+    <widget class="QMenu" name="menuBook_Mark">
+     <property name="title">
+      <string>Book Mark</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuMark_Color">
+     <property name="title">
+      <string>Mark Color</string>
+     </property>
+    </widget>
     <addaction name="actionFind"/>
+    <addaction name="actionFindNext"/>
+    <addaction name="actionFindPrev"/>
     <addaction name="actionFind_In_Dir"/>
     <addaction name="actionReplace"/>
     <addaction name="actionGoline"/>
+    <addaction name="separator"/>
+    <addaction name="menuBook_Mark"/>
+    <addaction name="menuMark_Color"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -195,29 +210,55 @@
      <property name="title">
       <string>Display symbols</string>
      </property>
-     <addaction name="actionshow_Spaces_tabs"/>
+     <addaction name="actionShowSpaces"/>
      <addaction name="actionshow_end_of_line"/>
-     <addaction name="actionshow_all"/>
+     <addaction name="actionShowAll"/>
+    </widget>
+    <widget class="QMenu" name="menuIcon_Size">
+     <property name="title">
+      <string>Icon Size</string>
+     </property>
+     <addaction name="action24"/>
+     <addaction name="action36"/>
+     <addaction name="action48"/>
     </widget>
     <addaction name="menudisplay_symbols"/>
     <addaction name="actionSearch_Result"/>
+    <addaction name="menuIcon_Size"/>
     <addaction name="actionWrap"/>
+    <addaction name="actionFileListView"/>
+    <addaction name="actionShow_ToolBar"/>
+    <addaction name="actionShow_Web_Addr"/>
    </widget>
    <widget class="QMenu" name="menuCode">
     <property name="title">
      <string>Encoding(&amp;N)</string>
     </property>
+    <widget class="QMenu" name="menuASNI">
+     <property name="title">
+      <string>Other</string>
+     </property>
+     <addaction name="actionBig5"/>
+    </widget>
+    <widget class="QMenu" name="menuConvert_to_Other">
+     <property name="title">
+      <string>Convert to Other</string>
+     </property>
+     <addaction name="actionToBig5"/>
+    </widget>
     <addaction name="actionencode_in_GBK"/>
     <addaction name="actionencode_in_uft8"/>
     <addaction name="actionencode_in_UTF8_BOM"/>
     <addaction name="actionencode_in_UCS_BE_BOM"/>
     <addaction name="actionencode_in_UCS_2_LE_BOM"/>
+    <addaction name="menuASNI"/>
     <addaction name="separator"/>
     <addaction name="actionconvert_to_GBK"/>
     <addaction name="actionconvert_to_UTF8"/>
     <addaction name="actionconvert_to_UTF8_BOM"/>
     <addaction name="actionconvert_to_UCS_2_BE_BOM"/>
     <addaction name="actionconvert_to_UCS_2_LE_BOM"/>
+    <addaction name="menuConvert_to_Other"/>
     <addaction name="actionbatch_convert"/>
    </widget>
    <widget class="QMenu" name="menuLanguage">
@@ -322,7 +363,6 @@
      <addaction name="actionAutoIt"/>
      <addaction name="actionAviSynth"/>
      <addaction name="actionASN1"/>
-     <addaction name="actionAVS"/>
     </widget>
     <widget class="QMenu" name="menuS">
      <property name="title">
@@ -340,6 +380,7 @@
      <property name="title">
       <string>V</string>
      </property>
+     <addaction name="actionVb"/>
      <addaction name="actionVerilog"/>
      <addaction name="actionVirsual_Basic"/>
      <addaction name="actionVHDL"/>
@@ -427,19 +468,6 @@
     <property name="title">
      <string>Set(&amp;T)</string>
     </property>
-    <widget class="QMenu" name="menuStyle">
-     <property name="title">
-      <string>Style</string>
-     </property>
-     <addaction name="actionDefaultStyle"/>
-     <addaction name="actionLightBlueStyle"/>
-     <addaction name="actionThinBlue"/>
-     <addaction name="actionYellow"/>
-     <addaction name="actionRiceYellow"/>
-     <addaction name="actionSilver"/>
-     <addaction name="actionLavenderBlush"/>
-     <addaction name="actionMistyRose"/>
-    </widget>
     <widget class="QMenu" name="menuLanguage_2">
      <property name="title">
       <string>Language</string>
@@ -448,7 +476,6 @@
      <addaction name="actionEnglish"/>
     </widget>
     <addaction name="actionOptions"/>
-    <addaction name="menuStyle"/>
     <addaction name="menuLanguage_2"/>
     <addaction name="actionLanguage_Format"/>
     <addaction name="actionDefine_Language"/>
@@ -460,6 +487,17 @@
     <addaction name="actionDonate"/>
     <addaction name="actionCC_Pad"/>
    </widget>
+   <widget class="QMenu" name="menuAbout_2">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <addaction name="actioninfo"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools(&amp;O)</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuSearch"/>
@@ -467,7 +505,9 @@
    <addaction name="menuCode"/>
    <addaction name="menuLanguage"/>
    <addaction name="menuSet"/>
+   <addaction name="menuTools"/>
    <addaction name="menuAbout"/>
+   <addaction name="menuAbout_2"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
@@ -489,7 +529,10 @@
     <string>New</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+N</string>
+    <string>Ctrl+T</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WindowShortcut</enum>
    </property>
   </action>
   <action name="actionOpenFile">
@@ -625,7 +668,7 @@
     <string>Replace</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string>Ctrl+H</string>
    </property>
   </action>
   <action name="actionGoline">
@@ -636,7 +679,7 @@
     <string>Ctrl+G</string>
    </property>
   </action>
-  <action name="actionshow_Spaces_tabs">
+  <action name="actionShowSpaces">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -652,7 +695,7 @@
     <string>Show end of line</string>
    </property>
   </action>
-  <action name="actionshow_all">
+  <action name="actionShowAll">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1539,7 +1582,7 @@
   </action>
   <action name="actionLanguage_Format">
    <property name="text">
-    <string>Language Format</string>
+    <string>Theme Style</string>
    </property>
   </action>
   <action name="actionOpen_In_Text">
@@ -1695,10 +1738,16 @@
    <property name="text">
     <string>Move Up Current Line</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Up</string>
+   </property>
   </action>
   <action name="actionMove_Down_Current_Line">
    <property name="text">
     <string>Move Down Current Line</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Down</string>
    </property>
   </action>
   <action name="actionInsert_Blank_Line_Above_Current">
@@ -1782,7 +1831,206 @@
     <string>Find In Dir</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+F</string>
+    <string>Ctrl+Shift+D</string>
+   </property>
+  </action>
+  <action name="actionFindNext">
+   <property name="text">
+    <string>Find Next</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="actionFindPrev">
+   <property name="text">
+    <string>Find Prev</string>
+   </property>
+   <property name="shortcut">
+    <string>F4</string>
+   </property>
+  </action>
+  <action name="actionRed">
+   <property name="text">
+    <string>Red</string>
+   </property>
+  </action>
+  <action name="actionYellow_2">
+   <property name="text">
+    <string>Yellow</string>
+   </property>
+  </action>
+  <action name="actionBlue">
+   <property name="text">
+    <string>Blue</string>
+   </property>
+  </action>
+  <action name="actionBig5">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Big5</string>
+   </property>
+  </action>
+  <action name="actionToBig5">
+   <property name="text">
+    <string>Big5</string>
+   </property>
+  </action>
+  <action name="action24">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>24x24</string>
+   </property>
+  </action>
+  <action name="action36">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>36x36</string>
+   </property>
+  </action>
+  <action name="action48">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>48x48</string>
+   </property>
+  </action>
+  <action name="actioninfo">
+   <property name="text">
+    <string>AboutNdd</string>
+   </property>
+  </action>
+  <action name="action1">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="actionFormat_Xml">
+   <property name="text">
+    <string>Format Xml</string>
+   </property>
+  </action>
+  <action name="actionFormat_Json">
+   <property name="text">
+    <string>Format Json</string>
+   </property>
+  </action>
+  <action name="actionDark">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Dark</string>
+   </property>
+  </action>
+  <action name="actionVb">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>VB</string>
+   </property>
+  </action>
+  <action name="color1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="color2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="color3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="color4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="color5">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>5</string>
+   </property>
+  </action>
+  <action name="loopColor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>loop</string>
+   </property>
+  </action>
+  <action name="actionClear_History">
+   <property name="text">
+    <string>Clear History</string>
+   </property>
+  </action>
+  <action name="actionFileListView">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>FileListView</string>
+   </property>
+  </action>
+  <action name="actionShow_ToolBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show ToolBar</string>
+   </property>
+  </action>
+  <action name="actionBatch_Find">
+   <property name="text">
+    <string>Batch Find</string>
+   </property>
+  </action>
+  <action name="actionShow_Web_Addr">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Web Addr(Not recommended)</string>
+   </property>
+  </action>
+  <action name="actionLanguage_File_Suffix">
+   <property name="text">
+    <string>Language File Suffix</string>
+   </property>
+  </action>
+  <action name="actionShortcut_Key_Manager">
+   <property name="text">
+    <string>Shortcut Key Manager</string>
    </property>
   </action>
  </widget>
@@ -2096,7 +2344,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionshow_Spaces_tabs</sender>
+   <sender>actionShowSpaces</sender>
    <signal>triggered(bool)</signal>
    <receiver>CCNotePad</receiver>
    <slot>slot_show_spaces(bool)</slot>
@@ -2128,10 +2376,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionshow_all</sender>
+   <sender>actionShowAll</sender>
    <signal>triggered(bool)</signal>
    <receiver>CCNotePad</receiver>
-   <slot>slot_show_all(bool)</slot>
+   <slot>slot_allWhite(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -2404,134 +2652,6 @@
    <signal>triggered()</signal>
    <receiver>CCNotePad</receiver>
    <slot>slot_donate()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionDefaultStyle</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toDefaultStyle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionLightBlueStyle</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toLightBlueStyle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionThinBlue</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toThinBlueStyle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionRiceYellow</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toRiceYellow()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionYellow</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toYellow()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionSilver</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toSilverStyle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionLavenderBlush</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toThinBlueStyle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>554</x>
-     <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionMistyRose</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_toMistyRose()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -3151,6 +3271,182 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionFindNext</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_findNext()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFindPrev</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_findPrev()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBig5</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_load_with_big5()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionToBig5</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_encode_big5()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>792</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actioninfo</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_aboutNdd()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClear_History</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_clearHistoryOpenList()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFileListView</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_fileListView(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_ToolBar</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_showToolBar(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_Web_Addr</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_showWebAddr(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLanguage_File_Suffix</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_langFileSuffix()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShortcut_Key_Manager</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_shortcutManager()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionNewFile_toggle(bool)</slot>
@@ -3174,7 +3470,6 @@
   <slot>slot_gotoline()</slot>
   <slot>slot_show_spaces(bool)</slot>
   <slot>slot_show_line_end(bool)</slot>
-  <slot>slot_show_all(bool)</slot>
   <slot>slot_encode_gbk()</slot>
   <slot>slot_encode_utf8()</slot>
   <slot>slot_encode_utf8_bom()</slot>
@@ -3240,5 +3535,20 @@
   <slot>slot_sortLexDesc()</slot>
   <slot>slot_sortLexDescIngCase()</slot>
   <slot>slot_findInDir()</slot>
+  <slot>slot_findNext()</slot>
+  <slot>slot_findPrev()</slot>
+  <slot>slot_load_with_big5()</slot>
+  <slot>slot_encode_big5()</slot>
+  <slot>slot_aboutNdd()</slot>
+  <slot>slot_formatXml()</slot>
+  <slot>slot_formatJson()</slot>
+  <slot>slot_allWhite(bool)</slot>
+  <slot>slot_toDarkStyle()</slot>
+  <slot>slot_clearHistoryOpenList()</slot>
+  <slot>slot_fileListView(bool)</slot>
+  <slot>slot_showToolBar(bool)</slot>
+  <slot>slot_showWebAddr(bool)</slot>
+  <slot>slot_langFileSuffix()</slot>
+  <slot>slot_shortcutManager()</slot>
  </slots>
 </ui>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BatchFindReplaceClass</class>
+ <widget class="QMainWindow" name="BatchFindReplaceClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>902</width>
+    <height>737</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>BatchFindReplace</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>6</number>
+    </property>
+    <property name="rightMargin">
+     <number>3</number>
+    </property>
+    <property name="bottomMargin">
+     <number>3</number>
+    </property>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Enter multiple find keywords, separated by blank characters</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="findKeywordEdit"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Enter multiple Replace keywords, separated by blank characters</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="replaceKeywordEdit"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="findReplaceTable">
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Keyword</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Replace</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="freshBt">
+        <property name="text">
+         <string>Fresh</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="swapBt">
+        <property name="text">
+         <string>swap</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="findBt">
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="replaceBt">
+        <property name="text">
+         <string>Replace</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="markBt">
+        <property name="text">
+         <string>Mark</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>ClearMark</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="importBt">
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="exportBt">
+        <property name="text">
+         <string>Export</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>freshBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_freshBtClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>703</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>findBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_findBtClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>366</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>replaceBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_replaceBtClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>447</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>530</x>
+     <y>709</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>swapBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_swapFindReplace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>285</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>378</x>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>importBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_import()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>690</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>687</x>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_export()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>771</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>799</x>
+     <y>698</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>markBt</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_mark()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>528</x>
+     <y>710</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>584</x>
+     <y>742</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchFindReplaceClass</receiver>
+   <slot>on_clearMark()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>577</x>
+     <y>693</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>570</x>
+     <y>746</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_freshBtClick()</slot>
+  <slot>on_findBtClick()</slot>
+  <slot>on_replaceBtClick()</slot>
+  <slot>on_swapFindReplace()</slot>
+  <slot>on_import()</slot>
+  <slot>on_export()</slot>
+  <slot>on_mark()</slot>
+  <slot>on_clearMark()</slot>
+ </slots>
+</ui>

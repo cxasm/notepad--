@@ -27,50 +27,6 @@
         <file>Resources/edit/global/closehover.png</file>
         <file>Resources/edit/global/needsave.png</file>
         <file>Resources/edit/global/noneedsave.png</file>
-        <file>Resources/edit/styleblack/closeall.png</file>
-        <file>Resources/edit/styleblack/closefile.png</file>
-        <file>Resources/edit/styleblack/crlf.png</file>
-        <file>Resources/edit/styleblack/cut.png</file>
-        <file>Resources/edit/styleblack/dircompare.png</file>
-        <file>Resources/edit/styleblack/filecompare.png</file>
-        <file>Resources/edit/styleblack/find.png</file>
-        <file>Resources/edit/styleblack/needsavebar.png</file>
-        <file>Resources/edit/styleblack/newfile.png</file>
-        <file>Resources/edit/styleblack/noneedsaveallbar.png</file>
-        <file>Resources/edit/styleblack/noneedsavebar.png</file>
-        <file>Resources/edit/styleblack/openfile.png</file>
-        <file>Resources/edit/styleblack/paste.png</file>
-        <file>Resources/edit/styleblack/redo.png</file>
-        <file>Resources/edit/styleblack/replace.png</file>
-        <file>Resources/edit/styleblack/transcode.png</file>
-        <file>Resources/edit/styleblack/undo.png</file>
-        <file>Resources/edit/styleblack/white.png</file>
-        <file>Resources/edit/styleblack/zoomin.png</file>
-        <file>Resources/edit/styleblack/zoomout.png</file>
-        <file>Resources/edit/styleblack/copy.png</file>
-        <file>Resources/edit/styleblack/needsaveallbar.png</file>
-        <file>Resources/edit/styledeepblue/closeall.png</file>
-        <file>Resources/edit/styledeepblue/closefile.png</file>
-        <file>Resources/edit/styledeepblue/copy.png</file>
-        <file>Resources/edit/styledeepblue/crlf.png</file>
-        <file>Resources/edit/styledeepblue/cut.png</file>
-        <file>Resources/edit/styledeepblue/dircompare.png</file>
-        <file>Resources/edit/styledeepblue/filecompare.png</file>
-        <file>Resources/edit/styledeepblue/find.png</file>
-        <file>Resources/edit/styledeepblue/needsaveallbar.png</file>
-        <file>Resources/edit/styledeepblue/needsavebar.png</file>
-        <file>Resources/edit/styledeepblue/newfile.png</file>
-        <file>Resources/edit/styledeepblue/noneedsaveallbar.png</file>
-        <file>Resources/edit/styledeepblue/noneedsavebar.png</file>
-        <file>Resources/edit/styledeepblue/openfile.png</file>
-        <file>Resources/edit/styledeepblue/paste.png</file>
-        <file>Resources/edit/styledeepblue/redo.png</file>
-        <file>Resources/edit/styledeepblue/replace.png</file>
-        <file>Resources/edit/styledeepblue/transcode.png</file>
-        <file>Resources/edit/styledeepblue/undo.png</file>
-        <file>Resources/edit/styledeepblue/white.png</file>
-        <file>Resources/edit/styledeepblue/zoomin.png</file>
-        <file>Resources/edit/styledeepblue/zoomout.png</file>
         <file>Resources/edit/global/notebook.png</file>
         <file>Resources/img/next.png</file>
         <file>Resources/img/pre.png</file>
@@ -152,5 +108,42 @@
         <file>mac.icns</file>
         <file>Resources/img/register.png</file>
         <file>notepad/rightClose.png</file>
+        <file>Resources/img/bookmark.png</file>
+        <file>Resources/img/refresh.png</file>
+        <file>Resources/edit/styledeepblue/autosave.png</file>
+        <file>Resources/edit/styledeepblue/clearsign.png</file>
+        <file>Resources/edit/styledeepblue/closeall.png</file>
+        <file>Resources/edit/styledeepblue/closefile.png</file>
+        <file>Resources/edit/styledeepblue/copy.png</file>
+        <file>Resources/edit/styledeepblue/crlf.png</file>
+        <file>Resources/edit/styledeepblue/cut.png</file>
+        <file>Resources/edit/styledeepblue/dircompare.png</file>
+        <file>Resources/edit/styledeepblue/filecompare.png</file>
+        <file>Resources/edit/styledeepblue/find.png</file>
+        <file>Resources/edit/styledeepblue/indentGuide.png</file>
+        <file>Resources/edit/styledeepblue/mark.png</file>
+        <file>Resources/edit/styledeepblue/needsavebar.png</file>
+        <file>Resources/edit/styledeepblue/newfile.png</file>
+        <file>Resources/edit/styledeepblue/openfile.png</file>
+        <file>Resources/edit/styledeepblue/paste.png</file>
+        <file>Resources/edit/styledeepblue/redo.png</file>
+        <file>Resources/edit/styledeepblue/replace.png</file>
+        <file>Resources/edit/styledeepblue/sign.png</file>
+        <file>Resources/edit/styledeepblue/transcode.png</file>
+        <file>Resources/edit/styledeepblue/undo.png</file>
+        <file>Resources/edit/styledeepblue/white.png</file>
+        <file>Resources/edit/styledeepblue/zoomin.png</file>
+        <file>Resources/edit/styledeepblue/zoomout.png</file>
+        <file>Resources/edit/styledeepblue/needsaveall.png</file>
+        <file>Resources/img/savedark.png</file>
+        <file>Resources/img/opendark.png</file>
+        <file>Resources/img/reloaddark.png</file>
+        <file>Resources/img/vip.png</file>
+        <file>Resources/img/vipdark.png</file>
+        <file>Resources/edit/global/noneedsavedark.png</file>
+        <file>Resources/img/diffall.png</file>
+        <file>Resources/img/expand.png</file>
+        <file>Resources/img/fold.png</file>
+        <file>qss/common.qss</file>
     </qresource>
 </RCC>

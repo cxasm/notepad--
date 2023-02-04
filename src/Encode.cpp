@@ -154,6 +154,9 @@ QString Encode::getCodeNameById(CODE_ID id)
 	case TIS_620:
 		ret = "TIS-620";
 		break;
+	case BIG5:
+		ret = "BIG5-HKSCS";
+		break;
 	default:
 		ret = "unknown";
 		break;
@@ -288,6 +291,9 @@ QString Encode::getQtCodecNameById(CODE_ID id)
 		break;
 	case TIS_620:
 		ret = "TIS-620";
+		break;
+	case BIG5:
+		ret = "Big5-HKSCS";
 		break;
 	default:
 		ret = "unknown";

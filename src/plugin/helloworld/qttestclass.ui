@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtTestClassClass</class>
+ <widget class="QWidget" name="QtTestClassClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>544</width>
+    <height>251</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QtTestClass</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>这是一个插件例子，把当前文档全部变成大写字母。
+请给我们提交插件！</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="upperBt">
+       <property name="text">
+        <string>TransUpper</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="lowerBt">
+       <property name="text">
+        <string>TransLower</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>QtTestClassClass</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>435</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>446</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>upperBt</sender>
+   <signal>clicked()</signal>
+   <receiver>QtTestClassClass</receiver>
+   <slot>on_upper()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>177</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>187</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lowerBt</sender>
+   <signal>clicked()</signal>
+   <receiver>QtTestClassClass</receiver>
+   <slot>on_lower()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>296</x>
+     <y>182</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>323</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>on_upper()</slot>
+  <slot>on_lower()</slot>
+ </slots>
+</ui>

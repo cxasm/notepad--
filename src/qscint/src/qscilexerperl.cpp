@@ -31,6 +31,7 @@ QsciLexerPerl::QsciLexerPerl(QObject *parent)
       fold_atelse(false), fold_comments(false), fold_compact(true),
       fold_packages(true), fold_pod_blocks(true)
 {
+    m_commentSymbol = "#";
 }
 
 

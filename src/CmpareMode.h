@@ -73,19 +73,13 @@ public:
 	static CODE_ID scanFileRealCode(QString filePath);
 	static CODE_ID scanFileOutPut(CODE_ID code, QString filePath, QList<LineFileInfo>& outputLineInfoVec, int & maxLineSize, int & charsNums, bool &isHexFile);
 
-
-	inline QList<LineFileInfo>* getLeftLineInfo();
-	inline QList<LineFileInfo>* getRightLineInfo();
-
-
-	void getLines(RC_DIRECTION direction, QList<LineFileInfo>& lines);
-	void getLinesExternInfo(QList<BlockUserData*>*& leftExternBlockInfo, QList<BlockUserData*>*& rightExternBlockInfo);
-
+	static CODE_ID getTextFileEncodeType(uchar* fileFpr, int fileLength, QString filePath="", bool isCheckHead = true);
+	static bool tranUnicodeLeToUtf8Bytes(uchar* fileFpr, const int fileLength, QString& outUtf8Bytes, bool isSkipHead=false);
+	static bool isUnicodeLeBomFile(uchar* fileFpr, int fileLength);
 private:
 
 	static bool recognizeTextCode(QByteArray & text, LineFileInfo & lineInfo, QString & outUnicodeText);
-	static CODE_ID getTextFileEncodeType(uchar* fileFpr, int fileLength, QString filePath);
-	CODE_ID static readLineFromFileWithUnicodeLe(uchar* m_fileFpr, const int fileLength, QList<LineFileInfo>& lineInfoVec, QList<LineFileInfo>& blankLineInfoVec,int mode, int &maxLineSize);
+	quint32 static readLineFromFileWithUnicodeLe(uchar* m_fileFpr, const int fileLength, QList<LineFileInfo>& lineInfoVec, QList<LineFileInfo>& blankLineInfoVec,int mode, int &maxLineSize);
 
 	
 };

@@ -1,5 +1,5 @@
 ﻿#include "ccnotepad.h"
-#include "jsondeploy.h"
+#include "nddsetting.h"
 #include "styleset.h"
 
 
@@ -23,13 +23,18 @@
 
 #ifdef Q_OS_WIN
 #pragma comment(lib, "user32.lib")
+#if _DEBUG
+#pragma comment(lib, "qmyedit_qt5d.lib")
+#else
+#pragma comment(lib, "qmyedit_qt5.lib")
+#endif
 #include <qt_windows.h>
 const ULONG_PTR CUSTOM_TYPE = 10000;
 const ULONG_PTR OPEN_NOTEPAD_TYPE = 10001;
 bool s_isAdminAuth = false;
 #endif
 
-const QString c_strTitle = "notepad-- v1.17.1";
+const QString c_strTitle = "Ndd";
 
 
 #ifdef Q_OS_UNIX
@@ -129,6 +134,18 @@ int main(int argc, char *argv[])
 	a.setApplicationName(c_strTitle);
 
 	QStringList arguments = QCoreApplication::arguments();
+
+#ifdef uos
+	QFont font("Noto Sans CJK SC,9,-1,5,50,0,0,0,0,0,Regular", 9);
+	QApplication::setFont(font);
+#endif
+#ifdef Q_OS_MAC
+	//这里的字体大小，务必要和查找结果框的高度匹配，否则会结构字体拥挤
+	QFont font("Courier New,11,-1,5,50,0,0,0,0,0,Regular", 11);
+	// qDebug() << "font name mac";
+	QApplication::setFont(font);
+	// qDebug() << QApplication::font().toString();
+#endif
 
 #ifdef Q_OS_WIN
 	QSharedMemory shared("ccnotepad");
@@ -281,27 +298,18 @@ drop_old:
 	//20221009发现有小概率出现窗口没有，但是进程还在的诡异问题，加个保护一下
 	QApplication::setQuitOnLastWindowClosed(true);
 
-	JsonDeploy::init();
+	NddSetting::init();
 
-	int id = JsonDeploy::getKeyValueFromNumSets(SKIN_KEY);
+	int id = NddSetting::getKeyValueFromNumSets(SKIN_KEY);
 	StyleSet::setSkin(id);
 
 	CCNotePad *pMainNotepad = new CCNotePad(true);
 	pMainNotepad->setAttribute(Qt::WA_DeleteOnClose);
 	pMainNotepad->setShareMem(&shared);
-	pMainNotepad->show();
+	pMainNotepad->quickshow();
 
 	pMainNotepad->syncCurSkinToMenu(id);
 
-#ifdef uos
-	QFont font("Noto Sans CJK JP,9,-1,5,50,0,0,0,0,0,Regular", 9);
-	QApplication::setFont(font);
-#endif
-#ifdef Q_OS_MAC
-	//这里的字体大小，务必要和查找结果框的高度匹配，否则会结构字体拥挤
-	QFont font("Courier New,11,-1,5,50,0,0,0,0,0,Regular", 11);
-	QApplication::setFont(font);
-#endif
 
 #ifdef Q_OS_WIN
 	//HWND hwnd = ::FindWindowA("Qt5QWindowIcon", "CCNotebook");
@@ -326,16 +334,11 @@ drop_old:
     memcpy(nppShared.data(), &pid, sizeof(pid_t));
     nppShared.unlock();
 #endif // Q_OS_WIN
-
-	//else
-	//{
-	//	pMainNotepad->initTabNewOne();
-	//}
 	//恢复上次关闭时的文件
 #ifdef Q_OS_WIN
 	if (!s_isAdminAuth)
 	{
-		if (0 == pMainNotepad->restoreLastFiles())
+		if (0 == pMainNotepad->restoreLastFiles() && (arguments.size() == 1))
 		{
 		pMainNotepad->initTabNewOne();
 	}
@@ -349,8 +352,16 @@ drop_old:
 
 	if (arguments.size() == 2)
 	{
+		if (!s_isAdminAuth)
+		{
 		pMainNotepad->openFile(arguments[1]);
-		pMainNotepad->showNormal();
+	}
+		else
+		{
+			//如果是管理员，还不能直接打开文件，需要恢复之前文件的修改内容
+			//恢复不了，再直接打开
+			pMainNotepad->tryRestoreFile(arguments[1]);
+		}
 	}
 #ifdef Q_OS_WIN
 	pMainNotepad->checkAppFont();
@@ -358,7 +369,7 @@ drop_old:
 
 	a.exec();
 
-	JsonDeploy::close();
+	NddSetting::close();
 
 	return 0;
 }

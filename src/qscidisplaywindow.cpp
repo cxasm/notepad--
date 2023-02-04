@@ -3,14 +3,16 @@
 #include "textfind.h"
 #include "common.h"
 #include "styleset.h"
+#include "rcglobal.h"
 
 #include <QScrollBar>
 #include <QFileInfo>
 #include <QProcess>
 #include <QMessageBox>
 #include <stdexcept>
+#include <SciLexer.h>
 
-QsciDisplayWindow::QsciDisplayWindow(QWidget *parent):QsciScintilla(parent), m_textFindWin(nullptr), m_preFirstLineNum(0), m_isShowFindItem(true)
+QsciDisplayWindow::QsciDisplayWindow(QWidget *parent):QsciScintilla(parent), m_textFindWin(nullptr), m_preFirstLineNum(0), m_isShowFindItem(true), m_hasHighlight(false)
 {
 	//20210815 左右行同步还有问题，暂时不屏蔽，不实现
 	connect(this->verticalScrollBar(), &QScrollBar::valueChanged, this, &QsciDisplayWindow::slot_scrollYValueChange);
@@ -37,21 +39,31 @@ QsciDisplayWindow::QsciDisplayWindow(QWidget *parent):QsciScintilla(parent), m_t
 	}
 
 	//这个无比要设置false，否则双击后高亮单词，拷贝时会拷贝多个选择。
-	execute(SCI_SETMULTIPLESELECTION, false);
+	execute(SCI_SETMULTIPLESELECTION, true);
 	execute(SCI_SETMULTIPASTE, 1);
 	execute(SCI_SETADDITIONALCARETSVISIBLE, false);
 	execute(SCI_SETSELFORE, true, 0x0);
 	execute(SCI_SETSELBACK, true, 0x00ffff);
 
-	QColor foldfgColor(StyleSet::foldfgColor);
-	QColor foldbgColor(StyleSet::foldbgColor);//默认0xff,0xff,0xff
+	//QColor foldfgColor(StyleSet::foldfgColor);
+	//QColor foldbgColor(StyleSet::foldbgColor);//默认0xff,0xff,0xff
 
-	//通过fold发现，尽量使用qscint的功能，因为他做了大量封装和简化
-	setFolding(BoxedTreeFoldStyle, 2);
-	setFoldMarginColors(foldfgColor, foldbgColor);
-	setMarginsBackgroundColor(StyleSet::marginsBackgroundColor); //0xea, 0xf7, 0xff //默认0xf0f0f0
+	////通过fold发现，尽量使用qscint的功能，因为他做了大量封装和简化
+	//setFolding(BoxedTreeFoldStyle, 2);
+	//setFoldMarginColors(foldfgColor, foldbgColor);
+	//setMarginsBackgroundColor(StyleSet::marginsBackgroundColor); //0xea, 0xf7, 0xff //默认0xf0f0f0
 
+		//双击后同样的字段进行高亮
+	execute(SCI_INDICSETSTYLE, SCE_UNIVERSAL_FOUND_STYLE_SMART, INDIC_ROUNDBOX);
+	execute(SCI_INDICSETALPHA, SCE_UNIVERSAL_FOUND_STYLE_SMART, 100);
+	execute(SCI_INDICSETUNDER, SCE_UNIVERSAL_FOUND_STYLE_SMART, false);
+	execute(SCI_INDICSETFORE, SCE_UNIVERSAL_FOUND_STYLE_SMART, 0x00ff00);
 
+	setStyleOptions();
+
+	//开启后可以保证长行在滚动条下完整显示
+	execute(SCI_SETSCROLLWIDTHTRACKING, true);
+	connect(this, &QsciScintilla::selectionChanged, this, &QsciDisplayWindow::slot_clearHightWord, Qt::QueuedConnection);
 	connect(this, &QsciDisplayWindow::delayWork, this, &QsciDisplayWindow::slot_delayWork, Qt::QueuedConnection);
 }
 
@@ -61,6 +73,37 @@ QsciDisplayWindow::~QsciDisplayWindow()
 	{
 		delete m_textFindWin;
 		m_textFindWin = nullptr;
+	}
+}
+
+void QsciDisplayWindow::setFoldColor(int margin, QColor fgClack, QColor bkColor)
+{
+	SendScintilla(SCI_MARKERSETFORE, margin, fgClack);
+	SendScintilla(SCI_MARKERSETBACK, margin, bkColor);
+}
+
+void QsciDisplayWindow::setStyleOptions()
+{
+	if (StyleSet::m_curStyleId != BLACK_SE)
+	{
+		setMarginsForegroundColor(QColor(0x80, 0x80, 0x80)); //默认0x80, 0x80, 0x80
+	}
+	else
+	setMarginsBackgroundColor(0xf0f0f0);
+	setFoldMarginColors(0xf0f0f0, 0xf0f0f0);
+	{
+		//setCaretLineBackgroundColor(QColor(0xe8e8ff));
+		setCaretLineBackgroundColor(QColor(0xFAF9DE));
+		setMatchedBraceForegroundColor(QColor(191, 141, 255));
+		setMatchedBraceBackgroundColor(QColor(222, 222, 222));
+		setCaretForegroundColor(QColor(0, 0, 0));
+		setFoldColor(SC_MARKNUM_FOLDEROPEN, QColor(Qt::white), QColor(128, 128, 128));
+		setFoldColor(SC_MARKNUM_FOLDER, QColor(Qt::white), QColor(128, 128, 128));
+		setFoldColor(SC_MARKNUM_FOLDERSUB, QColor(Qt::white), QColor(128, 128, 128));
+		setFoldColor(SC_MARKNUM_FOLDERTAIL, QColor(Qt::white), QColor(128, 128, 128));
+		setFoldColor(SC_MARKNUM_FOLDEREND, QColor(Qt::white), QColor(128, 128, 128));
+		setFoldColor(SC_MARKNUM_FOLDEROPENMID, QColor(Qt::white), QColor(128, 128, 128));
+		setFoldColor(SC_MARKNUM_FOLDERMIDTAIL, QColor(Qt::white), QColor(128, 128, 128));
 	}
 }
 
@@ -90,10 +133,129 @@ void QsciDisplayWindow::mouseDoubleClickEvent(QMouseEvent * e)
 	}
 }
 
+void QsciDisplayWindow::clearIndicator(int indicatorNumber) {
+	size_t docStart = 0;
+	size_t docEnd = length();
+	execute(SCI_SETINDICATORCURRENT, indicatorNumber);
+	execute(SCI_INDICATORCLEARRANGE, docStart, docEnd - docStart);
+};
+
 const int MAXLINEHIGHLIGHT = 400;
+
+void QsciDisplayWindow::slot_clearHightWord()
+{
+	if (m_hasHighlight)
+	{
+		m_hasHighlight = false;
+		clearIndicator(SCE_UNIVERSAL_FOUND_STYLE_SMART);
+	}
+}
+
+
+void QsciDisplayWindow::highlightViewWithWord(QString & word2Hilite)
+{
+	int originalStartPos = execute(SCI_GETTARGETSTART);
+	int originalEndPos = execute(SCI_GETTARGETEND);
+
+	int firstLine = static_cast<int>(this->execute(SCI_GETFIRSTVISIBLELINE));
+	int nbLineOnScreen = this->execute(SCI_LINESONSCREEN);
+	int nbLines = std::min(nbLineOnScreen, MAXLINEHIGHLIGHT) + 1;
+	int lastLine = firstLine + nbLines;
+	int startPos = 0;
+	int endPos = 0;
+	auto currentLine = firstLine;
+	int prevDocLineChecked = -1;	//invalid start
+
+
+	auto searchMark = [this](int &startPos, int &endPos, QByteArray &word2Mark) {
+
+		int targetStart = 0;
+		int targetEnd = 0;
+
+		long lens = word2Mark.length();
+
+		while (targetStart >= 0)
+		{
+			execute(SCI_SETTARGETRANGE, startPos, endPos);
+
+			targetStart = SendScintilla(SCI_SEARCHINTARGET, lens, word2Mark.data());
+
+			if (targetStart == -1 || targetStart == -2)
+				break;
+
+			targetEnd = int(this->execute(SCI_GETTARGETEND));
+
+			if (targetEnd > endPos)
+			{
+				//we found a result but outside our range, therefore do not process it
+				break;
+			}
+
+			int foundTextLen = targetEnd - targetStart;
+
+			if (foundTextLen > 0)
+			{
+				this->execute(SCI_SETINDICATORCURRENT, SCE_UNIVERSAL_FOUND_STYLE_SMART);
+				this->execute(SCI_INDICATORFILLRANGE, targetStart, foundTextLen);
+			}
+
+			if (targetStart + foundTextLen == endPos)
+				break;
+
+			startPos = targetStart + foundTextLen;
+
+		}
+	};
+
+
+	QByteArray whatMark = word2Hilite.toUtf8();
+
+	SendScintilla(SCI_SETSEARCHFLAGS, SCFIND_REGEXP | SCFIND_MATCHCASE | SCFIND_WHOLEWORD | SCFIND_REGEXP_SKIPCRLFASONE);
+
+	for (; currentLine < lastLine; ++currentLine)
+	{
+		int docLine = static_cast<int>(this->execute(SCI_DOCLINEFROMVISIBLE, currentLine));
+		if (docLine == prevDocLineChecked)
+			continue;	//still on same line (wordwrap)
+		prevDocLineChecked = docLine;
+		startPos = static_cast<int>(this->execute(SCI_POSITIONFROMLINE, docLine));
+		endPos = static_cast<int>(this->execute(SCI_POSITIONFROMLINE, docLine + 1));
+
+		if (endPos == -1)
+		{	//past EOF
+			endPos = this->length() - 1;
+			searchMark(startPos, endPos, whatMark);
+			break;
+		}
+		else
+		{
+			searchMark(startPos, endPos, whatMark);
+		}
+	}
+
+	m_hasHighlight = true;
+
+	// restore the original targets to avoid conflicts with the search/replace functions
+	this->execute(SCI_SETTARGETRANGE, originalStartPos, originalEndPos);
+}
+
+
 
 void QsciDisplayWindow::slot_delayWork()
 {
+
+	if (!hasSelectedText())
+	{
+		return;
+	}
+
+	QString word = selectedText();
+	if (!word.isEmpty())
+	{
+		highlightViewWithWord(word);
+	}
+
+#if 0
 	if (!hasSelectedText())
 	{
 		return;
@@ -156,6 +318,7 @@ void QsciDisplayWindow::slot_delayWork()
 			execute(SCI_SETMAINSELECTION, mainSelect - 1);
 		}
 	}
+#endif
 }
 
 void QsciDisplayWindow::setMediator(MediatorDisplay* mediator)
@@ -196,29 +359,6 @@ void QsciDisplayWindow::autoAdjustLineWidth(int xScrollValue)
 		updateLineNumberWidth();
 	}
 }
-//
-//int nbDigitsFromNbLines(size_t nbLines)
-//{
-//	int nbDigits = 0; // minimum number of digit should be 4
-//	if (nbLines < 10) nbDigits = 1;
-//	else if (nbLines < 100) nbDigits = 2;
-//	else if (nbLines < 1000) nbDigits = 3;
-//	else if (nbLines < 10000) nbDigits = 4;
-//	else if (nbLines < 100000) nbDigits = 5;
-//	else if (nbLines < 1000000) nbDigits = 6;
-//	else // rare case
-//	{
-//		nbDigits = 7;
-//		nbLines /= 1000000;
-//
-//		while (nbLines)
-//		{
-//			nbLines /= 10;
-//			++nbDigits;
-//		}
-//	}
-//	return nbDigits;
-//}
 
 void QsciDisplayWindow::updateLineNumberWidth()
 {
@@ -232,10 +372,10 @@ void QsciDisplayWindow::updateLineNumberWidth()
 		auto lastVisibleLineDoc = execute(SCI_DOCLINEFROMVISIBLE, lastVisibleLineVis);
 
 		nbDigits = nbDigitsFromNbLines(lastVisibleLineDoc);
-		nbDigits = nbDigits < 3 ? 3 : nbDigits;
+		nbDigits = nbDigits < 4 ? 4 : nbDigits;
 		
 		auto pixelWidth = 8 + nbDigits * execute(SCI_TEXTWIDTH, STYLE_LINENUMBER, reinterpret_cast<sptr_t>("8"));
-		execute(SCI_SETMARGINWIDTHN, 3, pixelWidth);
+		execute(SCI_SETMARGINWIDTHN, MARGIN_LINE_NUM, pixelWidth);
 	}
 }
 
@@ -267,11 +407,6 @@ void QsciDisplayWindow::setDirection(RC_DIRECTION direction)
 	m_direction = direction;
 }
 
-void QsciDisplayWindow::travEveryBlockToSave(std::function<void(QString&, int)> savefun, QList<BlockUserData*>* externLineInfo)
-{
-
-}
-
 int QsciDisplayWindow::getCurVerticalScrollValue()
 {
 	return this->verticalScrollBar()->value();
@@ -284,6 +419,7 @@ void QsciDisplayWindow::contextUserDefineMenuEvent(QMenu* menu)
 	{
 		menu->addAction(tr("Find Text"), this, SLOT(slot_findText()));
 		menu->addAction(tr("Show File in Explorer"), this, SLOT(slot_showFileInExplorer()));
+		menu->addAction(tr("Save As ..."), this, &QsciDisplayWindow::sign_saveAsFile);
 	}
 	menu->show();
 }
@@ -379,15 +515,6 @@ void QsciDisplayWindow::slot_FindTextWithPara(int prevOrNext, QString text)
 //定位到文件夹
 void QsciDisplayWindow::slot_showFileInExplorer()
 {
-	QString path, cmd;
-#ifdef _WIN32
-	path = m_filePath.replace("/", "\\");
-	cmd = QString("explorer.exe /select,%1").arg(path);
-#else
-	path = m_filePath.replace("\\", "/");
-	cmd = QString("open -R %1").arg(path);
-#endif
-	QProcess process;
-	process.startDetached(cmd);
+	showFileInExplorer(m_filePath);
 }
 

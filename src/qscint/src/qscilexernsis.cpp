@@ -8,7 +8,7 @@
 QsciLexerNsis::QsciLexerNsis(QObject *parent)
 	: QsciLexer(parent)
 {
-	
+	m_commentSymbol = "#";
 }
 
 QsciLexerNsis::~QsciLexerNsis()
@@ -123,7 +123,7 @@ QString QsciLexerNsis::description(int style) const
 	switch (style)
 	{
 	case NSIS_DEFAULT:
-		return tr("DEFAULT");
+		return tr("Default");
 	case NSIS_COMMENT:
 		return tr("COMMENT");
 	case NSIS_STRINGDQ:

@@ -55,6 +55,13 @@ public:
 
 	bool getLexerTypeByExt(QString ext, LexerInfo& lexer);
 
+	//列出tag语言下面的所有关联的文件后缀列表
+	void getExtlistByLangTag(QString tag, QStringList& extList);
+
+	//列出所有语言下面的所有关联的文件后缀列表
+	void getExtlistByLangTag(QMap<QString, QStringList>& extLangMap);
+
+
 private:
 	ExtLexerManager();
 

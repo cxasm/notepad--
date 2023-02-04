@@ -39,6 +39,7 @@ QsciLexerPython::QsciLexerPython(QObject *parent)
       indent_warn(NoWarning), strings_over_newline(false), v2_unicode(true),
       v3_binary_octal(true), v3_bytes(true), highlight_subids(true)
 {
+    m_commentSymbol = "#";
 }
 
 

@@ -3,6 +3,7 @@
 #include "scintillahexeditview.h"
 #include "CmpareMode.h"
 #include "ccnotepad.h"
+#include "progresswin.h"
 
 #include <QMessageBox>
 #include <QFile>
@@ -10,13 +11,17 @@
 #include <qscilexer.h>
 
 
+FileManager::FileManager():m_lastErrorCode(NONE_ERROR)
+{
+}
+
 FileManager::~FileManager()
 {
 }
 
-ScintillaEditView* FileManager::newEmptyDocument()
+ScintillaEditView* FileManager::newEmptyDocument(bool isBigText)
 {
-	ScintillaEditView* pEdit = new ScintillaEditView(nullptr);
+	ScintillaEditView* pEdit = new ScintillaEditView(nullptr, isBigText);
 	return pEdit;
 }
 
@@ -27,7 +32,10 @@ ScintillaHexEditView* FileManager::newEmptyHexDocument()
 }
 
 //从尾部找前面的换行符号。返回的是需要回溯的个数
-int findLineEndPos(const char* buf, int size)
+//注意如果是LE编码，字节流是\n\0的格式。从尾部往前回溯，找到\n，要回退1个\0。\n\0是一个整体，不能分割开
+//20230201发现一个bug,在LE模式下，不能单纯用\n做换行识别。因为发现其它字符也存在\n，必须要完整以\n\0才能确定是换行。
+//同样发现BE模式下，是\0\n的格式，也不能单独使用\n做换行识别，因为发现其他字符也存在\n，必须要完整以\0\n才能确定是换行
+int findLineEndPos(const char* buf, int size, CODE_ID code = UNKOWN)
 {
 	int ret = 0;
 	bool isfound = false;
@@ -35,6 +43,18 @@ int findLineEndPos(const char* buf, int size)
 	{
 		if (buf[i] == '\n')
 		{
+			////如果是LE，还要确定\n的下一个是否是\0
+			if ((code == UNICODE_LE) && ((i != size -1) && (buf[i+1] != '\0')))
+			{
+				++ret;
+				continue;
+			}
+			////如果是BE，还要确定\n的前一个是否是\0
+			if ((code == UNICODE_BE) && ((i != 0) && (buf[i - 1] != '\0')))
+			{
+				++ret;
+				continue;
+			}
 			isfound = true;
 			break;
 		}
@@ -48,6 +68,16 @@ int findLineEndPos(const char* buf, int size)
 		{
 			if (buf[i] == '\r')
 			{
+				////如果是LE，还要确定\n的下一个是否是\0
+				if ((code == UNICODE_LE) && ((i != size - 1) && (buf[i + 1] != '\0')))
+				{
+					continue;
+				}
+				////如果是BE，还要确定\n的前一个是否是\0
+				if ((code == UNICODE_BE) && ((i != 0) && (buf[i - 1] != '\0')))
+				{
+					continue;
+				}
 				isfound = true;
 				break;
 			}
@@ -57,6 +87,13 @@ int findLineEndPos(const char* buf, int size)
 
 	if (isfound)
 	{
+		//注意好好想想，这里是--ret,而不是++ret。
+		if (code == UNICODE_LE)
+		{
+			--ret;
+		}
+		//UNICODE_BE不需要处理
+
 		return ret;
 	}
 
@@ -65,7 +102,7 @@ int findLineEndPos(const char* buf, int size)
 }
 
 //从行首找后面的换行符号。返回的是需要前进的个数，即把前面掐掉一节，让返回在一行的行首位置
-int findLineStartPos(const char* buf, int size)
+int findLineStartPos(const char* buf, int size, CODE_ID code = UNKOWN)
 {
 	int ret = 0;
 	bool isfound = false;
@@ -74,6 +111,17 @@ int findLineStartPos(const char* buf, int size)
 		++ret;
 		if (buf[i] == '\n')
 		{
+			////如果是LE，还要确定\n的下一个是否是\0
+			if ((code == UNICODE_LE) && ((i != size - 1) && (buf[i + 1] != '\0')))
+			{
+				continue;
+			}
+			////如果是BE，还要确定\n的前一个是否是\0
+			if ((code == UNICODE_BE) && ((i != 0) && (buf[i - 1] != '\0')))
+			{
+				continue;
+			}
+
 			isfound = true;
 			break;
 		}
@@ -87,6 +135,16 @@ int findLineStartPos(const char* buf, int size)
 			++ret;
 			if (buf[i] == '\r')
 			{
+				////如果是LE，还要确定\n的下一个是否是\0
+				if ((code == UNICODE_LE) && ((i != size - 1) && (buf[i + 1] != '\0')))
+				{
+					continue;
+				}
+				////如果是BE，还要确定\n的前一个是否是\0
+				if ((code == UNICODE_BE) && ((i != 0) && (buf[i - 1] != '\0')))
+				{
+					continue;
+				}
 				isfound = true;
 				break;
 			}
@@ -95,6 +153,11 @@ int findLineStartPos(const char* buf, int size)
 
 	if (isfound)
 	{
+		//注意好好想想，这里是++ret,而不是--ret。
+		if (code == UNICODE_LE)
+		{
+			++ret;
+		}
 		return ret;
 	}
 
@@ -220,6 +283,14 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 
 	qint64 fileSize = file.size();
 
+	//如果文件是空的。检查一下，有可能在临时文件损坏情况下出现，外面需要使用
+	if (fileSize == 0)
+	{
+		m_lastErrorCode = ERROR_TYPE::OPEN_EMPTY_FILE;
+		file.close();
+		return 0;
+	}
+
 	qint64 bufferSizeRequested = fileSize + qMin((qint64)(1 << 20), (qint64)(fileSize / 6));
 
 	// As a 32bit application, we cannot allocate 2 buffer of more than INT_MAX size (it takes the whole address space)
@@ -237,6 +308,14 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 	bool isHexFile = false;
 
 	fileTextCode = CmpareMode::scanFileOutPut(fileTextCode,filePath, outputLineInfoVec, maxLineSize, charsNums, isHexFile);
+
+	//如果文件是空的。检查一下，有可能在临时文件损坏情况下出现，外面需要使用
+	if (charsNums == 0)
+	{
+		m_lastErrorCode = ERROR_TYPE::OPEN_EMPTY_FILE;
+		file.close();
+		return 0;
+	}
 
 	if (isHexFile && hexAsk)
 	{
@@ -283,6 +362,8 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 		lineEnd = UNIX_LINE;
 #endif
 	}
+
+
 	QString text;
 	text.reserve(charsNums + 1);
 
@@ -429,6 +510,11 @@ int  FileManager::loadFilePreNextPage(int dir, QString& filePath, HexFileMgr* & 
 	{
 		hexFileOut = m_hexFileMgr.value(filePath);
 
+		//小于LITTLE_FILE_MAX的已经一次性全部在内存，没有上下页可以翻到
+		if (hexFileOut->onetimeRead)
+		{
+			return 1;
+		}
 		qint64 pos = hexFileOut->fileOffset;
 
 		if (dir == 1 && (pos >= 0))
@@ -446,7 +532,7 @@ int  FileManager::loadFilePreNextPage(int dir, QString& filePath, HexFileMgr* & 
 		}
 		else
 		{
-			return 1;
+			return 1;//没有上下页，已经是最后一页或最前一页
 		}
 
 		char* buf = new char[ONE_PAGE_BYTES+1];
@@ -475,9 +561,10 @@ int  FileManager::loadFilePreNextPage(int dir, QString& filePath, HexFileMgr* & 
 	return -1;
 }
 
-const int ONE_PAGE_TEXT_SIZE = 200 * 1024;
+const int ONE_PAGE_TEXT_SIZE = 1000 * 1024;
 
 //加载下一页或者上一页。(文本模式）
+//返回值：0表示成功
 int  FileManager::loadFilePreNextPage(int dir, QString& filePath, TextFileMgr* & textFileOut)
 {
 	if (m_bigTxtFileMgr.contains(filePath))
@@ -532,13 +619,14 @@ int  FileManager::loadFilePreNextPage(int dir, QString& filePath, TextFileMgr* &
 			if (dir == 2)
 			{
 				//读取了1M的内容，从内容尾部往前查找，找到第一个换行符号。如果没有怎么办？说明是一个巨长的行，不妙
+				//如果是巨长的行，一行超过ONE_PAGE_TEXT_SIZE（1M),则可能存在单个字符截断的可能。
 				buf[ret] = '\0';
 
 				int preLineEndPos = 0;
 				
 				if (textFileOut->file->pos() < textFileOut->fileSize)//反之已经到尾部了，不需要往前找行首了
 				{
-					preLineEndPos = findLineEndPos(buf, ret);
+					preLineEndPos = findLineEndPos(buf, ret, (CODE_ID)textFileOut->loadWithCode);
 					if (preLineEndPos > 0)
 					{
 						//给后面的字符填\0，让字符串正常结尾\0
@@ -564,14 +652,14 @@ int  FileManager::loadFilePreNextPage(int dir, QString& filePath, TextFileMgr* &
 			else if (dir == 1)
 			{
 				//如果是往前读取
-				//读取了1M的内容，往内容前面往后查找，找到第一个换行符号。如果没有怎么办？说明是一个巨长的行，不妙
+				//读取了1M的内容，从内容前面往后查找，找到第一个换行符号。如果没有怎么办？说明是一个巨长的行，不妙
 				buf[ret] = '\0';
 
 				int preLineStartPos = 0;
 
 				if (textFileOut->file->pos() > canReadSize)//==canReadSize说明已经在文件最前面了。不在最前面，需要
 				{
-					preLineStartPos = findLineStartPos(buf, ret);
+					preLineStartPos = findLineStartPos(buf, ret, (CODE_ID)textFileOut->loadWithCode);
 					if (preLineStartPos > 0)
 					{
 						//把\n前面的内容去掉，通过内存move的方式。
@@ -670,7 +758,7 @@ int FileManager::loadFileFromAddr(QString filePath, qint64 addr, TextFileMgr* & 
 
 			if (textFileOut->file->pos() < textFileOut->fileSize)//反之已经到尾部了，不需要往前找行了
 			{
-				preLineEndPos = findLineEndPos(buf, ret);
+				preLineEndPos = findLineEndPos(buf, ret, (CODE_ID)textFileOut->loadWithCode);
 				if (preLineEndPos > 0)
 				{
 					//给后面的字符填\0，让字符串正常结尾\0
@@ -678,7 +766,16 @@ int FileManager::loadFileFromAddr(QString filePath, qint64 addr, TextFileMgr* & 
 				}
 			}
 
-			int preLineStartPos = findLineStartPos(buf, ret);
+			//如果本来就在开头开始，则不需要计算findLineStartPos
+			int preLineStartPos = 0;
+
+			if (addr == 0)
+			{
+
+			}
+			else
+			{
+				preLineStartPos = findLineStartPos(buf, ret, (CODE_ID)textFileOut->loadWithCode);
 			if (preLineStartPos > 0 && preLineStartPos < ret) //preLineStartPos如果大于ret，则全部都被跳过了，不会显示，是个特例
 			{
 				memmove(buf, buf + preLineStartPos, ret - preLineStartPos);
@@ -689,7 +786,8 @@ int FileManager::loadFileFromAddr(QString filePath, qint64 addr, TextFileMgr* & 
 				//如果没做调整，则后续不需要偏移，这里必须preLineStartPos赋0值
 				preLineStartPos = 0;
 			}
-			
+			}
+
 			//只需要文件调到上一行的行位即可。
 			textFileOut->fileOffset = textFileOut->file->pos() - preLineEndPos;
 			if (preLineEndPos > 0)
@@ -722,8 +820,7 @@ bool FileManager::loadFileData(QString filePath, HexFileMgr* & hexFileOut)
 		return false;
 	}
 
-	//小于10k的文件一次性全部读取完毕
-	const int LITTLE_FILE_MAX = 10240;
+
 
 	int readBytes = 0;
 
@@ -760,6 +857,7 @@ bool FileManager::loadFileData(QString filePath, HexFileMgr* & hexFileOut)
 			hexFile->fileSize = file->size();
 			hexFile->contentBuf = buf;
 			hexFile->contentRealSize = ret;
+			hexFile->onetimeRead = (file->size() <= LITTLE_FILE_MAX);
 			m_hexFileMgr.insert(filePath, hexFile);
 		}
 		else
@@ -769,6 +867,7 @@ bool FileManager::loadFileData(QString filePath, HexFileMgr* & hexFileOut)
 			hexFile->fileOffset = file->pos();
 			hexFile->contentBuf = buf;
 			hexFile->contentRealSize = ret;
+			hexFile->onetimeRead = (file->size() <= LITTLE_FILE_MAX);
 		}
 
 		hexFileOut = hexFile;
@@ -780,7 +879,7 @@ bool FileManager::loadFileData(QString filePath, HexFileMgr* & hexFileOut)
 }
 
 //加载大文本文件。从0开始读取ONE_PAGE_TEXT_SIZE 500K的内容
-bool FileManager::loadFileData(QString filePath, TextFileMgr* & textFileOut)
+bool FileManager::loadFileData(QString filePath, TextFileMgr* & textFileOut, RC_LINE_FORM & lineEnd)
 {
 	QFile *file = new QFile(filePath);
 
@@ -807,11 +906,30 @@ bool FileManager::loadFileData(QString filePath, TextFileMgr* & textFileOut)
 		//读取了1M的内容，从尾部往找，找到第一个换行符号。如果没有怎么办？说明是一个巨长的行，不妙
 		buf[ret] = '\0';
 
-		int preLineEndPos = findLineEndPos(buf,ret);
+
+		CODE_ID code = CmpareMode::getTextFileEncodeType((uchar*)buf, ret, filePath, true);
+
+		int preLineEndPos = findLineEndPos(buf,ret, code);
 		if (preLineEndPos > 0)
 		{
 			//给后面的字符填\0，让字符串正常结尾\0
 			buf[ret - preLineEndPos] = '\0';
+
+			if (ret - preLineEndPos >= 2)
+			{
+				if (buf[ret - preLineEndPos - 1] == '\n' && buf[ret - preLineEndPos - 2] == '\r')
+				{
+					lineEnd = DOS_LINE;
+		}
+				else if (buf[ret - preLineEndPos - 1] == '\n')
+				{
+					lineEnd = UNIX_LINE;
+				}
+				else if (buf[ret - preLineEndPos - 1] == '\r')
+				{
+					lineEnd = MAC_LINE;
+				}
+			}
 		}
 
 		TextFileMgr* txtFile = nullptr;
@@ -819,6 +937,8 @@ bool FileManager::loadFileData(QString filePath, TextFileMgr* & textFileOut)
 		if (!m_bigTxtFileMgr.contains(filePath))
 		{
 			txtFile = new TextFileMgr();
+			txtFile->loadWithCode = code;
+			
 			txtFile->filePath = filePath;
 			txtFile->file = file;
 			txtFile->fileOffset = file->pos() - preLineEndPos;
@@ -850,6 +970,227 @@ bool FileManager::loadFileData(QString filePath, TextFileMgr* & textFileOut)
 	return false;
 }
 
+//返回行的数量
+int getLineNumInBuf(char* buf, int size, CODE_ID code = UNKOWN)
+{
+	int lineNums = 0;
+
+	for (int i = 0; i < size; ++i)
+	{
+		if (buf[i] == '\n')
+		{
+			////如果是LE，还要确定\n的下一个是否是\0
+			if ((code == UNICODE_LE) && ((i != size - 1) && (buf[i + 1] != '\0')))
+			{
+				continue;
+			}
+			//如果是BE,简单\0\n是否连续存在，不能单纯检查\n,还有确定\n的前一个是不是\0
+			if ((code == UNICODE_BE) && ((i != 0) && (buf[i - 1] != '\0')))
+			{
+				continue;
+			}
+			++lineNums;
+		}
+	}
+
+	//如果没有找到，怀疑是mac格式，按照\r结尾解析
+	if (lineNums == 0)
+	{
+		for (int i = 0; i < size; ++i)
+		{
+			if (buf[i] == '\r')
+			{
+				////如果是LE，还要确定\n的前面一个是否是\0
+				if ((code == UNICODE_LE) && ((i != size - 1) && (buf[i + 1] != '\0')))
+				{
+					continue;
+				}
+				//如果是BE,简单\0\n是否连续存在，不能单纯检查\n,还有确定\n的前一个是不是\0
+				if ((code == UNICODE_BE) && ((i != 0) && (buf[i - 1] != '\0')))
+				{
+					continue;
+				}
+				++lineNums;
+			}
+		}
+	}
+
+	return lineNums;
+}
+
+//创建大文件编辑模式的索引文件。0 成功，-1取消
+int FileManager::createBlockIndex(BigTextEditFileMgr* txtFile)
+{
+	//每次filePtr 4M的速度进行建块
+	qint64 fileSize = txtFile->file->size();
+
+	qint64 curOffset = 0;
+
+	uchar* curPtr = txtFile->filePtr;
+
+	//检测是否为unicode_le编码，要特殊对待。
+	//bool isUnLeCode = CmpareMode::isUnicodeLeBomFile(curPtr, 2);
+
+	CODE_ID code = CmpareMode::getTextFileEncodeType(curPtr, fileSize, txtFile->filePath, true);
+	txtFile->loadWithCode = code;
+	
+	const int blockBytes = BigTextEditFileMgr::BLOCK_SIZE * 1024 * 1024;
+
+	int lineEndPos = 0;
+
+	int steps = fileSize / blockBytes;
+
+	txtFile->blocks.reserve(steps + 10);
+
+	ProgressWin* loadFileProcessWin = nullptr;
+	
+	if (steps > 200)
+	{
+		loadFileProcessWin = new ProgressWin(nullptr);
+
+		loadFileProcessWin->setWindowModality(Qt::ApplicationModal);
+
+		loadFileProcessWin->info(tr("load bit text file tree in progress\nfile size %1, please wait ...").arg(tranFileSize(fileSize)));
+
+		loadFileProcessWin->setTotalSteps(steps);
+
+		loadFileProcessWin->show();
+	}
+
+	quint32 lineNumStart = 0;
+	quint32 lineNum = 0;
+
+	while ((curOffset + blockBytes) < fileSize)
+	{
+		BlockIndex bi;
+		bi.fileOffset = curOffset;
+
+		curOffset += blockBytes;
+
+		lineEndPos = findLineEndPos((char*)curPtr+ bi.fileOffset, blockBytes, code);
+
+		bi.fileSize = blockBytes - lineEndPos;
+
+		lineNum = getLineNumInBuf((char*)curPtr + bi.fileOffset, bi.fileSize, code);
+
+		curOffset -= lineEndPos;
+
+		bi.lineNum = lineNum;
+		bi.lineNumStart = lineNumStart;
+
+		lineNumStart += lineNum;
+
+		txtFile->blocks.append(bi);
+
+		if (loadFileProcessWin != nullptr)
+		{
+			if (loadFileProcessWin->isCancel())
+			{
+				delete loadFileProcessWin;
+				txtFile->blocks.clear();
+				return -1;
+			}
+			loadFileProcessWin->moveStep(true);
+		}
+		
+	}
+	//最后一块
+	int lastBlockBytes = fileSize - curOffset;
+
+	BlockIndex bi;
+	bi.fileOffset = curOffset;
+
+	curOffset += lastBlockBytes;
+
+	bi.fileSize = lastBlockBytes;
+
+	lineNum = getLineNumInBuf((char*)curPtr + bi.fileOffset, bi.fileSize);
+
+	bi.lineNum = lineNum;
+	bi.lineNumStart = lineNumStart;
+
+	txtFile->blocks.append(bi);
+
+	if (loadFileProcessWin != nullptr)
+	{
+		delete loadFileProcessWin;
+	}
+
+	return 0;
+}
+
+//加载大文件，以索引的方式打开大文件
+bool FileManager::loadFileDataWithIndex(QString filePath, BigTextEditFileMgr*& textFileOut)
+{
+	QFile* file = new QFile(filePath);
+	file->open(QIODevice::ReadOnly);
+
+
+	uchar* filePtr = file->map(0, file->size());
+
+	BigTextEditFileMgr* txtFile = nullptr;
+
+	if (!m_bigTxtEditFileMgr.contains(filePath))
+	{
+		txtFile = new BigTextEditFileMgr();
+		txtFile->filePath = filePath;
+		txtFile->file = file;
+		txtFile->filePtr = filePtr;
+		textFileOut = txtFile;
+
+		if (-1 == createBlockIndex(txtFile))
+		{
+			//取消。
+			delete txtFile;
+			txtFile = nullptr;
+			return false;
+		}
+		m_bigTxtEditFileMgr.insert(filePath, txtFile);
+	}
+	else
+	{
+		//理论上这里永远不走
+		assert(false);
+	}
+
+	return true;
+}
+
+BigTextEditFileMgr* FileManager::getBigFileEditMgr(QString filepath)
+{
+	if (m_bigTxtEditFileMgr.contains(filepath))
+	{
+		return m_bigTxtEditFileMgr.value(filepath);
+	}
+
+	return nullptr;
+}
+
+TextFileMgr* FileManager::getSuperBigFileMgr(QString filepath)
+{
+	if (m_bigTxtFileMgr.contains(filepath))
+	{
+		return m_bigTxtFileMgr.value(filepath);
+	}
+
+	return nullptr;
+}
+
+int FileManager::getBigFileBlockId(QString filepath, quint32 lineNum)
+{
+	BigTextEditFileMgr* v = m_bigTxtEditFileMgr.value(filepath);
+
+	for (int i = 0, s = v->blocks.size(); i < s; ++i)
+	{
+		const BlockIndex& k = v->blocks.at(i);
+		if (lineNum >= k.lineNumStart && lineNum < (k.lineNumStart + k.lineNum))
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 HexFileMgr * FileManager::getHexFileHand(QString filepath)
 {
 	if (m_hexFileMgr.contains(filepath))
@@ -871,7 +1212,7 @@ void FileManager::closeHexFileHand(QString filepath)
 	}
 }
 
-void FileManager::closeBigTextFileHand(QString filepath)
+void FileManager::closeSuperBigTextFileHand(QString filepath)
 {
 	if (m_bigTxtFileMgr.contains(filepath))
 	{
@@ -882,6 +1223,16 @@ void FileManager::closeBigTextFileHand(QString filepath)
 	}
 }
 
+void FileManager::closeBigTextRoFileHand(QString filepath)
+{
+	if (m_bigTxtEditFileMgr.contains(filepath))
+	{
+		BigTextEditFileMgr* v = m_bigTxtEditFileMgr.value(filepath);
+		v->destory();
+		delete v;
+		m_bigTxtEditFileMgr.remove(filepath);
+	}
+}
 
 //检查文件的编程语言
 LangType FileManager::detectLanguageFromTextBegining(const unsigned char *data, size_t dataLen)

@@ -4,6 +4,7 @@
 #include "ccnotepad.h"
 #include <stdexcept>
 #include <QMimeData>
+#include <QScrollBar>
 
 // initialize the static variable
 bool ScintillaHexEditView::_SciInit = false;
@@ -20,7 +21,11 @@ ScintillaHexEditView::~ScintillaHexEditView()
 
 void ScintillaHexEditView::setNoteWidget(QWidget * win)
 {
-	m_NoteWin = win;
+	CCNotePad* pv = dynamic_cast<CCNotePad*>(win);
+	if (pv != nullptr)
+	{
+		m_NoteWin = pv;
+}
 }
 
 sptr_t ScintillaHexEditView::execute(quint32 Msg, uptr_t wParam, sptr_t lParam) const {
@@ -63,13 +68,33 @@ void ScintillaHexEditView::init()
 #endif
 	setFont(font);
 	setMarginsFont(font);
-	setMarginsBackgroundColor(StyleSet::marginsBackgroundColor);
-
-
 	execute(SCI_SETTABWIDTH, 4);
-	setPaper(QColor(0xfc, 0xfc, 0xfc));
+
+	updateThemes();
+
+	connect(this->verticalScrollBar(), &QScrollBar::valueChanged, this, &ScintillaHexEditView::slot_scrollYValueChange);
 
 }
+
+//Y方向滚动条值变化后的槽函数
+void ScintillaHexEditView::slot_scrollYValueChange(int value)
+{
+	if (value >= this->verticalScrollBar()->maximum())
+	{
+		if (m_NoteWin != nullptr)
+		{
+			m_NoteWin->showChangePageTips(this);
+		}
+	}
+	else if (value == this->verticalScrollBar()->minimum())
+	{
+		if (m_NoteWin != nullptr)
+		{
+			m_NoteWin->showChangePageTips(this);
+		}
+	}
+}
+
 
 void ScintillaHexEditView::dragEnterEvent(QDragEnterEvent* event)
 {
@@ -95,4 +120,13 @@ void ScintillaHexEditView::dropEvent(QDropEvent* e)
 		pv->receiveEditDrop(e);
 
 	//qDebug() << ui.leftSrc->geometry() << ui.rightSrc->geometry() << QCursor::pos() << this->mapFromGlobal(QCursor::pos());
+}
+
+
+void ScintillaHexEditView::updateThemes()
+{
+	//如果是黑色主题，则单独做一些风格设置
+	setColor(StyleSet::s_global_style->default_style.fgColor);
+	setMarginsBackgroundColor(StyleSet::s_global_style->line_number_margin.bgColor);
+	setPaper(StyleSet::s_global_style->default_style.bgColor);
 }

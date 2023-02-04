@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) since 2009 Simon Steele - http://untidy.net/
  * Based on the work of Simon Steele for Programmer's Notepad 2 (http://untidy.net)
  * Converted from boost::xpressive to boost::regex and performance improvements 
@@ -6,7 +6,7 @@
  * (c) 2012 Dave Brotherstone - Changes for boost::regex
  * (c) 2013 Francois-R.Boyer@PolyMtl.ca - Empty match modes and best match backward search
  * (c) 2019 Don Ho - Adapt for upgrading Scitilla (to version 4.1.4) and boost (to version 1.70)
- * 
+ * (c) 2022 zuowei yin - Upgrading QScitilla and boost
  */
 
 #include <stdlib.h>
@@ -37,7 +37,7 @@
 #include "BoostRegexSearch.h"
 #include <boost/regex.hpp>
 #include <boost/throw_exception.hpp>
-#include "..\include\BoostRegexSearch.h"
+#include "BoostRegexSearch.h"
 #define CP_UTF8 65001
 #define SC_CP_UTF8 65001
 

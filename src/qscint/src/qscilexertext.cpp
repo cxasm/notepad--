@@ -8,16 +8,17 @@
 #if defined(Q_OS_WIN)
 QFont QsciLexerText::s_defaultTxtFont(u8"宋体", QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-    QFont QsciLexerText::s_defaultTxtFont("STSong",18);
+    QFont QsciLexerText::s_defaultTxtFont("STSong",14);
 #else
-        QFont QsciLexerText::s_defaultTxtFont(u8"CESI宋体-GB2312",12);
+    QFont QsciLexerText::s_defaultTxtFont("Courier 10 Pitch", 12);
 #endif
 
 
 QsciLexerText::QsciLexerText(QObject *parent)
 	: QsciLexer(parent)
 {
-	
+	setLexerId(L_TXT);
+	m_commentSymbol = "#";
 }
 
 QsciLexerText::~QsciLexerText()
@@ -72,7 +73,7 @@ QFont QsciLexerText::defaultFont(int style) const
 	{
 	case Default:
 #if defined(Q_OS_WIN)
-		return s_defaultTxtFont; // QFont("Microsoft YaHei", QsciLexer::s_defaultFontSize);
+		return s_defaultTxtFont; 
 #elif defined(Q_OS_MAC)
 		//return QFont("Courier", 12);
 		return s_defaultTxtFont;
@@ -82,9 +83,9 @@ QFont QsciLexerText::defaultFont(int style) const
 		break;
 	case Ascii:
 #if defined(Q_OS_WIN)
-		return QFont("Courier New", 14);
+		return QFont("Courier New", 12);
 #elif defined(Q_OS_MAC)
-		return QFont("Courier New", 18);
+		return QFont("Courier New", 14);
 #else
 		return s_defaultTxtFont;
 #endif
@@ -166,7 +167,7 @@ QColor QsciLexerText::defaultPaper(int style) const
 }
 
 // Return the lexer identifier.
-int QsciLexerText::lexerId() const
-{
-	return L_TXT;
-}
+//int QsciLexerText::lexerId() const
+//{
+//	return L_TXT;
+//}

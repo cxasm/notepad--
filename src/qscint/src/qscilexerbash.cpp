@@ -29,6 +29,7 @@
 QsciLexerBash::QsciLexerBash(QObject *parent)
     : QsciLexer(parent), fold_comments(false), fold_compact(true)
 {
+    m_commentSymbol = "#";
 }
 
 

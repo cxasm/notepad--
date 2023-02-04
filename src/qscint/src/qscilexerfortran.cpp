@@ -29,6 +29,7 @@
 QsciLexerFortran::QsciLexerFortran(QObject *parent)
     : QsciLexerFortran77(parent)
 {
+    m_commentSymbol = "!";
 }
 
 

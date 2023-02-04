@@ -1,6 +1,8 @@
 #include "findresultwin.h"
 #include "findwin.h"
 #include "common.h"
+#include "styleset.h"
+#include "nddsetting.h"
 
 #include <QTreeWidgetItem>
 #include <QStyleFactory>
@@ -10,6 +12,7 @@
 #include <QStandardItemModel>
 #include <QClipboard>
 #include <QTextEdit>
+#include <qscrollbar.h>
 
 #include "ndstyleditemdelegate.h"
 
@@ -17,7 +20,7 @@
 //使用Html的转义解决了该问题
 
 FindResultWin::FindResultWin(QWidget *parent)
-	: QWidget(parent), m_menu(nullptr)
+	: QWidget(parent), m_menu(nullptr), m_parent(parent),m_defaultFontSize(14), m_defFontSizeChange(false)
 {
 	ui.setupUi(this);
 
@@ -32,25 +35,52 @@ FindResultWin::FindResultWin(QWidget *parent)
 	ui.resultTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	ui.resultTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-#if defined (Q_OS_MAC)
-	QString qss = "QTreeView::item:selected{ \
-	   background:#e8e8ff; \
-    } \
-    QTreeView::item{ \
-        height:18px; \
-    }";
-#else
-    QString qss = "QTreeView::item:selected{ \
-       background:#e8e8ff; \
-    }";
-#endif
-	ui.resultTreeView->setStyleSheet(qss);
+//#if defined (Q_OS_MAC)
+//	QString qss = "QTreeView::item:selected{ \
+//	   background:#e8e8ff; \
+//    } \
+//    QTreeView::item{ \
+//        height:18px; \
+//    }";
+//#else
+//    QString qss = "QTreeView::item:selected{ \
+//       background:#e8e8ff; \
+//    }";
+//#endif
+//	ui.resultTreeView->setStyleSheet(qss);
 
 	connect(ui.resultTreeView, &QTreeView::doubleClicked, this, &FindResultWin::itemDoubleClicked);
+
+	connect(ui.resultTreeView, SIGNAL(pressed(QModelIndex)), this, SLOT(slot_treeView_pressed(QModelIndex)));
+	connect(ui.resultTreeView, SIGNAL(expanded(QModelIndex)), this, SLOT(slot_treeView_pressed(QModelIndex)));
+
+	ui.resultTreeView->verticalScrollBar()->setStyle(QStyleFactory::create("vis"));
+	ui.resultTreeView->horizontalScrollBar()->setStyle(QStyleFactory::create("vis"));
+
+	int defFontSize = NddSetting::getKeyValueFromNumSets(FIND_RESULT_FONT_SIZE);
+	if (defFontSize >= 8)
+	{
+		m_defaultFontSize = defFontSize;
+
+		QFont curFt = ui.resultTreeView->font();
+		curFt.setPointSize(m_defaultFontSize);
+		ui.resultTreeView->setFont(curFt);
+
+		m_delegate->setFontSize(m_defaultFontSize);
+}
 }
 
 FindResultWin::~FindResultWin()
 {
+	if (m_defFontSizeChange)
+	{
+		NddSetting::updataKeyValueFromNumSets(FIND_RESULT_FONT_SIZE, m_defaultFontSize);
+}
+}
+
+void FindResultWin::slot_treeView_pressed(QModelIndex modeIndex)
+{
+	ui.resultTreeView->resizeColumnToContents(modeIndex.column());
 }
 
 void FindResultWin::contextMenuEvent(QContextMenuEvent *)
@@ -70,6 +100,10 @@ void FindResultWin::contextMenuEvent(QContextMenuEvent *)
 		m_menu->addAction(tr("copy select item (Ctrl Muli)"), this, &FindResultWin::slot_copyItemContents);
 		m_menu->addAction(tr("copy select Line (Ctrl Muli)"), this, &FindResultWin::slot_copyContents);
 
+		m_menu->addSeparator();
+		m_menu->addAction(tr("Zoom In"), this, &FindResultWin::slot_fontZoomIn);
+		m_menu->addAction(tr("Zoom Out"), this, &FindResultWin::slot_fontZoomOut);
+		m_menu->addAction(tr("close"), m_parent, &QWidget::close);
 
 	}
 	m_menu->move(cursor().pos()); //让菜单显示的位置在鼠标的坐标上
@@ -368,22 +402,103 @@ void FindResultWin::highlightFindText(int index, QString &srcText, QString &find
 		}
 		index--;
 	}
-	srcText.replace(pos, lens, QString("<font style='background-color:#ffffbf'>%1</font>").arg(srcText.mid(pos,lens)));
+	srcText.replace(pos, lens, QString("<font style='font-size:14px;background-color:#ffffbf'>%1</font>").arg(srcText.mid(pos,lens)));
 }
+
+const int MAX_HEAD_LENTGH = 20;
+const int MAX_TAIL_LENGTH = 80;
 
 //更复杂的高亮：在全词语匹配，大小写敏感，甚至正则表达式情况下，上面的highlightFindText是不够的。需要精确定位
 QString FindResultWin::highlightFindText(FindRecord& record)
 {
 	QByteArray utf8bytes = record.lineContents.toUtf8();
 
+	int lineLens = utf8bytes.length();
+
+	bool isNeedCut = false;
+
+	//行太长的进行缩短显示
+	if (lineLens > 300)
+	{
+		isNeedCut = true;
+	}
+
 	//高亮的开始、结束位置
 	int targetStart = record.pos - record.lineStartPos;
 	int targetLens = record.end - record.pos;
 	int tailStart = record.end - record.lineStartPos;
 
-	QString head = QString(utf8bytes.mid(0, targetStart)).toHtmlEscaped();
-	QString src = QString("<font style='background-color:#ffffbf'>%1</font>").arg(QString(utf8bytes.mid(targetStart, targetLens)).toHtmlEscaped());
-	QString tail = QString(utf8bytes.mid(tailStart)).toHtmlEscaped();
+	QString head; 
+	QString src;
+	QString tail;
+	if (!StyleSet::isCurrentDeepStyle())
+	{
+		if (!isNeedCut)
+		{
+			head = QString("<font style='font-size:14px;'>%1</font>").arg(QString(utf8bytes.mid(0, targetStart)).toHtmlEscaped());
+			src = QString("<font style='font-size:14px;background-color:#ffffbf'>%1</font>").arg(QString(utf8bytes.mid(targetStart, targetLens)).toHtmlEscaped());
+			tail = QString("<font style='font-size:14px;'>%1</font>").arg(QString(utf8bytes.mid(tailStart)).toHtmlEscaped());
+	}
+	else
+	{
+			head = QString(utf8bytes.mid(0, targetStart));
+			if (head.size() > MAX_HEAD_LENTGH)
+			{
+				head = (head.mid(0, MAX_HEAD_LENTGH) + "...").toHtmlEscaped();
+			}
+			else
+			{
+				head = head.toHtmlEscaped();
+			}
+			head = QString("<font style='font-size:14px;'>%1</font>").arg(head);
+			src = QString("<font style='font-size:14px;background-color:#ffffbf'>%1</font>").arg(QString(utf8bytes.mid(targetStart, targetLens)).toHtmlEscaped());
+			tail = QString(utf8bytes.mid(tailStart));
+			if (tail > MAX_TAIL_LENGTH)
+			{
+				tail = (tail.mid(0, MAX_TAIL_LENGTH) + "...").toHtmlEscaped();
+			}
+			else
+			{
+				tail = tail.toHtmlEscaped();
+			}
+			tail = QString("<font style='font-size:14px;'>%1</font>").arg(tail);
+		}
+	}
+	else
+	{
+		if (!isNeedCut)
+		{
+			head = QString("<font style='font-size:14px;color:#dcdcdc'>%1</font>").arg(QString(utf8bytes.mid(0, targetStart)).toHtmlEscaped());
+			src = QString("<font style='font-size:14px;font-weight:bold;color:#ffaa00'>%1</font>").arg(QString(utf8bytes.mid(targetStart, targetLens)).toHtmlEscaped());
+			tail = QString("<font style='font-size:14px;color:#dcdcdc'>%1</font>").arg(QString(utf8bytes.mid(tailStart)).toHtmlEscaped());
+	}
+		else
+		{
+			QString headContens = QString(utf8bytes.mid(0, targetStart));
+			if (headContens.size() > MAX_HEAD_LENTGH)
+			{
+				headContens = (headContens.mid(0, MAX_HEAD_LENTGH) + "...").toHtmlEscaped();
+			}
+			else
+			{
+				headContens = headContens.toHtmlEscaped();
+			}
+
+			head = QString("<font style='font-size:14px;color:#dcdcdc'>%1</font>").arg(headContens);
+			src = QString("<font style='font-size:14px;font-weight:bold;color:#ffaa00'>%1</font>").arg(QString(utf8bytes.mid(targetStart, targetLens)).toHtmlEscaped());
+
+			QString tailContens = QString(utf8bytes.mid(tailStart));
+			if (tailContens > MAX_TAIL_LENGTH)
+			{
+				tailContens = (tailContens.mid(0, MAX_TAIL_LENGTH) + "...").toHtmlEscaped();
+			}
+			else
+			{
+				tailContens = tailContens.toHtmlEscaped();
+			}
+			tail = QString("<font style='font-size:14px;color:#dcdcdc'>%1</font>").arg(tailContens);
+		}
+	}
 
 	return QString("%1%2%3").arg(head).arg(src).arg(tail);
 }
@@ -394,10 +509,29 @@ void FindResultWin::appendResultsToShow(FindRecords* record)
 	{
 		return;
 	}
-	QString findTitle = tr("<font style='font-weight:bold;color:#343497'>Search \"%1\" (%2 hits)</font>").arg(record->findText.toHtmlEscaped()).arg(record->records.size());
+
+	QString findTitle;
+	//if (!StyleSet::isCurrentDeepStyle())
+	//{
+		findTitle = tr("<font style='font-size:14px;font-weight:bold;color:#343497'>Search \"%1\" (%2 hits)</font>").arg(record->findText.toHtmlEscaped()).arg(record->records.size());
+	/*}
+	else
+	{
+		findTitle = tr("<font style='font-size:14px;font-weight:bold;color:#ffffff'>Search \"%1\" (%2 hits)</font>").arg(record->findText.toHtmlEscaped()).arg(record->records.size());
+	}*/
+
 
 	QStandardItem* titleItem = new QStandardItem(findTitle);
-	setItemBackground(titleItem, QColor(0xbbbbff));
+
+	//if (!StyleSet::isCurrentDeepStyle())
+	//{
+		setItemBackground(titleItem, QColor(0xbbbbff));
+	//}
+	//else
+	//{
+	//	setItemBackground(titleItem, QColor(0x423328));//0xd5ffd5
+	//}
+
 	m_model->insertRow(0, titleItem);
 	titleItem->setData(QVariant(true), ResultItemRoot);
 
@@ -415,9 +549,27 @@ void FindResultWin::appendResultsToShow(FindRecords* record)
 		return;
 	}
 
-	QString desc = tr("<font style='font-weight:bold;color:#309730'>%1 (%2 hits)</font>").arg(record->findFilePath.toHtmlEscaped()).arg(record->records.size());
+	QString desc;
+	if (!StyleSet::isCurrentDeepStyle())
+	{
+		desc = tr("<font style='font-size:14px;font-weight:bold;color:#309730'>%1 (%2 hits)</font>").arg(record->findFilePath.toHtmlEscaped()).arg(record->records.size());
+	}
+	else
+	{
+		desc = tr("<font style='font-size:14px;color:#99cc99'>%1 (%2 hits)</font>").arg(record->findFilePath.toHtmlEscaped()).arg(record->records.size());
+	}
+
 	QStandardItem* descItem = new QStandardItem(desc);
+
+	if (!StyleSet::isCurrentDeepStyle())
+	{
 	setItemBackground(descItem, QColor(0xd5ffd5));
+	}
+	else
+	{
+		setItemBackground(descItem, QColor(0x484848));
+	}
+
 	titleItem->appendRow(descItem);
 	
 
@@ -434,23 +586,17 @@ void FindResultWin::appendResultsToShow(FindRecords* record)
 	{
 		FindRecord v = record->records.at(i);
 
-		////找到是第几次出现关键字
-		//if (lastLineNum != v.lineNum)
-		//{
-		//	lastLineNum = v.lineNum;
-		//	occurTimes = 1;
-		//}
-		//else
-		//{
-		//	occurTimes++;
-		//}
-
-		//highlightFindText(occurTimes, v.lineContents, record->findText, (Qt::CaseSensitivity)record->caseSensitivity);
-
 		QString richText = highlightFindText(v);
 
-		QString text = tr("Line <font style='color:#ff8040'>%1</font> : %2").arg(v.lineNum + 1).arg(richText);
-
+		QString text;
+		if (!StyleSet::isCurrentDeepStyle())
+		{
+			text = tr("<font style='font-size:14px;'>Line </font><font style='font-size:14px;color:#ff8040'>%1</font> : %2").arg(v.lineNum + 1).arg(richText);
+		}
+		else
+		{
+			text = tr("<font style='font-size:14px;color:#ffffff'>Line </font><font style='font-size:14px;color:#ff8040'>%1</font> : %2").arg(v.lineNum + 1).arg(richText);
+		}
 		QStandardItem* childItem = new QStandardItem(text);
 		childItem->setData(QVariant(v.pos), ResultItemPos);
 		childItem->setData(QVariant(v.end - v.pos), ResultItemLen);
@@ -470,7 +616,7 @@ void FindResultWin::appendResultsToShow(QVector<FindRecords*>* record, int hits,
 		return;
 	}
 
-	QString findTitle = tr("<font style='font-weight:bold;color:#343497'>Search \"%1\" (%2 hits in %3 files)</font>").arg(whatFind.toHtmlEscaped()).arg(hits).arg(record->size());
+	QString findTitle = tr("<font style='font-size:14px;font-weight:bold;color:#343497'>Search \"%1\" (%2 hits in %3 files)</font>").arg(whatFind.toHtmlEscaped()).arg(hits).arg(record->size());
 	QStandardItem* titleItem = new QStandardItem(findTitle);
 	setItemBackground(titleItem, QColor(0xbbbbff));
 	titleItem->setData(QVariant(true), ResultItemRoot);
@@ -492,14 +638,33 @@ void FindResultWin::appendResultsToShow(QVector<FindRecords*>* record, int hits,
 		return;
 	}
 
+
+
 	for (int i = 0,count= record->size(); i < count; ++i)
 	{
 		FindRecords* pr = record->at(i);
 
-		QString desc = tr("<font style='font-weight:bold;color:#309730'>%1 (%2 hits)</font>").arg(pr->findFilePath.toHtmlEscaped()).arg(pr->records.size());
+		QString desc;
+		if (!StyleSet::isCurrentDeepStyle())
+		{
+			desc = tr("<font style='font-size:14px;font-weight:bold;color:#309730'>%1 (%2 hits)</font>").arg(pr->findFilePath.toHtmlEscaped()).arg(pr->records.size());
+		}
+		else
+		{
+			desc = tr("<font style='font-size:14px;color:#99cc99'>%1 (%2 hits)</font>").arg(pr->findFilePath.toHtmlEscaped()).arg(pr->records.size());
+		}
 
 		QStandardItem* descItem = new QStandardItem(desc);
+
+		if (!StyleSet::isCurrentDeepStyle())
+		{
 		setItemBackground(descItem, QColor(0xd5ffd5));
+		}
+		else
+		{
+			setItemBackground(descItem, QColor(0x484848));
+		}
+
 		titleItem->insertRow(0,descItem);
 
 		//默认全部收起来
@@ -520,8 +685,15 @@ void FindResultWin::appendResultsToShow(QVector<FindRecords*>* record, int hits,
 			FindRecord  v = pr->records.at(i);
 			QString richText = highlightFindText(v);
 
-			QString text = QString("Line <font style='color:#ff8040'>%1</font> : %2").arg(v.lineNum + 1).arg(richText);
-
+			QString text;
+			if (!StyleSet::isCurrentDeepStyle())
+			{
+				text = tr("<font style='font-size:14px;'>Line </font><font style='font-size:14px;color:#ff8040'>%1</font> : %2").arg(v.lineNum + 1).arg(richText);
+			}
+			else
+			{
+				text = tr("<font style='font-size:14px;color:#ffffff'>Line </font><font style='font-size:14px;color:#ff8040'>%1</font> : %2").arg(v.lineNum + 1).arg(richText);
+			}
 			QStandardItem* childItem = new QStandardItem(text);
 			childItem->setData(QVariant(v.pos), ResultItemPos);
 			childItem->setData(QVariant(v.end - v.pos), ResultItemLen);
@@ -547,4 +719,49 @@ void FindResultWin::setItemForeground(QStandardItem* item, const QColor& color)
 {
 	QBrush b(color);
 	item->setForeground(b);
+}
+
+//查找结果框的字体变大
+void FindResultWin::slot_fontZoomIn()
+{
+	QFont curFt = ui.resultTreeView->font();
+
+	int s = curFt.pointSize();
+	s += 2;
+	curFt.setPointSize(s);
+
+	m_defaultFontSize += 2;
+
+	ui.resultTreeView->setFont(curFt);
+
+	m_delegate->setFontSize(m_defaultFontSize);
+
+	m_defFontSizeChange = true;
+}
+
+void FindResultWin::slot_fontZoomOut()
+{
+	QFont curFt = ui.resultTreeView->font();
+
+	int s = curFt.pointSize();
+	s -= 2;
+
+	if (s >= 8)
+	{
+		m_defFontSizeChange = true;
+		m_defaultFontSize -= 2;
+		curFt.setPointSize(s);
+		ui.resultTreeView->setFont(curFt);
+		m_delegate->setFontSize(m_defaultFontSize);
+	}
+}
+
+int FindResultWin::getDefaultFontSize()
+{
+	return m_defaultFontSize;
+}
+
+void FindResultWin::setDefaultFontSize(int defSize)
+{
+	m_defaultFontSize = defSize;
 }

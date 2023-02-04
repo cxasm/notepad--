@@ -31,6 +31,8 @@ QsciLexerCSS::QsciLexerCSS(QObject *parent)
       fold_comments(false), fold_compact(true), hss_language(false),
       less_language(false), scss_language(false)
 {
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 

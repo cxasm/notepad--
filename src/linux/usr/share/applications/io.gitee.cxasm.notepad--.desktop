@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Notepad--
+Comment=Notepad--
+Categories=Development;
+
+Icon=notepad--
+Exec=notepad--
+Terminal=false

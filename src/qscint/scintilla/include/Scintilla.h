@@ -1101,7 +1101,7 @@ typedef sptr_t (*SciFnDirect)(sptr_t ptr, unsigned int iMessage, uptr_t wParam, 
 #define SCN_URIDROPPED 2015
 #define SCN_DWELLSTART 2016
 #define SCN_DWELLEND 2017
-#define SCN_ZOOM 2018
+#define SCN_ZOOM_CODE 2018
 #define SCN_HOTSPOTCLICK 2019
 #define SCN_HOTSPOTDOUBLECLICK 2020
 #define SCN_CALLTIPCLICK 2021

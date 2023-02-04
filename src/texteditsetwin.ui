@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>617</width>
-    <height>140</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,18 +132,92 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-    <widget class="QCheckBox" name="restoreFile">
-     <property name="text">
-      <string>Remember files opened on close</string>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Font Setting</string>
      </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Txt File Font:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButton">
+          <property name="text">
+           <string> Set</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>App Font Color:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="appFontColorLabel">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButton1">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Set</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-      <widget class="QPushButton" name="pushButton">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QCheckBox" name="restoreFile">
        <property name="text">
-        <string>Txt File Font Set</string>
+        <string>Restore files opened on close</string>
        </property>
       </widget>
      </item>
@@ -170,7 +244,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>7</height>
+       <height>40</height>
       </size>
      </property>
     </spacer>
@@ -181,18 +255,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>toolButton</sender>
    <signal>clicked()</signal>
    <receiver>TextEditSetWin</receiver>
    <slot>slot_txtFontSet()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>295</x>
-     <y>105</y>
+     <x>129</x>
+     <y>126</y>
     </hint>
     <hint type="destinationlabel">
-     <x>369</x>
-     <y>132</y>
+     <x>567</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButton1</sender>
+   <signal>clicked()</signal>
+   <receiver>TextEditSetWin</receiver>
+   <slot>slot_appFontColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>195</x>
+     <y>151</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>304</y>
     </hint>
    </hints>
   </connection>
@@ -201,5 +291,7 @@
   <slot>slot_selectFont()</slot>
   <slot>slot_selectProLangFont()</slot>
   <slot>slot_txtFontSet()</slot>
+  <slot>slot_selectAppFont()</slot>
+  <slot>slot_appFontColor()</slot>
  </slots>
 </ui>

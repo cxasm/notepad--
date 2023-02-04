@@ -6,12 +6,19 @@
 #include <QTextEdit>
 
 NdStyledItemDelegate::NdStyledItemDelegate(QObject *parent)
-	: QStyledItemDelegate(parent)
+	: QStyledItemDelegate(parent), m_defaultFontSize(14)
 {
 }
 
 NdStyledItemDelegate::~NdStyledItemDelegate()
 {
+}
+
+
+void NdStyledItemDelegate::setFontSize(int size)
+{
+	m_defaultFontSize = size;
+	
 }
 
 //重载使可以支持富文本格式的文字
@@ -27,6 +34,13 @@ void NdStyledItemDelegate::paint(QPainter * painter, const QStyleOptionViewItem 
 	QStyle *pStyle = viewOption.widget ? viewOption.widget->style() : QApplication::style();
 
 	QTextDocument doc;
+
+	//外部修改了字体大小后，内部进行富文本的修改绘制。
+	if (m_defaultFontSize != 14)
+	{
+		viewOption.text.replace("font-size:14px",QString("font-size:%1px").arg(m_defaultFontSize));
+	}
+
 	doc.setHtml(viewOption.text);
 
 	viewOption.text.clear();

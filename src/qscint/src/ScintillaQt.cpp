@@ -172,8 +172,9 @@ void QsciScintillaQt::StartDrag()
     if (action == Qt::MoveAction && qdrag->target() != qsb->viewport())
         ClearSelection();
 
-    SetDragPosition(Scintilla::SelectionPosition());
     inDragDrop = ddNone;
+    SetDragPosition(Scintilla::SelectionPosition(INVALID_POSITION));
+  
 }
 
 

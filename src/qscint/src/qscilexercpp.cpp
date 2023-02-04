@@ -34,6 +34,9 @@ QsciLexerCPP::QsciLexerCPP(QObject *parent, bool caseInsensitiveKeywords)
       highlight_escape(false), vs_escape(false),
       nocase(caseInsensitiveKeywords)
 {
+    m_commentSymbol = "//";
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 

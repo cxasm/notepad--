@@ -35,6 +35,9 @@ QsciLexerHTML::QsciLexerHTML(QObject *parent)
       fold_script_comments(false), fold_script_heredocs(false),
       django_templates(false), mako_templates(false)
 {
+    m_commentSymbol = "";
+    m_commentStart = "<!--";
+    m_commentEnd = "-->";
 }
 
 
@@ -565,7 +568,7 @@ QString QsciLexerHTML::description(int style) const
     switch (style)
     {
     case Default:
-        return tr("HTML default");
+        return tr("Default");
 
     case Tag:
         return tr("Tag");

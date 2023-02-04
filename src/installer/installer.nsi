@@ -213,16 +213,16 @@ SectionEnd
 
 # -----------------------------------------------
 
-Section ".txt" Note
-DetailPrint "关联 txt 文件..."
-SectionIn 1
-WriteRegStr HKCR   ".txt" "" "Notepad--"
-#WriteRegStr HKCR   "Note.file" "" "文本文件 (.txt)"
-#WriteRegStr HKCR   "Note.file\DefaultIcon" "" "$INSTDIR\Notepad--.exe,0"
-#WriteRegStr HKCR   "Note.file\shell" "" ""
-#WriteRegStr HKCR   "Note.file\shell\open" "" ""
-#WriteRegStr HKCR   "Note.file\shell\open\command" "" '"$INSTDIR\Notepad--.exe" "%1"'
-SectionEnd
+#Section ".txt" Ndd
+#DetailPrint "关联 txt 文件..."
+#SectionIn 1
+#WriteRegStr HKCR   ".txt" "" "Ndd.file"
+#WriteRegStr HKCR   "Ndd.file" "" "文本文件 (.txt)"
+#WriteRegStr HKCR   "Ndd.file\DefaultIcon" "" "$INSTDIR\Notepad--.exe,0"
+#WriteRegStr HKCR   "Ndd.file\shell" "" ""
+#WriteRegStr HKCR   "Ndd.file\shell\open" "" ""
+#WriteRegStr HKCR   "Ndd.file\shell\open\command" "" '"$INSTDIR\Notepad--.exe" "%1"'
+#SectionEnd
 
 
 ${MementoSectionDone}
@@ -279,8 +279,7 @@ Section "Uninstall"
 	DeleteRegValue SHCTX "Software\Classes\.txt\OpenWithProgids" "Notepad--"
 	DeleteRegKey SHCTX "Software\Classes\Notepad--"
 
-    DeleteRegKey HKCR   ".txt" "" "Notepad--"
-    #DeleteRegKey HKCR  "Note.File"
+    #DeleteRegKey HKCR   ".txt" "" "Ndd.file"
 	
 	!insertmacro MULTIUSER_RegistryRemoveInstallInfo 
 SectionEnd

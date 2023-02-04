@@ -1,4 +1,4 @@
-/* Scintilla source code edit control */
+﻿/* Scintilla source code edit control */
 /** @file SciLexer.h
  ** Interface to the added lexer functions in the SciLexer version of the edit control.
  **/
@@ -268,6 +268,7 @@
 #define SCE_TXT_DEFAULT 0
 #define SCE_TXT_ASCII 1
 #define SCE_TXT_KEYWORD 2
+#define SCE_TXT_IDENTIFIER 4
 
 #define SCE_P_DEFAULT 0
 #define SCE_P_COMMENTLINE 1

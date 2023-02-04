@@ -4,16 +4,16 @@
 #include <QWidget>
 #include "ui_donate.h"
 
-class donate : public QWidget
+class Donate : public QWidget
 {
 	Q_OBJECT
 
 public:
-	donate(QWidget *parent = 0);
-	~donate();
+	Donate(QWidget *parent = 0);
+	~Donate();
 
 private:
-	Ui::donate ui;
+	Ui::DonateClass ui;
 };
 
 #endif // DONATE_H

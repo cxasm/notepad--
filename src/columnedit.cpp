@@ -7,6 +7,7 @@ ColumnEdit::ColumnEdit(QWidget *parent)
 	ui.setupUi(this);
 
 	connect(ui.addPrefix, &QCheckBox::stateChanged, this, &ColumnEdit::slot_addPrefix);
+	connect(ui.is16, &QRadioButton::clicked, this, &ColumnEdit::slot_bigChar);
 }
 
 ColumnEdit::~ColumnEdit()
@@ -48,6 +49,11 @@ void ColumnEdit::slot_addPrefix(int s)
 	}
 }
 
+void ColumnEdit::slot_bigChar(bool isCheck)
+{
+	ui.capital->setEnabled(isCheck);
+}
+
 //自动调整当前窗口的状态
 QWidget* ColumnEdit::autoAdjustCurrentEditWin()
 {
@@ -83,8 +89,9 @@ void ColumnEdit::slot_ok()
 	int initNum = 0;
 	int inc = ui.incNum->value();
 	int repeNum = ui.repeNum->value();
-	bool addPrefix = ui.addPrefix->isChecked();
+	bool isAddPrefix = ui.addPrefix->isChecked();
 	QString prefix = ui.prefix->text();
+	bool isCapital = ui.capital->isChecked();
 
 	//是插入文本模式
 	if (ui.textGroupBox->isChecked())
@@ -124,19 +131,59 @@ void ColumnEdit::slot_ok()
 		{
 			text = QString::number(num, numType);
 
-			if (addPrefix)
+			if (isAddPrefix)
 			{
 				text = prefix + text;
 			}
 		}
 		else
 		{
+			//这里要加个提示
 			QApplication::beep();
 			return;
 		}
 	}
 
 	pEdit->execute(SCI_BEGINUNDOACTION);
+
+	if (ui.textGroupBox->isChecked())
+	{
+		if (pEdit->execute(SCI_SELECTIONISRECTANGLE) || pEdit->execute(SCI_GETSELECTIONS) > 1)
+		{
+			ColumnModeInfos colInfos = pEdit->getColumnModeSelectInfo();
+			std::sort(colInfos.begin(), colInfos.end(), SortInPositionOrder());
+
+			QByteArray bytes = text.toUtf8();
+			pEdit->columnReplace(colInfos, bytes);
+			std::sort(colInfos.begin(), colInfos.end(), SortInSelectOrder());
+			pEdit->setMultiSelections(colInfos);
+
+			return;
+		}
+	}
+	else
+	{
+		if (pEdit->execute(SCI_SELECTIONISRECTANGLE) || pEdit->execute(SCI_GETSELECTIONS) > 1)
+		{
+			ColumnModeInfos colInfos = pEdit->getColumnModeSelectInfo();
+
+			// If there is no column mode info available, no need to do anything
+			// If required a message can be shown to user, that select column properly or something similar
+			if (colInfos.size() > 0)
+			{
+				std::sort(colInfos.begin(), colInfos.end(), SortInPositionOrder());
+				QByteArray bytes;
+				if (isAddPrefix)
+				{
+					bytes = prefix.toUtf8();
+				}
+				pEdit->columnReplace(colInfos, initNum, inc, repeNum, numType, isCapital, bytes);
+				std::sort(colInfos.begin(), colInfos.end(), SortInSelectOrder());
+				pEdit->setMultiSelections(colInfos);
+			}
+			return;
+		}
+	}
 
 	auto cursorPos = pEdit->execute(SCI_GETCURRENTPOS);
 	auto cursorCol = pEdit->execute(SCI_GETCOLUMN, cursorPos);
@@ -196,10 +243,25 @@ void ColumnEdit::slot_ok()
 
 			}
 			
+
+			if (numType != 16)
+			{
 			text = QString::number(initNum, numType);
+			}
+			else
+			{
+				if (isCapital)
+				{
+					text = QString::number(initNum, numType).toUpper();
+				}
+				else
+				{
+					text = QString::number(initNum, numType);
+				}
+			}
 
 
-			if (addPrefix)
+			if (isAddPrefix)
 			{
 				text = prefix + text;
 			}

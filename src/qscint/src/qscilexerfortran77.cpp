@@ -29,6 +29,7 @@
 QsciLexerFortran77::QsciLexerFortran77(QObject *parent)
     : QsciLexer(parent), fold_compact(true)
 {
+    m_commentSymbol = "!";
 }
 
 

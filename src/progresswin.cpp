@@ -25,12 +25,16 @@ void ProgressWin::setTotalSteps(int step)
 	m_curStep = 0;
 }
 
-void ProgressWin::moveStep()
+void ProgressWin::moveStep(bool isRest)
 {
 	++m_curStep;
 	ui.progressBar->setValue(m_curStep);
 	ui.progressBar->update();
-	//QCoreApplication::processEvents();
+
+	if (isRest)
+	{
+		QCoreApplication::processEvents();
+}
 }
 
 int ProgressWin::getTotalStep()

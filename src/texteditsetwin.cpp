@@ -3,6 +3,7 @@
 #include "ccnotepad.h"
 #include "qtlangset.h"
 #include <QFontDialog>
+#include <QColorDialog>
 
 TextEditSetWin::TextEditSetWin(QWidget *parent)
 	: QWidget(parent), m_notepadWin(nullptr)
@@ -19,6 +20,10 @@ TextEditSetWin::TextEditSetWin(QWidget *parent)
 	ui.BigTextSizeLimit->setValue(ScintillaEditView::s_bigTextSize);
 
 	ui.restoreFile->setChecked((CCNotePad::s_restoreLastFile == 1));
+
+
+	QPalette pal = QApplication::palette();
+
 }
 
 TextEditSetWin::~TextEditSetWin()
@@ -31,17 +36,7 @@ void TextEditSetWin::setNotePadWin(QWidget *w)
 	m_notepadWin = w;
 }
 
-#if 0
-//弹出对话框时，默认初始化该值
-void TextEditSetWin::setFont(QFont &font)
-{
-	if (m_curFont != font)
-	{
-		m_curFont = font;
-	}
-	ui.curTextFontEdit->setText(font.toString());
-}
-#endif
+
 #if 0
 //弹出对话框时，默认初始化该值
 void TextEditSetWin::setProgramLangFont(QFont &font)

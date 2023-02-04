@@ -29,6 +29,7 @@
 QsciLexerLua::QsciLexerLua(QObject *parent)
     : QsciLexer(parent), fold_compact(true)
 {
+    m_commentSymbol = "--";
 }
 
 

@@ -39,7 +39,7 @@ public:
 	//! \sa defaultColor()
 	QColor defaultPaper(int style) const;
 
-	int lexerId() const;
+	//int lexerId() const;
 
 	//! Returns the set of keywords for the keyword set \a set recognised
 	//! by the lexer as a space separated string.

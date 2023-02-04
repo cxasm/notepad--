@@ -29,6 +29,9 @@
 QsciLexerXML::QsciLexerXML(QObject *parent)
     : QsciLexerHTML(parent), scripts(true)
 {
+    m_commentSymbol = "";
+    m_commentStart = "<!--";
+    m_commentEnd = "-->";
 }
 
 

@@ -21,7 +21,7 @@
 !win32:VERSION = 15.1.0
 
 TEMPLATE = lib
-CONFIG += qt warn_off thread exceptions hide_symbols release staticlib
+CONFIG += qt warn_off thread exceptions hide_symbols staticlib
 
 CONFIG(debug, debug|release) {
     mac: {
@@ -103,7 +103,7 @@ HEADERS = \
     ./Qsci/qscicommandset.h \
     ./Qsci/qscidocument.h \
     ./Qsci/qscilexer.h \
-    ./Qsci/qscilexeravs.h \
+    ./Qsci/qscilexerasm.h \
     ./Qsci/qscilexerbash.h \
     ./Qsci/qscilexerbatch.h \
     ./Qsci/qscilexercmake.h \
@@ -118,7 +118,9 @@ HEADERS = \
     ./Qsci/qscilexerfortran.h \
     ./Qsci/qscilexerfortran77.h \
 	./Qsci/qscilexergo.h \
+    ./Qsci/qscilexerglobal.h \
     ./Qsci/qscilexertext.h \
+    ./Qsci/qscilexerrust.h \
     ./Qsci/qscilexerhtml.h \
     ./Qsci/qscilexeridl.h \
     ./Qsci/qscilexerjava.h \
@@ -149,6 +151,7 @@ HEADERS = \
     ./Qsci/qscistyle.h \
     ./Qsci/qscistyledtext.h \
     ./Qsci/qscilexernsis.h \
+    ./Qsci/qscilexervb.h \
     ListBoxQt.h \
     SciAccessibility.h \
     SciClasses.h \
@@ -214,12 +217,14 @@ HEADERS = \
     ../scintilla/src/UniqueString.h \
     ../scintilla/src/ViewStyle.h \
     ../scintilla/src/XPM.h \
-    ../scintilla/boostregex/*.h 
+    ../scintilla/boostregex/AnsiDocumentIterator.h \
+    ../scintilla/boostregex/UTF8DocumentIterator.h
 
 !ios:HEADERS += ./Qsci/qsciprinter.h
 
 SOURCES = \
     qscilexertext.cpp \
+    qscilexerrust.cpp \
     qscilexernsis.cpp \
     qsciscintilla.cpp \
     qsciscintillabase.cpp \
@@ -229,7 +234,7 @@ SOURCES = \
     qscicommandset.cpp \
     qscidocument.cpp \
     qscilexer.cpp \
-    qscilexeravs.cpp \
+    qscilexerasm.cpp \
     qscilexerbash.cpp \
     qscilexerbatch.cpp \
     qscilexercmake.cpp \
@@ -244,6 +249,7 @@ SOURCES = \
     qscilexerfortran.cpp \
     qscilexerfortran77.cpp \
 	qscilexergo.cpp \
+    qscilexerglobal.cpp \
     qscilexertext.cpp \
     qscilexerhtml.cpp \
     qscilexeridl.cpp \
@@ -274,6 +280,7 @@ SOURCES = \
     qscimacro.cpp \
     qscistyle.cpp \
     qscistyledtext.cpp \
+    qscilexervb.cpp \
     InputMethod.cpp \
     ListBoxQt.cpp \
     MacPasteboardMime.cpp \
@@ -431,7 +438,9 @@ SOURCES = \
     ../scintilla/src/UniConversion.cpp \
     ../scintilla/src/ViewStyle.cpp \
     ../scintilla/src/XPM.cpp \
-    ../scintilla/boostregex/*.cpp
+    ../scintilla/boostregex/BoostRegExSearch.cpp \
+    ../scintilla/boostregex/UTF8DocumentIterator.cpp
+
     
 INCLUDEPATH += ../scintilla/boostregex
 

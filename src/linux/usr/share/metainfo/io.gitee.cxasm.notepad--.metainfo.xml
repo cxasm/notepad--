@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.gitee.cxasm.notepad--</id>
+
+  <name>Notepad--</name>
+  <summary>Notepad--</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+
+  <description>
+    <p>
+      notepad--是一个国产跨平台、简单的文本编辑器，是替换notepad++的一种选择。其内置强大的代码对比功能，让你丢掉付费的beyond compare。
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.gitee.cxasm.notepad--.desktop</launchable>
+</component>

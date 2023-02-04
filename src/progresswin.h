@@ -15,7 +15,7 @@ public:
 
 	void info(QString text);
 	void setTotalSteps(int step);
-	void moveStep();
+	void moveStep(bool isRest = false);
 
 	int getTotalStep();
 	void setStep(int step);

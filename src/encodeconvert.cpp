@@ -97,15 +97,7 @@ void EncodeConvert::slot_itemClicked(QTreeWidgetItem* item, int /*column*/)
 				}
 
 				path = QString("%1").arg(it->data(0, Qt::ToolTipRole).toString());
-#ifdef _WIN32
-				path = path.replace("/", "\\");
-				cmd = QString("explorer.exe /select,%1").arg(path);
-#else
-				path = path.replace("\\", "/");
-				cmd = QString("open -R %1").arg(path);
-#endif
-				QProcess process;
-				process.startDetached(cmd);
+				showFileInExplorer(path);
 				});
 		}
 		m_menu->move(QCursor::pos());

@@ -1,4 +1,4 @@
-// This module defines various things common to all of the Scintilla Qt port.
+﻿// This module defines various things common to all of the Scintilla Qt port.
 //
 // Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
@@ -37,6 +37,7 @@
 // Define QSCINTILLA_MAKE_DLL to create a QScintilla shared library, or
 // define QSCINTILLA_DLL to link against a QScintilla shared library, or define
 // neither to either build or link against a static QScintilla library.
+
 #if defined(QSCINTILLA_DLL)
 #define QSCINTILLA_EXPORT       Q_DECL_IMPORT
 #elif defined(QSCINTILLA_MAKE_DLL)

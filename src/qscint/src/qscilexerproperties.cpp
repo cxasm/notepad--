@@ -1,4 +1,4 @@
-// This module implements the QsciLexerProperties class.
+﻿// This module implements the QsciLexerProperties class.
 //
 // Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
@@ -29,6 +29,7 @@
 QsciLexerProperties::QsciLexerProperties(QObject *parent)
     : QsciLexer(parent), fold_compact(true), initial_spaces(true)
 {
+    m_commentSymbol = "#";
 }
 
 

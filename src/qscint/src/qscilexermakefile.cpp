@@ -1,4 +1,4 @@
-// This module implements the QsciLexerMakefile class.
+﻿// This module implements the QsciLexerMakefile class.
 //
 // Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
@@ -28,6 +28,7 @@
 QsciLexerMakefile::QsciLexerMakefile(QObject *parent)
     : QsciLexer(parent)
 {
+    m_commentSymbol = "#";
 }
 
 

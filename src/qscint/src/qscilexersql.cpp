@@ -33,6 +33,9 @@ QsciLexerSQL::QsciLexerSQL(QObject *parent)
       numbersign_comment(false), backslash_escapes(false),
       allow_dotted_word(false)
 {
+    m_commentSymbol = "--";
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 

@@ -24,6 +24,7 @@ private slots:
 	void slot_insertNumEnable(bool check);
 	void slot_insertTextEnable(bool check);
 	void slot_addPrefix(int s);
+	void slot_bigChar(bool isCheck);
 	void slot_ok();
 
 private:

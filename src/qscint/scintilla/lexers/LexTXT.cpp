@@ -1,4 +1,4 @@
-#include <stdlib.h>
+ï»¿#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -31,37 +31,17 @@
 
 using namespace Scintilla;
 
-const char styleSubable[] = { SCE_P_IDENTIFIER, 0 };
+//const char styleSubable[] = { SCE_P_IDENTIFIER, 0 };
 
-//Default = 0,//ÖĞÎÄ
-//Ascii = 1,//Ó¢ÎÄ
-//Keyword = 2, //¹Ø¼ü×Ö£¬Ö»ÓĞÒÔTXTÎªÄ¸°æµÄ
+//Default = 0,//ä¸­æ–‡
+//Ascii = 1,//è‹±æ–‡
+//Keyword = 2, //å…³é”®å­—ï¼Œåªæœ‰ä»¥TXTä¸ºæ¯ç‰ˆçš„
 
 LexicalClass lexicalClasses[] = {
-
-#if 1
 	// Lexer Python SCLEX_PYTHON SCE_P_:
 	0, "SCE_TXT_DEFAULT", "default", "utf8 char",
 	1, "SCE_TXT_ASCII", "Ascii", "Ascii",
 	2, "SCE_TXT_KEYWORD", "keyword", "keyword",
-	/*3, "SCE_P_STRING", "literal string", "String",
-	4, "SCE_P_CHARACTER", "literal string", "Single quoted string",
-	5, "SCE_P_WORD", "keyword", "Keyword",
-	6, "SCE_P_TRIPLE", "literal string", "Triple quotes",
-	7, "SCE_P_TRIPLEDOUBLE", "literal string", "Triple double quotes",
-	8, "SCE_P_CLASSNAME", "identifier", "Class name definition",
-	9, "SCE_P_DEFNAME", "identifier", "Function or method name definition",
-	10, "SCE_P_OPERATOR", "operator", "Operators",
-	11, "SCE_P_IDENTIFIER", "identifier", "Identifiers",
-	12, "SCE_P_COMMENTBLOCK", "comment", "Comment-blocks",
-	13, "SCE_P_STRINGEOL", "error literal string", "End of line where string is not closed",
-	14, "SCE_P_WORD2", "identifier", "Highlighted identifiers",
-	15, "SCE_P_DECORATOR", "preprocessor", "Decorators",
-	16, "SCE_P_FSTRING", "literal string interpolated", "F-String",
-	17, "SCE_P_FCHARACTER", "literal string interpolated", "Single quoted f-string",
-	18, "SCE_P_FTRIPLE", "literal string interpolated", "Triple quoted f-string",
-	19, "SCE_P_FTRIPLEDOUBLE", "literal string interpolated", "Triple double quoted f-string",*/
-#endif
 };
 
 enum literalsAllowed { litNone = 0, litU = 1, litB = 2, litF = 4 };
@@ -92,13 +72,13 @@ struct OptionSetTxt : public OptionSet<OptionsTxt> {
 class LexTXT :public DefaultLexer
 {
 	WordList keywords;
-	SubStyles subStyles;
+	//SubStyles subStyles;
 	OptionsTxt options;
 	OptionSetTxt osTxt;
 public:
 	explicit LexTXT() :
-		DefaultLexer(lexicalClasses, ELEMENTS(lexicalClasses)),
-		subStyles(styleSubable, 0x80, 0x40, 0) {
+		DefaultLexer(lexicalClasses, ELEMENTS(lexicalClasses))/*,
+		subStyles(styleSubable, 0x80, 0x40, 0)*/ {
 	}
 	virtual ~LexTXT() {}
 
@@ -133,34 +113,34 @@ public:
 		return SC_LINE_END_TYPE_UNICODE;
 	}
 
-	int SCI_METHOD AllocateSubStyles(int styleBase, int numberStyles) override {
-		return subStyles.Allocate(styleBase, numberStyles);
-	}
-	int SCI_METHOD SubStylesStart(int styleBase) override {
-		return subStyles.Start(styleBase);
-	}
-	int SCI_METHOD SubStylesLength(int styleBase) override {
-		return subStyles.Length(styleBase);
-	}
-	int SCI_METHOD StyleFromSubStyle(int subStyle) override {
-		const int styleBase = subStyles.BaseStyle(subStyle);
-		return styleBase;
-	}
+	//int SCI_METHOD AllocateSubStyles(int styleBase, int numberStyles) override {
+	//	return subStyles.Allocate(styleBase, numberStyles);
+	//}
+	//int SCI_METHOD SubStylesStart(int styleBase) override {
+	//	return subStyles.Start(styleBase);
+	//}
+	//int SCI_METHOD SubStylesLength(int styleBase) override {
+	//	return subStyles.Length(styleBase);
+	//}
+	//int SCI_METHOD StyleFromSubStyle(int subStyle) override {
+	//	const int styleBase = subStyles.BaseStyle(subStyle);
+	//	return styleBase;
+	//}
 	int SCI_METHOD PrimaryStyleFromStyle(int style) override {
 		return style;
 	}
-	void SCI_METHOD FreeSubStyles() override {
-		subStyles.Free();
-	}
-	void SCI_METHOD SetIdentifiers(int style, const char *identifiers) override {
-		subStyles.SetIdentifiers(style, identifiers);
-	}
+	//void SCI_METHOD FreeSubStyles() override {
+	//	subStyles.Free();
+	//}
+	//void SCI_METHOD SetIdentifiers(int style, const char *identifiers) override {
+	//	subStyles.SetIdentifiers(style, identifiers);
+	//}
 	int SCI_METHOD DistanceToSecondaryStyles() override {
 		return 0;
 	}
-	const char *SCI_METHOD GetSubStyleBases() override {
-		return styleSubable;
-	}
+	//const char *SCI_METHOD GetSubStyleBases() override {
+	//	return styleSubable;
+	//}
 
 	static ILexer *LexerFactoryTxt() {
 		return new LexTXT();
@@ -196,15 +176,19 @@ Sci_Position SCI_METHOD LexTXT::WordListSet(int n, const char *wl) {
 
 const int indicatorWhitespace = 1;
 
-inline bool IsAWordChar(int ch, bool unicodeIdentifiers) {
-	if (ch < 0x80)
-		return (isalnum(ch) || ch == '.' || ch == '_');
+//inline bool IsAWordChar(int ch, bool unicodeIdentifiers) {
+//	if (ch < 0x80)
+//		return (isalnum(ch) || ch == '.' || ch == '_');
+//
+//	if (!unicodeIdentifiers)
+//		return false;
+//
+//	// Python uses the XID_Continue set from unicode data
+//	return IsXidContinue(ch);
+//}
 
-	if (!unicodeIdentifiers)
-		return false;
-
-	// Python uses the XID_Continue set from unicode data
-	return IsXidContinue(ch);
+inline bool IsAAsciiChar(int ch) {
+	return (ch < 0x80);
 }
 
 inline bool IsAWordStart(int ch, bool unicodeIdentifiers) {
@@ -218,39 +202,39 @@ inline bool IsAWordStart(int ch, bool unicodeIdentifiers) {
 	return IsXidStart(ch);
 }
 
-//Ö»Ê¶±ğÖĞÎÄºÍÓ¢ÎÄÁ½ÖÖµ¥´ÊµÄ×´Ì¬
+//åªè¯†åˆ«ä¸­æ–‡å’Œè‹±æ–‡ä¸¤ç§å•è¯çš„çŠ¶æ€
 void SCI_METHOD LexTXT::Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, IDocument *pAccess) {
 	Accessor styler(pAccess, NULL);
 
 	const Sci_Position endPos = startPos + length;
 
-	// Backtrack to previous line in case need to fix its tab whinging
-	Sci_Position lineCurrent = styler.GetLine(startPos);
-	if (startPos > 0) {
-		if (lineCurrent > 0) {
-			lineCurrent--;
-			// Look for backslash-continued lines
-			while (lineCurrent > 0) {
-				Sci_Position eolPos = styler.LineStart(lineCurrent) - 1;
-				const int eolStyle = styler.StyleAt(eolPos);
-				if (eolStyle == SCE_P_STRING
-					|| eolStyle == SCE_P_CHARACTER
-					|| eolStyle == SCE_P_STRINGEOL) {
-					lineCurrent -= 1;
-				}
-				else {
-					break;
-				}
-			}
-			startPos = styler.LineStart(lineCurrent);
-		}
-		initStyle = (startPos == 0 ? SCE_P_DEFAULT : styler.StyleAt(startPos - 1));
-	}
+	//// Backtrack to previous line in case need to fix its tab whinging
+	//Sci_Position lineCurrent = styler.GetLine(startPos);
+	//if (startPos > 0) {
+	//	if (lineCurrent > 0) {
+	//		lineCurrent--;
+	//		// Look for backslash-continued lines
+	//		while (lineCurrent > 0) {
+	//			Sci_Position eolPos = styler.LineStart(lineCurrent) - 1;
+	//			const int eolStyle = styler.StyleAt(eolPos);
+	//			if (eolStyle == SCE_P_STRING
+	//				|| eolStyle == SCE_P_CHARACTER
+	//				|| eolStyle == SCE_P_STRINGEOL) {
+	//				lineCurrent -= 1;
+	//			}
+	//			else {
+	//				break;
+	//			}
+	//		}
+	//		startPos = styler.LineStart(lineCurrent);
+	//	}
+	//	initStyle = (startPos == 0 ? SCE_P_DEFAULT : styler.StyleAt(startPos - 1));
+	//}
 
-	initStyle = initStyle & 31;
-	if (initStyle == SCE_P_STRINGEOL) {
-		initStyle = SCE_P_DEFAULT;
-	}
+	//initStyle = initStyle & 31;
+	//if (initStyle == SCE_P_STRINGEOL) {
+	//	initStyle = SCE_P_DEFAULT;
+	//}
 
 	StyleContext sc(startPos, endPos - startPos, initStyle, styler);
 
@@ -259,47 +243,68 @@ void SCI_METHOD LexTXT::Lex(Sci_PositionU startPos, Sci_Position length, int ini
 
 	for (; sc.More();) {
 
-		if (sc.state == SCE_P_IDENTIFIER) {
+		// Check for a new state starting character
+		if (sc.state == SCE_TXT_DEFAULT)
+		{
+			//é‡åˆ°ä¸‹ä¸€ä¸ªASCIIå­—ç¬¦çš„æ—¶å€™ï¼Œè¿›å…¥è¯†åˆ«çŠ¶æ€
+			if (IsAAsciiChar(sc.ch))
+			{
+				sc.SetState(SCE_TXT_IDENTIFIER);
+				}
+				}
+		else if (sc.state == SCE_TXT_ASCII)
+		{
+			//é‡åˆ°ä¸‹ä¸€ä¸ªéASCIIå­—ç¬¦çš„æ—¶å€™ï¼Œè¿›å…¥è¯†åˆ«çŠ¶æ€
+			if (!IsAAsciiChar(sc.ch))
+			{
+				sc.SetState(SCE_TXT_IDENTIFIER);
+			}
+		}
 
-			//txt¾ÍÈıÖÖ×´Ì¬¡¢Ó¢ÎÄ¡¢ÖĞÎÄ¡¢×Ô¶¨Òå¹Ø¼ü×Ö¡£Ä¬ÈÏÊÇÖĞÎÄ¡£
-			//Óöµ½·Ç×Ö·ûºÍ·ÇÊı×Ö£¬¿ªÊ¼¼ì²âµ¥´Ê,ÊÇ¹Ø¼ü×ÖÔòÊ¶±ğÎª¹Ø¼ü×Ö;Èô²»ÊÇ¹Ø¼ü×Ö£¬Ôò¿Ï¶¨ÊÇÓ¢ÎÄ×Ö·û
-			//¹Ø¼ü×ÖÊÇÓ¢ÎÄ£¬²»ÊÇÖĞÎÄ¡£
+		if (sc.state == SCE_TXT_IDENTIFIER) {
 
-			if ((sc.ch == '.') || (!IsAWordChar(sc.ch, false))) {
+			//txtå°±ä¸‰ç§çŠ¶æ€ã€è‹±æ–‡ã€ä¸­æ–‡ã€è‡ªå®šä¹‰å…³é”®å­—ã€‚é»˜è®¤æ˜¯ä¸­æ–‡ã€‚
+			//é‡åˆ°éå­—ç¬¦å’Œéæ•°å­—ï¼Œå¼€å§‹æ£€æµ‹å•è¯,æ˜¯å…³é”®å­—åˆ™è¯†åˆ«ä¸ºå…³é”®å­—;è‹¥ä¸æ˜¯å…³é”®å­—ï¼Œåˆ™è‚¯å®šæ˜¯è‹±æ–‡å­—ç¬¦
+	
+			//å¦‚æœé‡åˆ°éASCIIå­—ç¬¦ï¼Œåˆ™å¼€å§‹æ£€æŸ¥
+			if (!IsAAsciiChar(sc.ch)) {
 				char s[1000];
 				sc.GetCurrent(s, sizeof(s));
-				int style = SCE_P_IDENTIFIER;
+				int style = SCE_TXT_IDENTIFIER;
 				if (keywords.InList(s)) 
 		{
 					style = SCE_TXT_KEYWORD;
 		}
 				else
 		{
-					//²»ÊÇ¹Ø¼ü×Ö£¬¾ÍÊÇÆÕÍ¨µÄÓ¢ÎÄµ¥´Ê
+					//ä¸æ˜¯å…³é”®å­—ï¼Œå°±æ˜¯æ™®é€šçš„è‹±æ–‡å•è¯
 					style = SCE_TXT_ASCII;
 				}
 				sc.ChangeState(style);
 
-				//ÏÂÃæº¯ÊıÔËĞĞ¾ÍÒÑ¾­°Ñ¹Ø¼ü×Ö»òÓ¢ÎÄ¸øµ¥¶ÀÉèÖÃ·ç¸ñÁË¡£´ËÊ±Ä¬ÈÏ½øÈëÖĞÎÄ·ç¸ñ×´Ì¬
+				//ä¸‹é¢å‡½æ•°è¿è¡Œå°±å·²ç»æŠŠå…³é”®å­—æˆ–è‹±æ–‡ç»™å•ç‹¬è®¾ç½®é£æ ¼äº†ã€‚æ­¤æ—¶é»˜è®¤è¿›å…¥ä¸­æ–‡é£æ ¼çŠ¶æ€
 			sc.SetState(SCE_TXT_DEFAULT);
 
 		}
 	}
 
-		// Check for a new state starting character
-		if (sc.state == SCE_TXT_DEFAULT)
-	{
-			//Óöµ½ÏÂÒ»¸öÓ¢ÎÄ×Ö·ûµÄÊ±ºò£¬½øÈëÊ¶±ğ×´Ì¬
-			if (IsAWordStart(sc.ch, false)) 
-	{
-				sc.SetState(SCE_P_IDENTIFIER);
-	}
-		}
 		sc.Forward();
 	}
 	
-	//ÕâÀï¿´ÆğÀ´×îºóÒ»¶ÎÖĞÎÄ£¬»áÊ¶±ğ²»³öÀ´¡£ÒòÎªÉÏÃæµÄÑ­»·²»ÄÜÊ¶±ğ×îºóÒ»¶ÎÊÇÖĞÎÄµÄÇé¿ö¡£
-	//²»¹ıÖĞÎÄ±¾À´Ä¬ÈÏ¾ÍÊÇ0£¬¾ÍËãÊ¶±ğ²»µ½£¬±¾À´¾ÍÊÇÄ¬ÈÏµÄÖµ¡£ËùÓĞÊÇÃ»ÓĞÎÊÌâµÄ¡£
+	//æœ€åä¸€æ®µä¸èƒ½é—æ¼ï¼Œä¹Ÿéœ€è¦è¯†åˆ«
+	if (sc.state == SCE_TXT_IDENTIFIER)
+	{
+		if (IsAAsciiChar(sc.chPrev))
+		{
+		sc.ChangeState(SCE_TXT_ASCII);
+	}
+	else
+	{
+		sc.ChangeState(SCE_TXT_DEFAULT);
+	}
+	}
+
+	sc.SetState(SCE_TXT_DEFAULT);
 
 	styler.IndicatorFill(startIndicator, sc.currentPos, indicatorWhitespace, 0);
 	sc.Complete();
@@ -325,7 +330,7 @@ static bool IsQuoteLine(Sci_Position line, const Accessor &styler) {
 }
 
 
-//²»´¦ÀíÈÎºÎÕÛµş
+//ä¸å¤„ç†ä»»ä½•æŠ˜å 
 void SCI_METHOD LexTXT::Fold(Sci_PositionU startPos, Sci_Position length, int /*initStyle - unused*/, IDocument *pAccess) {
 	return;
 }

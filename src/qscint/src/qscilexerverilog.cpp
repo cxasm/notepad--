@@ -31,6 +31,9 @@ QsciLexerVerilog::QsciLexerVerilog(QObject *parent)
       fold_atelse(false), fold_comments(false), fold_compact(true),
       fold_preproc(false), fold_atmodule(false)
 {
+    m_commentSymbol = "//";
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 

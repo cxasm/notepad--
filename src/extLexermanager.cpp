@@ -60,3 +60,35 @@ bool ExtLexerManager::getLexerTypeByExt(QString ext, LexerInfo& lexer)
 	}
 	return false;
 }
+
+//列出tag语言下面的所有关联的文件后缀列表
+void ExtLexerManager::getExtlistByLangTag(QString tag, QStringList& extList)
+{
+	for (QMap<QString, LexerInfo>::iterator it = m_extToLexerIdMap.begin(); it != m_extToLexerIdMap.end(); ++it)
+	{
+		LexerInfo& v = it.value();
+		if (v.tagName == tag)
+		{
+			extList.append(it.key());
+		}
+
+	}
+}
+
+//列出tag语言下面的所有关联的文件后缀列表
+void ExtLexerManager::getExtlistByLangTag(QMap<QString,QStringList>& extLangMap)
+{
+	for (QMap<QString, LexerInfo>::iterator it = m_extToLexerIdMap.begin(); it != m_extToLexerIdMap.end(); ++it)
+	{
+		LexerInfo& v = it.value();
+
+		if (extLangMap.contains(v.tagName))
+		{
+			extLangMap[v.tagName].append(it.key());
+		}
+		else
+		{
+			extLangMap[v.tagName] = QStringList(it.key());
+		}
+	}
+}

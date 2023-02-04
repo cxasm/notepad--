@@ -29,6 +29,7 @@
 QsciLexerCMake::QsciLexerCMake(QObject *parent)
     : QsciLexer(parent), fold_atelse(false)
 {
+    m_commentSymbol = "#";
 }
 
 

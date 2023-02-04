@@ -39,6 +39,9 @@ const char *QsciLexerJavaScript::keywordClass =
 QsciLexerJavaScript::QsciLexerJavaScript(QObject *parent)
     : QsciLexerCPP(parent)
 {
+    m_commentSymbol = "//";
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 

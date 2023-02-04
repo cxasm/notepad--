@@ -1,4 +1,4 @@
-// This module defines the "official" high-level API of the Qt port of
+﻿// This module defines the "official" high-level API of the Qt port of
 // Scintilla.
 //
 // Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
@@ -1670,6 +1670,8 @@ public:
 	void setHtmlHighLightTag(bool v);
 	bool getHtmlHighLightTag();
 
+   /* virtual void adjuctSkinStyle() {}*/
+
 public slots:
     //! Appends the text \a text to the end of the text edit.  Note that the
     //! undo/redo history is cleared by this function.
@@ -2214,6 +2216,10 @@ protected:
     //! \reimp
     virtual void wheelEvent(QWheelEvent *e);
 
+	virtual void addHotSpot() {}
+
+    void setStylesFont(const QFont& f, int style);
+
 private slots:
     void handleCallTipClick(int dir);
     void handleCharAdded(int charadded);
@@ -2225,6 +2231,7 @@ private slots:
             int added, int line, int foldNow, int foldPrev, int token,
             int annotationLinesAdded);
     void handlePropertyChange(const char *prop, const char *val);
+
     void handleSavePointReached();
     void handleSavePointLeft();
     void handleSelectionChanged(bool yes);
@@ -2271,7 +2278,7 @@ private:
             int visLevels = 0, int level = -1);
     void setFoldMarker(int marknr, int mark = SC_MARK_EMPTY);
     void setLexerStyle(int style);
-    void setStylesFont(const QFont &f, int style);
+ 
     void setEnabledColors(int style, QColor &fore, QColor &back);
 
     void braceMatch();

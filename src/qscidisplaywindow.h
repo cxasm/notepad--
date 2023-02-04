@@ -31,7 +31,6 @@ public:
 	void setMediator(MediatorDisplay* mediator);
 	
 	void setDirection(RC_DIRECTION direction);
-	void travEveryBlockToSave(std::function<void(QString&, int)> savefun, QList<BlockUserData*>* externLineInfo);
 
 	//获取当前垂直进度条的滚动位置
 	int getCurVerticalScrollValue();
@@ -45,10 +44,11 @@ public:
 	{
 		m_filePath = v;
 	}
-
+	void autoAdjustLineWidth(int xScrollValue);
 signals:
 	void delayWork();
 	void sign_find(bool v=true);
+	void sign_saveAsFile();
 
 private slots:
 	void slot_delayWork();
@@ -64,9 +64,13 @@ protected:
 	void contextUserDefineMenuEvent(QMenu* menu) override;
 	void inputMethodEvent(QInputMethodEvent* event) override;
 	void mouseDoubleClickEvent(QMouseEvent *e) override;
-	void autoAdjustLineWidth(int xScrollValue);
-
+	void clearIndicator(int indicatorNumber);
+	void slot_clearHightWord();
+	void highlightViewWithWord(QString & word2Hilite);
 	void updateLineNumberWidth();
+
+	void setStyleOptions();
+	void setFoldColor(int margin, QColor fgClack, QColor bkColor);
 
 private:
 	RC_DIRECTION m_direction;
@@ -85,4 +89,5 @@ private:
 	SCINTILLA_PTR  m_pScintillaPtr = 0;
 
 	bool m_isShowFindItem;
+	bool m_hasHighlight;
 };

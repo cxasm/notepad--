@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>728</height>
+    <width>1029</width>
+    <height>660</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,157 @@
     <normaloff>:/Resources/edit/global/ndd.ico</normaloff>:/Resources/edit/global/ndd.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_9">
+   <layout class="QVBoxLayout" name="verticalLayout_13">
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Preferred</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Select Main:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="mainThemesCbox">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <item>
+         <property name="text">
+          <string>Default(stylers.xml)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bespin</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Black board</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Blue Light</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Choco</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DansLeRuSH-Dark</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Deep Black</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lavender</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HotFudgeSundae</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Misty Rose</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Mono Industrial</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Monokai</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Obsidian</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Plastic Code Wrap</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ruby Blue</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Twilight</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Vibrant Ink</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Yellow Rice</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="curThemes">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_11">
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QLabel" name="label">
@@ -38,7 +187,7 @@
           </property>
           <property name="maximumSize">
            <size>
-          <width>220</width>
+            <width>220</width>
             <height>16777215</height>
            </size>
           </property>
@@ -61,7 +210,7 @@
           </property>
           <property name="maximumSize">
            <size>
-          <width>220</width>
+            <width>220</width>
             <height>150</height>
            </size>
           </property>
@@ -96,278 +245,379 @@
         </item>
        </layout>
       </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string>Color</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Foreground:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_fc">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="toolButton">
-               <property name="text">
-                <string>Select</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-            <widget class="QCheckBox" name="modiryAllColor">
-             <property name="text">
-              <string>All Style</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>background:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_bc">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Same As Theme</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
-          <property name="title">
-           <string>Font</string>
-          </property>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
-             <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_7">
-               <property name="text">
-              <string>Name:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-            <widget class="QFontComboBox" name="fontComboBox"/>
-             </item>
-            </layout>
-           </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QCheckBox" name="boldCheckBox">
-               <property name="text">
-                <string>Bold</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="italicCheckBox">
-               <property name="text">
-                <string>Italic</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="underlineCheckBox">
-               <property name="text">
-                <string>Underline</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-             <item>
-            <layout class="QVBoxLayout" name="verticalLayout_7">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>Color</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
-                <widget class="QLabel" name="label_8">
-               <property name="text">
-                  <string>Font Size:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-                <widget class="QSpinBox" name="fontSpinBox"/>
-             </item>
-            </layout>
-           </item>
-             <item>
-              <widget class="QCheckBox" name="modifyAllFont">
-               <property name="text">
-                <string>All Style</string>
-               </property>
-              </widget>
-             </item>
-          </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
-         </widget>
-        </item>
-        <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>Keyword And Mother </string>
-          </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QPlainTextEdit" name="keywordTe">
-           <property name="readOnly">
-            <bool>true</bool>
-          </property>
-          </widget>
-        </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Mother Language:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="motherLangCb">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <item>
-              <property name="text">
-               <string>None</string>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>Foreground:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_fc">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="toolButton">
+                   <property name="text">
+                    <string>Select</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>background:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_bc">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Same As Theme</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QToolButton" name="toolButton1">
+                   <property name="text">
+                    <string>Select</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="useGlobalColor">
+              <property name="title">
+               <string>Use Global Color</string>
               </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Cpp</string>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <widget class="QCheckBox" name="useGbFc">
+                 <property name="text">
+                  <string>Use Global Foreground Color</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="useGbBc">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="text">
+                  <string>Use Global Background Color</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
-             </item>
-            </widget>
-           </item>
-       </layout>
-      </item>
-      <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Ext File Type:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="extFileType">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QPushButton" name="reset">
-          <property name="text">
-           <string>reset</string>
-          </property>
-         </widget>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Font</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_8">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>Name:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFontComboBox" name="fontComboBox"/>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_3">
+                   <item>
+                    <widget class="QCheckBox" name="boldCheckBox">
+                     <property name="text">
+                      <string>Bold</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="italicCheckBox">
+                     <property name="text">
+                      <string>Italic</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="underlineCheckBox">
+                     <property name="text">
+                      <string>Underline</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_7">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_3">
+                     <item>
+                      <widget class="QLabel" name="label_8">
+                       <property name="text">
+                        <string>Font Size:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QSpinBox" name="fontSpinBox">
+                       <property name="singleStep">
+                        <number>1</number>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QStackedWidget" name="stackedWidget">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="page_normal">
+               <layout class="QGridLayout" name="gridLayout">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QGroupBox" name="groupBox">
+                  <property name="title">
+                   <string>Keyword And Mother </string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_4">
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QPlainTextEdit" name="keywordTe">
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout">
+                     <item>
+                      <widget class="QLabel" name="label_6">
+                       <property name="text">
+                        <string>Mother Language:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QComboBox" name="motherLangCb">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
+                       <item>
+                        <property name="text">
+                         <string>None</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>Cpp</string>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_5">
+                     <item>
+                      <widget class="QLabel" name="label_9">
+                       <property name="text">
+                        <string>Ext File Type:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="extFileType">
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_global">
+               <layout class="QGridLayout" name="gridLayout_2">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QGroupBox" name="useGlobalFont">
+                  <property name="title">
+                   <string>Global Style Font</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QCheckBox" name="useGbFont">
+                     <property name="text">
+                      <string>Use Global Font</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="useGbFontSize">
+                     <property name="text">
+                      <string>Use Global FontSize</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="useGbFontBold">
+                     <property name="text">
+                      <string>Use Global Bold Font</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="useGbFontItalic">
+                     <property name="text">
+                      <string>Use Global Italic Font</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="useGbFontUnderline">
+                     <property name="text">
+                      <string>Use Global Underline Font</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="saveBt">
-          <property name="text">
-           <string>Save</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="cancelBt">
-          <property name="text">
-           <string>Close</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="reset">
+            <property name="text">
+             <string>reset</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="saveBt">
+            <property name="text">
+             <string>Save</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cancelBt">
+            <property name="text">
+             <string>Close</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -380,7 +630,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>983</width>
+     <width>1029</width>
      <height>23</height>
     </rect>
    </property>
@@ -407,8 +657,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1068</x>
-     <y>694</y>
+     <x>1016</x>
+     <y>625</y>
     </hint>
     <hint type="destinationlabel">
      <x>709</x>
@@ -423,8 +673,8 @@
    <slot>slot_saveClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>951</x>
-     <y>694</y>
+     <x>843</x>
+     <y>625</y>
     </hint>
     <hint type="destinationlabel">
      <x>575</x>
@@ -439,8 +689,8 @@
    <slot>slot_changeFgColor()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>919</x>
-     <y>92</y>
+     <x>725</x>
+     <y>123</y>
     </hint>
     <hint type="destinationlabel">
      <x>462</x>
@@ -455,12 +705,156 @@
    <slot>slot_reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>777</x>
-     <y>685</y>
+     <x>669</x>
+     <y>625</y>
     </hint>
     <hint type="destinationlabel">
      <x>814</x>
      <y>697</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbFc</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalFgColor(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbFont</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalFont(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>291</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbFontBold</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalFontBold(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbFontItalic</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalFontItalic(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbFontUnderline</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalFontUnderline(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>535</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbFontSize</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalFontSize(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>352</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useGbBc</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_useAlobalBkColor(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButton1</sender>
+   <signal>clicked()</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>slot_changeBkColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>725</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>363</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mainThemesCbox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>on_themesChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>635</y>
     </hint>
    </hints>
   </connection>
@@ -470,5 +864,13 @@
   <slot>slot_changeFgColor()</slot>
   <slot>slot_changeBkColor()</slot>
   <slot>slot_reset()</slot>
+  <slot>slot_useAlobalFgColor(bool)</slot>
+  <slot>slot_useAlobalFont(bool)</slot>
+  <slot>slot_useAlobalFontSize(bool)</slot>
+  <slot>slot_useAlobalFontBold(bool)</slot>
+  <slot>slot_useAlobalFontUnderline(bool)</slot>
+  <slot>slot_useAlobalFontItalic(bool)</slot>
+  <slot>slot_useAlobalBkColor(bool)</slot>
+  <slot>on_themesChange(int)</slot>
  </slots>
 </ui>
