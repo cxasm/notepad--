@@ -37,6 +37,7 @@
 
 代码上线不久，删除了商业的对比功能和注册功能（这部分有商业原因，请理解），除此以外，所有功能全部保留。
 
+
 ### 1.22发布效果图
 
 Notepad-- v1.22 版本是1.0系列的倒数第二个版本。
@@ -49,15 +50,10 @@ Notepad-- v1.22 版本是1.0系列的倒数第二个版本。
 
 2.0 时代，notepad--将真正融入开源社区，让更多的开源贡献者参与进来。
 
-给我们提交插件吧！一起开发，一起努力，做国人自己的免费文本编辑器！
+给我们提交插件吧！一起开发，一起努力，做国人自己的免费文本编辑器！所有中国程序员，团结起来！
 
 ![ntscreenshot_20230211_221301](https://user-images.githubusercontent.com/42246867/218263344-904424bc-d633-4d1d-a020-f6a3f264cc9a.png)
-
-![ntscreenshot_20230206_210942](https://user-images.githubusercontent.com/42246867/218263313-88c2af65-2180-4867-8939-31dbdff80ff6.png)
 
 ![ntscreenshot_20230206_211121](https://user-images.githubusercontent.com/42246867/218263319-3e78b0a9-9fb1-45d1-8f1c-2e850e073425.png)
 
 ![ntscreenshot_20230208_220118](https://user-images.githubusercontent.com/42246867/218263327-59b10802-75ec-4bae-9e45-a8caa8f38490.png)
-
-![ntscreenshot_20230208_220157](https://user-images.githubusercontent.com/42246867/218263332-725e7f85-9a14-4809-8a28-8d4f709230af.png)
-
