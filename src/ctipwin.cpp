@@ -9,7 +9,7 @@ CTipWin::CTipWin(QWidget *parent)
 	this->setWindowFlags(Qt::ToolTip);
 
 	QPalette  palette(this->palette());
-	palette.setColor(QPalette::Background, QColor(0xfff29d));
+	palette.setColor(QPalette::Window, QColor(0xfff29d));
 	this->setPalette(palette);
 }
 

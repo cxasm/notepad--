@@ -1386,54 +1386,68 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
+  <tabstop>findinfilesTab</tabstop>
   <tabstop>findComboBox</tabstop>
   <tabstop>findTextNext</tabstop>
+  <tabstop>findTextPrev</tabstop>
+  <tabstop>countBt</tabstop>
   <tabstop>findAllinCourrent</tabstop>
   <tabstop>findAllinAllOpen</tabstop>
+  <tabstop>findClearBt</tabstop>
   <tabstop>findCloseBt</tabstop>
   <tabstop>findBackwardBox</tabstop>
   <tabstop>findMatchWholeBox</tabstop>
   <tabstop>findMatchCaseBox</tabstop>
   <tabstop>findWrapBox</tabstop>
   <tabstop>findModeNormalBt</tabstop>
+  <tabstop>findModeExtendBt</tabstop>
   <tabstop>findModeRegularBt</tabstop>
   <tabstop>replaceTextBox</tabstop>
-  <tabstop>replaceBackwardBox</tabstop>
-  <tabstop>replaceMatchWholeBox</tabstop>
-  <tabstop>replaceMatchCaseBox</tabstop>
-  <tabstop>replaceWrapBox</tabstop>
-  <tabstop>replaceModeRegularBt</tabstop>
-  <tabstop>replaceModeNormalBox</tabstop>
+  <tabstop>replaceWithBox</tabstop>
   <tabstop>replaceFindNextBox</tabstop>
   <tabstop>replaceBt</tabstop>
   <tabstop>replaceAllBt</tabstop>
   <tabstop>replaceAllinAllOpenBt</tabstop>
   <tabstop>replaceCloseBt</tabstop>
+  <tabstop>replaceBackwardBox</tabstop>
+  <tabstop>replaceMatchWholeBox</tabstop>
+  <tabstop>replaceMatchCaseBox</tabstop>
+  <tabstop>replaceWrapBox</tabstop>
+  <tabstop>replaceModeNormalBox</tabstop>
+  <tabstop>replaceModeExtendBox</tabstop>
+  <tabstop>replaceModeRegularBt</tabstop>
   <tabstop>destFindDir</tabstop>
-  <tabstop>selectDir</tabstop>
   <tabstop>dirFindWhat</tabstop>
+  <tabstop>dirReplaceWhat</tabstop>
+  <tabstop>selectDir</tabstop>
+  <tabstop>dirFindAll</tabstop>
+  <tabstop>dirReplaceAll</tabstop>
+  <tabstop>clearBt</tabstop>
+  <tabstop>dirClose</tabstop>
   <tabstop>dealFileType</tabstop>
   <tabstop>fileType</tabstop>
+  <tabstop>skipDir</tabstop>
+  <tabstop>skipDirNames</tabstop>
   <tabstop>dirFindMatchWholeBox</tabstop>
   <tabstop>dirFindMatchCaseBox</tabstop>
-  <tabstop>dirFindModeRegularBt</tabstop>
   <tabstop>dirFindModeNormalBox</tabstop>
+  <tabstop>dirFindModeExtendBox</tabstop>
+  <tabstop>dirFindModeRegularBt</tabstop>
   <tabstop>skipChildDirs</tabstop>
   <tabstop>skipHideFile</tabstop>
   <tabstop>skipBinary</tabstop>
   <tabstop>skipFileMaxSize</tabstop>
   <tabstop>maxFileSizeSpinBox</tabstop>
-  <tabstop>dirFindAll</tabstop>
-  <tabstop>dirReplaceAll</tabstop>
-  <tabstop>dirClose</tabstop>
   <tabstop>markTextBox</tabstop>
-  <tabstop>markMatchWholeBox</tabstop>
-  <tabstop>markMatchCaseBox</tabstop>
-  <tabstop>markModeRegularBt</tabstop>
-  <tabstop>markModeNormalBox</tabstop>
   <tabstop>markAllBox</tabstop>
   <tabstop>markClearBox</tabstop>
+  <tabstop>markClearAllBox</tabstop>
   <tabstop>markCloseBt</tabstop>
+  <tabstop>markMatchWholeBox</tabstop>
+  <tabstop>markMatchCaseBox</tabstop>
+  <tabstop>markModeNormalBox</tabstop>
+  <tabstop>markModeExtendBox</tabstop>
+  <tabstop>markModeRegularBt</tabstop>
  </tabstops>
  <resources>
   <include location="RealCompare.qrc"/>

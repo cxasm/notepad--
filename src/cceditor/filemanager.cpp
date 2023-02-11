@@ -218,12 +218,13 @@ void FileManager::delNewFileNode(int fileIndex)
 	}
 }
 
+
 //这里是以文本方式加载文件。但是可能遇到的是二进制文件，里面会做判断
 //二进制时hexAsk是否询问，当用户指定打开格式时，不需要询问
-int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePath, CODE_ID& fileTextCode, RC_LINE_FORM& lineEnd,CCNotePad * callbackObj, bool hexAsk)
+//MsgBoxParent::尽量把这个给一下，让MsgBox有图标，不那么难看。
+int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePath, CODE_ID& fileTextCode, RC_LINE_FORM& lineEnd,CCNotePad * callbackObj, bool hexAsk, QWidget* msgBoxParent)
 {
 	QFile file(filePath);
-
 
 	//如果文件不存在，直接返回
 	if (!file.exists())
@@ -233,33 +234,11 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 
 	QFlags<QFileDevice::Permission> power = QFile::permissions(filePath);
 
-#if 0
-	if (!power.testFlag(QFile::ReadOwner))
-	{
-		//文件不能读
-		QMessageBox::warning(nullptr, tr("Error"), tr("Open File %1 failed Can not read auth").arg(filePath));
-		
-		return 1;
-	}
-#endif
-
 	//直接以只读的方式打开，至于能不能保存，是保存时需要考虑的问题。
 	//只需要在保存的时候获取admin权限即可
 	QIODevice::OpenMode mode;
 	
 	mode = QIODevice::ExistingOnly | QIODevice::ReadOnly;
-
-#if 0
-	if (!power.testFlag(QFile::WriteUser))
-	{
-		//文件不能写
-		mode = QIODevice::ExistingOnly | QIODevice::ReadOnly;
-	}
-	else
-	{
-		mode = QIODevice::ExistingOnly | QIODevice::ReadWrite;
-	}
-#endif
 
 	if (!file.open(mode))
 	{
@@ -276,7 +255,7 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 			}
 #endif
 #ifdef Q_OS_UNIX
-		QMessageBox::warning(nullptr, tr("Error"), tr("Open File %1 failed").arg(filePath));
+		QMessageBox::warning(msgBoxParent, tr("Error"), tr("Open File %1 failed").arg(filePath));
 #endif
 		return 2;
 	}
@@ -293,10 +272,9 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 
 	qint64 bufferSizeRequested = fileSize + qMin((qint64)(1 << 20), (qint64)(fileSize / 6));
 
-	// As a 32bit application, we cannot allocate 2 buffer of more than INT_MAX size (it takes the whole address space)
 	if (bufferSizeRequested > INT_MAX)
 	{
-		QMessageBox::warning(nullptr, tr("Error"), tr("File is too big to be opened by Notepad--"));
+		QMessageBox::warning(msgBoxParent, tr("Error"), tr("File is too big to be opened by Notepad--"));
 		file.close();
 		return 3;
 	}
@@ -320,7 +298,7 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 	if (isHexFile && hexAsk)
 	{
 		//检测到文件很可能是二进制文件，询问用户，是否以二进制加载
-		int ret = QMessageBox::question(nullptr, tr("Open with Text or Hex?"), tr("The file %1 is likely to be binary. Do you want to open it in binary?").arg(filePath), tr("Hex Open"), tr("Text Open"), tr("Cancel"));
+		int ret = QMessageBox::question(msgBoxParent, tr("Open with Text or Hex? [Exist Garbled Code]"), tr("The file %1 is likely to be binary. Do you want to open it in binary?").arg(filePath), tr("Hex Open"), tr("Text Open"), tr("Cancel"));
 		
 		if (ret == 0)
 		{
@@ -412,11 +390,17 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 	}
 	else
 	{
+		//20230203有github用户反馈，说存在乱码的文件被截断，所以后续还是不走截断
+		editView->setText(text);
+
+		return 6;
+#if 0
 		//这种情况，为了不编辑二进制模式，是可能只读的。
 		if (1 == editView->setUtf8Text(text))
 		{
 			return 5;//只读模式
 		}
+#endif
 	}
 	
 	return 0;
@@ -906,6 +890,8 @@ bool FileManager::loadFileData(QString filePath, TextFileMgr* & textFileOut, RC_
 		//读取了1M的内容，从尾部往找，找到第一个换行符号。如果没有怎么办？说明是一个巨长的行，不妙
 		buf[ret] = '\0';
 
+		//检测是否为unicode_le编码，要特殊对待。
+		//bool isUnLeCode = CmpareMode::isUnicodeLeBomFile((uchar*)buf, 2);
 
 		CODE_ID code = CmpareMode::getTextFileEncodeType((uchar*)buf, ret, filePath, true);
 

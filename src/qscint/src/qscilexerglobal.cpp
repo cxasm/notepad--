@@ -136,8 +136,8 @@ QFont QsciLexerGlobal::defaultFont(int style) const
 	case INACTIVE_TABS:*/
 	case URL_HOVERRED:
 		//这些都是不能设置字体的，统一设置为空
-		f.setFamily("");
-		f.setPointSize(-1);
+	/*	f.setFamily("");
+		f.setPointSize(-1);*/
 		break;
 
 	case GLOBAL_OVERRIDE:

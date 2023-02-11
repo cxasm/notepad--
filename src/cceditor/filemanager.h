@@ -154,7 +154,7 @@ public:
 
 	void delNewFileNode(int fileIndex);
 
-	int loadFileDataInText(ScintillaEditView * editView, QString filePath, CODE_ID & fileTextCode, RC_LINE_FORM &lineEnd, CCNotePad * callbackObj=nullptr, bool hexAsk = true);
+	int loadFileDataInText(ScintillaEditView * editView, QString filePath, CODE_ID & fileTextCode, RC_LINE_FORM &lineEnd, CCNotePad * callbackObj=nullptr, bool hexAsk = true, QWidget* MsgBoxParent=nullptr);
 
 	int loadFileForSearch(ScintillaEditView * editView, QString filePath);
 

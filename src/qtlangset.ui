@@ -38,6 +38,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Global Set</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Select Main:</string>
@@ -737,8 +744,8 @@
    <slot>slot_useAlobalFont(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1009</x>
-     <y>291</y>
+     <x>844</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>491</x>
@@ -753,8 +760,8 @@
    <slot>slot_useAlobalFontBold(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1009</x>
-     <y>413</y>
+     <x>844</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>491</x>
@@ -769,8 +776,8 @@
    <slot>slot_useAlobalFontItalic(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1009</x>
-     <y>474</y>
+     <x>844</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>491</x>
@@ -785,8 +792,8 @@
    <slot>slot_useAlobalFontUnderline(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1009</x>
-     <y>535</y>
+     <x>844</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>491</x>
@@ -801,8 +808,8 @@
    <slot>slot_useAlobalFontSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1009</x>
-     <y>352</y>
+     <x>844</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>491</x>
@@ -858,6 +865,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>QtLangSetClass</receiver>
+   <slot>on_showGlobalItem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>197</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_saveClick()</slot>
@@ -872,5 +895,6 @@
   <slot>slot_useAlobalFontItalic(bool)</slot>
   <slot>slot_useAlobalBkColor(bool)</slot>
   <slot>on_themesChange(int)</slot>
+  <slot>on_showGlobalItem()</slot>
  </slots>
 </ui>

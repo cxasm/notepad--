@@ -37,7 +37,7 @@ public:
     //static bool isExistDarkLangSetings();
 	void selectInitLangTag(QString initLangTag);
 	static bool readLangSettings(QsciLexer * lexer, QString tag, int StyleId = -1);
-	static bool readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleId=-1);
+	static bool readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleId=-1, bool force=false);
 private:
 	//static void setLangFontFgColorToDarkStyle(LangType langId, QString tag="");
 	static void createOneLangStyleFromThemes(int styleId, LangType langId, QString tag = "");
@@ -84,6 +84,7 @@ private slots:
 	void slot_useAlobalFontItalic(bool);
 	void on_themesChange(int index);
 
+	void on_showGlobalItem();
 
 
 private:
@@ -109,9 +110,9 @@ private:
 	bool isUseGlobalFgColor();
 	bool isUseGlobalBgColor();
 
-	void setGlobalFgColor(int style, QColor color);
-	void setGlobalBgColor(int style, QColor color);
-	void setGlobalFont(int style, QFont font);
+	//void setGlobalFgColor(int style, QColor color);
+	//void setGlobalBgColor(int style, QColor color);
+	//void setGlobalFont(int style, QFont font);
 
 	bool isExistThemesSetings(int styleId);
 	void createUserStyleFormThemes(int styleId);

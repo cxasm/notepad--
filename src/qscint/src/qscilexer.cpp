@@ -182,10 +182,21 @@ QsciLexer::StyleData& QsciLexer::setThemesDefaultStyleData(int style) const
 
     //如果是非默认主题,则无条件的把所有属性都设置为默认值
     //这样一来，默认都是GLobal的默认风格，只有文件中存在配置值的才是其它指定风格
+    //外部已经使用Global的默认值，填充了QsciLexer的默认值
     if (L_GLOBAL != lexerId())
     {
         // See if this is a new style by checking if the colour is valid.
-        if (m_themesId != 0 || !sd.color.isValid())
+        //20230209 默认风格，不能全部使用默认值，使用风格本身值，否则默认风格丢失
+        //20230209 发现当默认重置，切换到黑色，再切换到默认，默认丢失颜色高亮。
+        //因为语法其实没有使用默认赋值。
+        if (m_themesId == 0)
+        {
+            sd.color = defaultColor(style);
+            sd.paper = defaultPaper(style);
+            sd.font = defaultFont(style);
+            sd.eol_fill = defaultEolFill(style);
+        }
+        else if (m_themesId != 0 || !sd.color.isValid())
         {
             sd.color = defaultColor();
             sd.paper = defaultPaper();

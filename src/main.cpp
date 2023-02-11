@@ -31,6 +31,7 @@
 #include <qt_windows.h>
 const ULONG_PTR CUSTOM_TYPE = 10000;
 const ULONG_PTR OPEN_NOTEPAD_TYPE = 10001;
+const ULONG_PTR CUSTOM_TYPE_FILE_LINENUM = 10002;
 bool s_isAdminAuth = false;
 #endif
 
@@ -39,7 +40,7 @@ const QString c_strTitle = "Ndd";
 
 #ifdef Q_OS_UNIX
 #if defined(Q_OS_MAC)
-QSharedMemory shared("CCNotebook116");;//mac下面后面带一个版本号，避免新的打不开
+QSharedMemory shared("CCNotebook122");;//mac下面后面带一个版本号，避免新的打不开
 #else
 QSharedMemory shared("CCNotebook");
 #endif
@@ -119,13 +120,16 @@ class MyApplication : public QApplication
 
 int main(int argc, char *argv[])
 {
+	//可以防止某些屏幕下的字体拥挤重叠问题
+	QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #ifdef Q_OS_MAC
     MyApplication a(argc, argv);
 #else
 	QApplication a(argc, argv);
 #endif
 
-	QDir::setCurrent(QCoreApplication::applicationDirPath());
+	//不能开启，开启后相对路径打开文件失败
+	//QDir::setCurrent(QCoreApplication::applicationDirPath());
 
 #if defined(Q_OS_UNIX)
     QApplication::setStyle(QStyleFactory::create("fusion"));
@@ -134,6 +138,22 @@ int main(int argc, char *argv[])
 	a.setApplicationName(c_strTitle);
 
 	QStringList arguments = QCoreApplication::arguments();
+
+	//目前就三种
+	//1) ndd filepath
+	//2) ndd filepath -n linenum
+	//3) ndd -multi filepath
+	//只有 1  2 需要处理短路径
+	if ((arguments.size() == 2) || (arguments.size() == 4))
+	{
+		QFileInfo fi(arguments[1]);
+		if (fi.isRelative())
+		{
+			QString absDir = QDir::currentPath();
+			//获取绝对路径
+			arguments[1] = QString("%1/%2").arg(absDir).arg(arguments.at(1));
+		}
+	}
 
 #ifdef uos
 	QFont font("Noto Sans CJK SC,9,-1,5,50,0,0,0,0,0,Regular", 9);
@@ -147,8 +167,11 @@ int main(int argc, char *argv[])
 	// qDebug() << QApplication::font().toString();
 #endif
 
+bool isGotoLine = false;
+
 #ifdef Q_OS_WIN
 	QSharedMemory shared("ccnotepad");
+
 	if (arguments.size() > 2)
 	{
 		//如果是多开请求，这种是从管理员权限申请后重开过来的
@@ -167,7 +190,19 @@ int main(int argc, char *argv[])
 			goto authAdmin;
 			
 		}
+		else if ((arguments.size() == 4) && arguments[2] == QString("-n"))
+		{
+			//使用的是 file -n lineNums 方式。目前只有windows下支持 xxxfile -n linenum的格式
+			isGotoLine = true;
 	}
+		
+	}
+#else
+if ((arguments.size() == 4) && (arguments[2] == QString("-n")))
+{
+      //使用的是 file -n lineNums 方式。目前只有windows下支持 xxxfile -n linenum的格式
+      isGotoLine = true;
+}
 #endif
 
 	//attach成功表示已经存在该内存了，表示当前存在实例
@@ -177,7 +212,8 @@ int main(int argc, char *argv[])
 		if (arguments.size() > 1)
 		{
         #if defined(Q_OS_WIN)
-
+			int tryTimes = 0;
+			do {
 			qlonglong hwndId;
 			shared.lock();
 			memcpy(&hwndId, shared.data(), sizeof(qlonglong));
@@ -187,6 +223,9 @@ int main(int argc, char *argv[])
 
 			if (::IsWindow(hwnd))
 			{
+					if (!isGotoLine)
+					{
+						//就是ndd filepath的命令行格式
 				//去掉第一个参数，后续的参数拼接起来。其实参数中间有空格还是需要使用""引用起来，避免空格参数分隔为多个
 				arguments.takeFirst();
 
@@ -202,9 +241,39 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
+						//是 filepath -n linenums 方式。不考虑filepath含有空格的情况，因为前面做了严格判断
+						
+						QString para = QString("%1|%2").arg(arguments[1]).arg(arguments[3]);
+						QByteArray data = para.toUtf8();
+
+						COPYDATASTRUCT copydata;
+						copydata.dwData = CUSTOM_TYPE_FILE_LINENUM; //自定义类型
+						copydata.lpData = data.data();  //数据大小
+						copydata.cbData = data.size();  // 指向数据的指针
+
+						::SendMessage(hwnd, WM_COPYDATA, reinterpret_cast<WPARAM>(nullptr), reinterpret_cast<LPARAM>(&copydata));
+					}
+
+					break;
+				}
+				else
+				{
+					
+					//20230304 右键多个文件同时打开，比如3个。此时只有第1个可获取锁，其余2个均走这里。
+					//因为第个还没有来的及写入hwnd。此时不要goto drop_old。等一下再重试
+					QThread::sleep(1); 
+					++tryTimes;
+
+					//2次识别后，没法了，只能通过继续往下走。
 				//失败了，此时说明前一个窗口极可能状态错误了。如果不处理，则再也打不开程序了
+					if (tryTimes > 2)
+					{
 				goto drop_old;
 			}
+
+				}
+			} while (true);
+
         #elif defined (Q_OS_MAC)
         {
                //mac下面不需要，有他自身的机制保证
@@ -223,7 +292,11 @@ int main(int argc, char *argv[])
             memcpy((char*)nppShared.data()+sizeof(pid_t),data.data(),data.size());
             nppShared.unlock();
 
-            kill(pid,SIGUSR1);
+            //if kill failed, then open a new process
+            if(0 != kill(pid,SIGUSR1))
+            {
+                goto unix_goon;
+            }
         #endif
 		}
 		else if (arguments.size() == 1)
@@ -266,7 +339,10 @@ int main(int argc, char *argv[])
             nppShared.unlock();
             qDebug()<<"empty file send";
 
-            kill(pid,SIGUSR1);
+            if(0 != kill(pid,SIGUSR1))
+            {
+                goto unix_goon;
+            }
 #endif
 		}
 		return 0;
@@ -281,6 +357,8 @@ int main(int argc, char *argv[])
      nppShared.create(32);
 }
 #else
+
+unix_goon:
     shared.create(32);
     nppShared.create(2048);
 
@@ -349,19 +427,33 @@ drop_old:
     pMainNotepad->initTabNewOne();
     }
 #endif
-
 	if (arguments.size() == 2)
 	{
+#ifdef Q_OS_WIN
 		if (!s_isAdminAuth)
 		{
-		pMainNotepad->openFile(arguments[1]);
-	}
+			pMainNotepad->openFile(arguments[1]);
+		}
 		else
 		{
 			//如果是管理员，还不能直接打开文件，需要恢复之前文件的修改内容
 			//恢复不了，再直接打开
 			pMainNotepad->tryRestoreFile(arguments[1]);
 		}
+#else
+		pMainNotepad->openFile(arguments[1]);
+#endif
+	}
+	else if (isGotoLine)
+	{
+		//是filepath -n xxx 格式。
+		bool ok = true;
+		int lineNum = arguments[3].toInt(&ok);
+		if (!ok)
+		{
+			lineNum = -1;
+		}
+		pMainNotepad->openFile(arguments[1], lineNum);
 	}
 #ifdef Q_OS_WIN
 	pMainNotepad->checkAppFont();

@@ -44,6 +44,7 @@
 #include <Qsci/qscilexerpov.h>
 #include <Qsci/qscilexerproperties.h>
 #include <Qsci/qscilexerpython.h>
+#include <Qsci/qscilexerr.h>
 #include <Qsci/qscilexerruby.h>
 #include <Qsci/qscilexerspice.h>
 #include <Qsci/qscilexersql.h>
@@ -64,6 +65,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QDebug>
+#include <QMessageBox>
 
 
 #include <stdexcept>
@@ -450,6 +452,10 @@ QString ScintillaEditView::getTagByLexerId(int lexerId)
 
 	case L_PS:
 		break;
+
+	case L_R:
+		return "r";
+
 	case L_RUBY:
 		return "ruby";
 
@@ -597,6 +603,9 @@ QsciLexer* ScintillaEditView::createLexer(int lexerId, QString tag, bool isOrigi
 	case L_PHP:
 		ret = new QsciLexerHTML();
 		ret->setLexerTag("php");
+		ret->setCommentLineSymbol("//");
+		ret->setCommentStart("/*");
+		ret->setCommentEnd("*/");
 		break;
 	case L_HTML:
 		ret = new QsciLexerHTML();
@@ -703,6 +712,9 @@ QsciLexer* ScintillaEditView::createLexer(int lexerId, QString tag, bool isOrigi
 		ret = new QsciLexerProperties();
 		break;
 	case L_PS:
+		break;
+	case L_R:
+		ret = new QsciLexerR();
 		break;
 	case L_RUBY:
 		ret = new QsciLexerRuby();
@@ -955,22 +967,9 @@ void ScintillaEditView::init()
 	setMarginSensitivity(_SC_MARGE_SYBOLE, true);
 	connect(this, &QsciScintilla::marginClicked, this, &ScintillaEditView::slot_bookMarkClicked);
 
-	//adjuctSkinStyle();
 	
 	//开始括号匹配，比如html的<>，开启前后这类字段的匹配
 	setBraceMatching(SloppyBraceMatch);
-
-
-	//if (StyleSet::m_curStyleId != BLACK_SE)
-	//{
-	//	setMatchedBraceForegroundColor(QColor(191, 141, 255));
-	//	setMatchedBraceBackgroundColor(QColor(222, 222, 222));
-	//}
-	//else
-	//{
-	//	setMatchedBraceForegroundColor(QColor(246, 81, 246));
-	//	setMatchedBraceBackgroundColor(QColor(18, 90, 36));
-	//}
 
 	//自动补全效果不好，不开启20211017
 	//setAutoCompletionSource(QsciScintilla::AcsAPIs);   //设置源，自动补全所有地方出现的
@@ -1106,8 +1105,6 @@ void ScintillaEditView::showBigTextLineAddr(qint64 fileOffset)
 	int lineNums = this->lines();
 	int lineLength = 0;
 
-	qint64 curLineAddr = fileOffset;
-
 	int style = STYLE_LINENUMBER;
 
 	for (int i = 0; i < lineNums; ++i)
@@ -1163,8 +1160,6 @@ void ScintillaEditView::showBigTextLineAddr(qint64 fileOffset, qint64 fileEndOff
 
 	int lineNums = this->lines();
 	int lineLength = 0;
-
-	qint64 curLineAddr = fileOffset;
 
 	int style = STYLE_LINENUMBER;
 
@@ -1894,6 +1889,11 @@ void ScintillaEditView::contextUserDefineMenuEvent(QMenu* menu)
 		menu->addAction(tr("Del Block comment"), [this]() {
 			undoStreamComment();
 		});
+
+		menu->addSeparator();
+		menu->addAction(tr("Word Count"), [this]() {
+			showWordNums();
+			});
 		
 	}
 	menu->show();
@@ -2036,7 +2036,9 @@ bool ScintillaEditView::doBlockComment(Comment_Mode currCommentMode)
 		if (avoidIndent)
 			lineIndent = lineStart;
 
-		size_t linebufferSize = lineEnd - lineIndent + 1;
+		//这里linebufferSize不需要包含字符串后面的\0，所以不需要预留1个\0符号
+		size_t linebufferSize = lineEnd - lineIndent;
+
 		QByteArray linebuf;
 		linebuf.resize(linebufferSize);
 		this->getText(linebuf.data(), lineIndent, lineEnd);
@@ -2081,7 +2083,7 @@ bool ScintillaEditView::doBlockComment(Comment_Mode currCommentMode)
 					continue;
 				}
 			}
-			else // isSingleLineAdvancedMode
+			else 
 			{
 				if ((qstrncmp(linebufStr.data(), advCommentStart.data(), advCommentStart_length - 1) == 0) &&
 					(qstrncmp(linebufStr.mid(linebufStr.length() - advCommentEnd_length + 1, advCommentEnd_length - 1).data(), advCommentEnd.mid(1, advCommentEnd_length - 1).data(), advCommentEnd_length - 1) == 0))
@@ -2193,6 +2195,24 @@ bool ScintillaEditView::doBlockComment(Comment_Mode currCommentMode)
 		return undoStreamComment(false);
 	}
 	return true;
+}
+
+//显示文字的字数
+void ScintillaEditView::showWordNums()
+{
+	if (hasSelectedText())
+	{
+		QString word = selectedText();
+		if (!word.isEmpty())
+		{
+			QMessageBox::about(this, tr("Word Nums"), tr("Current Select Word Nums is %1 .").arg(word.size()));
+		}
+	}
+	else
+	{
+		QMessageBox::about(this, tr("Word Nums"), tr("Current Doc Word Nums is %1 .").arg(this->text().size()));
+	}
+	
 }
 
 bool ScintillaEditView::undoStreamComment(bool tryBlockComment)

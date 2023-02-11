@@ -21,17 +21,29 @@ enum TAB_TYPES {
 	MARK_TYPE,
 };
 
+const int MAX_RECORD_KEY_LENGTH = 20;
+
 FindWin::FindWin(QWidget *parent):QMainWindow(parent), m_editTabWidget(nullptr), m_isFindFirst(true), m_findHistory(nullptr), \
 	pEditTemp(nullptr), m_curEditWin(nullptr), m_isStatic(false), m_isReverseFind(false), m_pMainPad(parent)
 {
 	ui.setupUi(this);
 
+	//默认值要与界面初始值一样。
 	m_BackwardDir = false;
 	m_matchWhole = false;
 	m_matchCase = false;
 	m_matchWrap = true;
 	m_extend = false;
 	m_searchMode = 1;
+
+	m_re = false;
+	m_cs = false;
+	m_wo = false;
+	m_wrap = true;
+	m_forward = true;;//是否向前查找。注意如果向后，要为false
+	m_extend = false;
+	m_isFound = false;
+
 
 	connect(ui.findModeRegularBt, &QRadioButton::toggled, this, &FindWin::slot_findModeRegularBtChange);
 	connect(ui.replaceModeRegularBt, &QRadioButton::toggled, this, &FindWin::slot_replaceModeRegularBtChange);
@@ -40,7 +52,7 @@ FindWin::FindWin(QWidget *parent):QMainWindow(parent), m_editTabWidget(nullptr),
 	connect(ui.clearBt, &QAbstractButton::clicked, this, &FindWin::sign_clearResult);
 	connect(ui.findClearBt, &QAbstractButton::clicked, this, &FindWin::sign_clearResult);
 	connect(ui.findinfilesTab, &QTabWidget::currentChanged, this, &FindWin::slot_tabIndexChange);
-	
+
 
 #if 0 //这样是无效的，记住一下，不删除，避免后面再做无用功
 	Qt::WindowFlags m_flags = windowFlags();
@@ -74,9 +86,11 @@ void FindWin::slot_tabIndexChange(int index)
 
 	if (RELPACE_TYPE == type)
 	{
+		ui.replaceTextBox->setFocus();
+
 		if (ui.replaceTextBox->currentText().isEmpty() && !ui.findComboBox->currentText().isEmpty())
 		{
-			if (ui.findComboBox->currentText().size() < 255)
+			if (ui.findComboBox->currentText().size() < MAX_RECORD_KEY_LENGTH)
 			{
 				ui.replaceTextBox->setCurrentText(ui.findComboBox->currentText());
 			}
@@ -84,13 +98,23 @@ void FindWin::slot_tabIndexChange(int index)
 	}
 	else if(FIND_TYPE == type)
 	{
+		ui.findComboBox->setFocus();
+
 		if (ui.findComboBox->currentText().isEmpty() && !ui.replaceTextBox->currentText().isEmpty())
 		{
-			if (ui.replaceTextBox->currentText().size() < 255)
+			if (ui.replaceTextBox->currentText().size() < MAX_RECORD_KEY_LENGTH)
 			{
 				ui.findComboBox->setCurrentText(ui.replaceTextBox->currentText());
 			}
 		}
+	}
+	else if (DIR_FIND_TYPE == type)
+	{
+		ui.dirFindWhat->setFocus();
+	}
+	else if (MARK_TYPE == type)
+	{
+		ui.markTextBox->setFocus();
 	}
 
 	m_isFindFirst = true;
@@ -228,11 +252,11 @@ void FindWin::removeLineHeadEndBlank(int mode)
 
 		if (mode == 1)
 		{
-			ui.replaceTextBox->setCurrentText("^\\s+");
+			ui.replaceTextBox->setCurrentText("^[	 ]+");
 		}
 		else if (mode == 2)
 		{
-			ui.replaceTextBox->setCurrentText("\\s+$");
+			ui.replaceTextBox->setCurrentText("[	 ]+$");
 		}
 		ui.replaceWithBox->setText("");
 		
@@ -557,7 +581,7 @@ void FindWin::updateParameterFromUI()
 void FindWin::addFindHistory(QString &text)
 {
 	//太长会导致看起来很杂乱，也不记录
-	if (text.isEmpty() || text.size() >= 255)
+	if (text.isEmpty() || text.size() >= MAX_RECORD_KEY_LENGTH)
 	{
 		return;
 	}
@@ -786,6 +810,18 @@ void FindWin::dealWithZeroFound(QsciScintilla* pEdit)
 	}
 }
 
+//调整光标变化后，查找位置需要调整的情况
+void FindWin::adjustSearchStartPosChange(QsciScintilla* pEdit)
+{
+	int caretPos = pEdit->SendScintilla(SCI_GETCURRENTPOS);
+	FindState& state = pEdit->getLastFindState();
+
+	if (state.targend != caretPos)
+	{
+		state.startpos = caretPos;
+	}
+}
+
 /*处理查找时零长的问题。一定要处理，否则会死循环，因为每次都在原地查找。
 * 就是把下次查找的startpos往前一个，否则每次都从这个startpos找到自己
 * 和dealWithZeroFound是一样的，就是要显示消息而已
@@ -869,6 +905,8 @@ void FindWin::dofindNext()
 		//查找下一个
 		if (pEdit != nullptr)
 		{
+			adjustSearchStartPosChange(pEdit);
+
 			if (!pEdit->findNext())
 			{
 				ui.statusbar->showMessage(tr("no more find text \'%1\'").arg(m_expr), 8000);
@@ -1373,6 +1411,7 @@ bool FindWin::replaceFindNext(QsciScintilla* pEdit, bool showZeroFindTip)
 		//查找下一个
 		if (pEdit != nullptr)
 		{
+			adjustSearchStartPosChange(pEdit);
 			if (!pEdit->findNext())
 			{
 				ui.statusbar->showMessage(tr("no more find text \'%1\'").arg(m_expr), 8000);
@@ -2030,7 +2069,13 @@ void FindWin::slot_clearAllMark()
 //选择查找目录
 void FindWin::slot_dirSelectDest()
 {
-	QString destDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), CCNotePad::s_lastOpenDirPath, QFileDialog::DontResolveSymlinks);
+	QString curDirPath = ui.destFindDir->text();
+	if (curDirPath.isEmpty())
+	{
+		curDirPath = CCNotePad::s_lastOpenDirPath;
+	}
+
+	QString destDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), curDirPath, QFileDialog::DontResolveSymlinks);
 	if (!destDir.isEmpty())
 	{
 		ui.destFindDir->setText(destDir);

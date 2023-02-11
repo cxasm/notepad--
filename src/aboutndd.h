@@ -13,6 +13,9 @@ public:
 
 	void appendText(QString text);
 
+private slots:
+	void onButtonOkayClicked();
+
 private:
 	Ui::AboutNddClass ui;
 };

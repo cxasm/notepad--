@@ -24,6 +24,11 @@ TextEditSetWin::TextEditSetWin(QWidget *parent)
 
 	QPalette pal = QApplication::palette();
 
+	QPixmap f(32, 32);
+	f.fill(pal.text().color());
+	ui.appFontColorLabel->setPixmap(f);
+
+	//ui.appFontColorLabel
 }
 
 TextEditSetWin::~TextEditSetWin()
@@ -101,39 +106,63 @@ void TextEditSetWin::slot_txtFontSet()
 	pWin->show();
 	pWin->selectInitLangTag("txt");
 }
+
 #if 0
-void TextEditSetWin::slot_selectFont()
+//app字体颜色设置
+void TextEditSetWin::slot_appFontColor()
+{
+	QPalette pal = qApp->palette();
+
+	QColor oldColor = pal.text().color();
+	QColor color = QColorDialog::getColor(pal.text().color(), this, tr("App Font Foreground Color"));
+	if (color.isValid() && color != oldColor)
+	{
+		pal.setColor(QPalette::WindowText, color);//设置颜色
+		pal.setColor(QPalette::Text, color);//设置颜色
+		pal.setColor(QPalette::ButtonText, color);//设置颜色
+		pal.setColor(QPalette::ToolTipText, color);
+		qApp->setPalette(pal);
+
+		QPixmap f(32, 32);
+		f.fill(pal.text().color());
+		ui.appFontColorLabel->setPixmap(f);
+
+		//发现如果修改APP字体颜色后，必须要把存在的窗口关闭一下，否则存在的窗口的字体颜色无法生效。
+		CCNotePad* pMainWin = dynamic_cast<CCNotePad*>(m_notepadWin);
+		if (pMainWin != nullptr)
+		{
+			//是从主界面调用的，执行一下颜色的更新
+			pMainWin->changeAppFontColor(color);
+			return;
+		}
+	}
+}
+#endif
+#if 0
+//不能整体修改QApplication::font()，会引发语法里面的文字重叠破坏。
+//只针对菜单和状态栏，查找框字体进行修改。
+void TextEditSetWin::slot_selectAppFont()
 {
 	QFont ft;
-#if defined(Q_OS_WIN)
-	ft.fromString(u8"宋体,14,-1,5,50,0,0,0,0,0,常规");
-#elif defined(Q_OS_MAC)
-    ft.fromString(u8"STSong,14,-1,5,50,0,0,0,0,0,Regular");
-#else
-    ft.fromString(u8"CESI宋体-GB2312,12,-1,5,50,0,0,0,0,0,Regular");
-#endif
+	QFont curAppFont = QApplication::font();
 
 	bool ok = false;//定义bool型输出变量
-	ft = QFontDialog::getFont(&ok, m_curFont, this,tr("User define Txt Font"));
+	ft = QFontDialog::getFont(&ok, curAppFont, this,tr("The App Font"));
 
 	if (ok)
 	{
-		ui.curTextFontEdit->setText(ft.toString());
+		ui.appFontEdit->setText(ft.toString());
 
-		if (m_curFont != ft)
+		if (curAppFont != ft)
 		{
-			m_curFont = ft;
-			emit signTxtFontChange(ft);
+			//emit signAppFontChange(ft);
+			QApplication::setFont(ft,"FindResultWin");
 		}
-	}
-	else
-	{
-		ui.curTextFontEdit->setText(ft.toString());
-		m_curFont = ft;
 	}
 
 }
 #endif
+
 #if 0
 void TextEditSetWin::slot_selectProLangFont()
 {

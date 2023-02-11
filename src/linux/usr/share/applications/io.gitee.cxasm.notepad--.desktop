@@ -1,11 +1,13 @@
 [Desktop Entry]
 Version=1.0
-Type=Application
-
 Name=Notepad--
-Comment=Notepad--
-Categories=Development;
-
+Name[zh_CN]=Notepad--
+Comment=Notepad-- 是一个国产跨平台、简单的文本编辑器。
+Type=Application
+Exec=notepad-- %F 
 Icon=notepad--
-Exec=notepad--
+Categories=Development;Office;
 Terminal=false
+MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-patch;text/x-adasrc;text/x-chdr;text/x-csrc;text/css;application/x-desktop;text/x-patch;text/x-fortran;text/html;text/x-java;text/x-tex;text/x-makefile;text/x-objcsrc;text/x-pascal;application/x-perl;application/x-perl;application/x-php;text/vnd.wap.wml;text/x-python;application/x-ruby;text/sgml;application/xml;model/vrml;image/svg+xml;application/json;
+
+# Generated from the DesktopGenerater component of the z-Tools toolkit

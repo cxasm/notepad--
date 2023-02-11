@@ -17,6 +17,7 @@ public:
 
 private slots:
 	void slot_ok();
+	void on_delete();
 
 private:
 	Ui::ShortcutKeyEditWinClass ui;

@@ -128,6 +128,12 @@ void StyleSet::setSkin(int id)
 	}
 }
 
+//重新加载Global全局风格
+void StyleSet::reloadGolbalStyleFromSetFile()
+{
+	loadGolbalStyle();
+}
+
 void StyleSet::loadGolbalStyle()
 {
 	QsciLexer* pLexer = ScintillaEditView::createLexer(L_GLOBAL);
@@ -355,4 +361,34 @@ void StyleSet::setCommonStyle()
 		qApp->setStyleSheet(styleSheet);
 	}
 	file.close();
+}
+
+void StyleSet::setGlobalFgColor(int style, QColor color)
+{
+	One_Stype_Info* pStyle = &StyleSet::s_global_style->global_style;
+
+	if (pStyle[style].fgColor != color)
+	{
+		pStyle[style].fgColor = color;
+	}
+}
+
+void StyleSet::setGlobalBgColor(int style, QColor color)
+{
+	One_Stype_Info* pStyle = &StyleSet::s_global_style->global_style;
+
+	if (pStyle[style].bgColor != color)
+	{
+		pStyle[style].bgColor = color;
+	}
+}
+
+void StyleSet::setGlobalFont(int style, QFont font)
+{
+	One_Stype_Info* pStyle = &StyleSet::s_global_style->global_style;
+
+	if (pStyle[style].font != font)
+	{
+		pStyle[style].font = font;
+	}
 }

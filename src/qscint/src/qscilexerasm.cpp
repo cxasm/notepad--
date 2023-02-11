@@ -29,7 +29,9 @@
 QsciLexerAsm::QsciLexerAsm(QObject* parent)
     : QsciLexer(parent), fold_compact(true)
 {
-    m_commentSymbol = "#";
+    m_commentSymbol = ";";
+    m_commentStart = "/*";
+    m_commentEnd = "*/";
 }
 
 
@@ -64,25 +66,46 @@ QColor QsciLexerAsm::defaultColor(int style) const
     switch (style)
     {
     case DEFAULT:
+        return QColor(0x00, 0x00, 0x00);
+
+    case COMMENT:
+        return QColor(0x00, 0x80, 0x00);
+
+    case NUMBER:
+        return QColor(0xff, 0x80, 0x00);
+
+    case STRING:
         return QColor(0x80, 0x80, 0x80);
+
+    case OPERATOR:
+        return QColor(0x00, 0x00, 0x80);
+
+    case IDENTIFIER:
+        return QColor(0x00, 0x00, 0x00);
+
+    case CPUINSTRUCTION: //key word:
+        return QColor(0x00, 0x00, 0xff);
+
+    case MATHINSTRUCTION:
+        return QColor(0x00, 0x80, 0xc0);
 
     case REGISTER:
         return QColor(0x80, 0x80, 0xff);
 
-    case COMMENT:
-        return QColor(0x00, 0x7f, 0x00);
+    case DIRECTIVE:
+        return QColor(0x00, 0x80, 0xff);
 
-    case NUMBER:
-        return QColor(0x00, 0x7f, 0x7f);
+    case DIRECTIVEOPERAND:
+        return QColor(0x00, 0x00, 0x80);
 
-    case IDENTIFIER:
-        return QColor(0x80, 0x00, 0xff);
+    case COMMENTBLOCK:
+        return QColor(0x00, 0x80, 0x00);
 
-    case STRINGEOL:
-        return QColor(0x7f, 0x00, 0x7f);
+    case CHARACTER:
+        return QColor(0x80, 0x80, 0x00);
 
-    case CPUINSTRUCTION: //key word:
-        return QColor(0x00, 0x00, 0xff);
+    case EXTINSTRUCTION:
+        return QColor(0x80, 0x40, 0x00);
     }
 
     return QsciLexer::defaultColor(style);

@@ -216,13 +216,13 @@ void ColumnEdit::slot_ok()
 		{
 			QByteArray s_space(cursorCol - lineEndCol, ' ');
 			lineData.append(s_space);
-			lineData.append(text);
+			lineData.append(text.toUtf8());
 		}
 		else
 		{
 			int posAbs2Start = pEdit->execute(SCI_FINDCOLUMN, i, cursorCol);
 			int posRelative2Start = posAbs2Start - lineBegin;
-			lineData.insert(posRelative2Start, text);
+			lineData.insert(posRelative2Start, text.toUtf8());
 		}
 
 		pEdit->SendScintilla(SCI_SETTARGETRANGE, lineBegin, lineEnd);

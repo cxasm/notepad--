@@ -60,7 +60,7 @@
        <item>
         <widget class="QCheckBox" name="leftBox">
          <property name="text">
-          <string>save left document ?</string>
+          <string>Save Left Document?</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -70,7 +70,7 @@
        <item>
         <widget class="QCheckBox" name="rightBox">
          <property name="text">
-          <string>save right document ?</string>
+          <string>Save Right Document?</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -140,7 +140,7 @@
         </size>
        </property>
        <property name="text">
-        <string>save selected</string>
+        <string>Save Selected</string>
        </property>
       </widget>
      </item>
@@ -159,7 +159,7 @@
         </size>
        </property>
        <property name="text">
-        <string>discard</string>
+        <string>Discard</string>
        </property>
       </widget>
      </item>
@@ -178,7 +178,7 @@
         </size>
        </property>
        <property name="text">
-        <string>cancel</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>

@@ -7,10 +7,14 @@
 #include "ui_findcmpwin.h"
 #include "rcglobal.h"
 
+#ifndef DEF_FIND_TAB_INDEX
+#define DEF_FIND_TAB_INDEX
+
 enum FindTabIndex {
 	FIND_TAB,
 	REPLACE_TAB,
 };
+#endif
 class ScintillaEditView;
 
 //struct FindCmpRecord {

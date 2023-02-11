@@ -138,6 +138,7 @@ HEADERS = \
     ./Qsci/qscilexerpov.h \
     ./Qsci/qscilexerproperties.h \
     ./Qsci/qscilexerpython.h \
+	./Qsci/qscilexerr.h \
     ./Qsci/qscilexerruby.h \
     ./Qsci/qscilexerspice.h \
     ./Qsci/qscilexersql.h \
@@ -268,6 +269,7 @@ SOURCES = \
     qscilexerpov.cpp \
     qscilexerproperties.cpp \
     qscilexerpython.cpp \
+	qscilexerr.cpp \
     qscilexerruby.cpp \
     qscilexerspice.cpp \
     qscilexersql.cpp \

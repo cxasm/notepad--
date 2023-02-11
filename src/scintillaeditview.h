@@ -275,6 +275,8 @@ private:
 	void slot_markColorGroup(QAction * action);
 
 	void replaceSelWith(const char* replaceText);
+
+	void showWordNums();
 private slots:
 	void slot_delayWork();
 	void slot_scrollYValueChange(int value);

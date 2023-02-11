@@ -17,50 +17,6 @@
 #include <QDebug>
 #include <QDir>
 
-#if 0
-//要注意与common.h的保持一致。
-enum LangType {
-	L_TEXT = -1, L_PHP, L_C, L_CPP, L_CS, L_OBJC, L_JAVA, L_RC, \
-	L_HTML, L_XML, L_MAKEFILE, L_PASCAL, L_BATCH, L_INI, L_ASCII, L_USER, \
-	L_ASP, L_SQL, L_VB, L_JS, L_CSS, L_PERL, L_PYTHON, L_LUA, \
-	L_TEX, L_FORTRAN, L_BASH, L_FLASH, L_NSIS, L_TCL, L_LISP, L_SCHEME, \
-	L_ASM, L_DIFF, L_PROPS, L_PS, L_RUBY, L_SMALLTALK, L_VHDL, L_KIX, L_AU3, \
-	L_CAML, L_ADA, L_VERILOG, L_MATLAB, L_HASKELL, L_INNO, L_SEARCHRESULT, \
-	L_CMAKE, L_YAML, L_COBOL, L_GUI4CLI, L_D, L_POWERSHELL, L_R, L_JSP, \
-	L_COFFEESCRIPT, L_JSON, L_JAVASCRIPT, L_FORTRAN_77, L_BAANC, L_SREC, \
-	L_IHEX, L_TEHEX, L_SWIFT, \
-	L_ASN1, L_AVS, L_BLITZBASIC, L_PUREBASIC, L_FREEBASIC, \
-	L_CSOUND, L_ERLANG, L_ESCRIPT, L_FORTH, L_LATEX, \
-	L_MMIXAL, L_NIM, L_NNCRONTAB, L_OSCRIPT, L_REBOL, \
-	L_REGISTRY, L_RUST, L_SPICE, L_TXT2TAGS, L_VISUALPROLOG, L_TYPESCRIPT, \
-	L_EDIFACT, L_MARKDOWN, L_OCTAVE, L_PO, L_POV, L_IDL, L_GO, L_TXT, \
-	// Don't use L_JS, use L_JAVASCRIPT instead
-	// The end of enumated language type, so it should be always at the end
-	L_EXTERNAL = 100, L_USER_DEFINE = 200
-};
-#endif
-
-//static const QColor blackColor(Qt::black);
-//static const QColor lightColor(0xdedede);
-//
-//static const QColor blackColor1(0x0000ff);
-//static const QColor lightColor1(0xffaa00);
-//
-////C++注释的默认颜色，不显眼
-//static const QColor blackColor2(0x007f00);
-//static const QColor lightColor2(0xaaff7f);
-//
-//static const QColor blackColor3(0x7f7f00);
-//static const QColor lightColor3(0xfca287);
-//
-//static const QColor blackColor4(0x8000ff);
-//static const QColor lightColor4(0xffaa00);
-//
-//static const QColor blackColor5(0x007f7f);
-//static const QColor lightColor5(0xaaff7f);
-//
-//static const QColor blackColor6(0x7f007f);
-//static const QColor lightColor6(0x00ffff);
 
 QtLangSet::QtLangSet(QString initTag, QWidget *parent)
 	: QMainWindow(parent), m_selectLexer(nullptr), m_selectStyleId(0), m_isStyleChange(false),m_isStyleChildChange(false), m_initShowLexerTag(initTag), m_previousSysLangItem(nullptr),m_isGlobelItem(false)
@@ -70,7 +26,6 @@ QtLangSet::QtLangSet(QString initTag, QWidget *parent)
 	initUserDefineLangList();
 
 	startSignSlot();
-	//initDarkColorMap();
 
 	m_themesId = StyleSet::getCurrentSytleId();
 	m_lastThemesId = -1;
@@ -191,7 +146,7 @@ void QtLangSet::slot_fontBoldChange(int state)
 				{
 					//全局非第一个样式，修改当前全局字体大小
 						//全局样式的非第一个
-					setGlobalFont(m_selectStyleId, m_curStyleData.font);
+					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 
 					//保存全局样式第一条样式本身
 					saveLangeSet(m_selectLexer);
@@ -238,7 +193,7 @@ void QtLangSet::slot_fontItalicChange(int state)
 				{
 					//全局非第一个样式，修改当前全局字体大小
 						//全局样式的非第一个
-					setGlobalFont(m_selectStyleId, m_curStyleData.font);
+					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 					saveLangeSet(m_selectLexer);
 
 					//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
@@ -283,7 +238,7 @@ void QtLangSet::slot_fontUnderlineChange(int state)
 				{
 					//全局非第一个样式，修改当前全局字体大小
 						//全局样式的非第一个
-					setGlobalFont(m_selectStyleId, m_curStyleData.font);
+					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 					saveLangeSet(m_selectLexer);
 
 					//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
@@ -309,7 +264,6 @@ void QtLangSet::slot_fontSizeChange(int v)
 	if (m_selectLexer != nullptr)
 	{
 		//全局修改，把所有语言的所有风格都设置
-		//全局修改，把所有语言的所有风格都设置
 		if (m_isGlobelItem)
 		{
 			if (m_curStyleData.font.pointSize() != v)
@@ -334,7 +288,7 @@ void QtLangSet::slot_fontSizeChange(int v)
 				{
 					//全局非第一个样式，修改当前全局字体大小
 					//全局样式的非第一个
-					setGlobalFont(m_selectStyleId, m_curStyleData.font);
+					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 					saveLangeSet(m_selectLexer);
 
 					//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
@@ -411,12 +365,18 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 {
 	QFont oldfont;
 
+	bool isGlobalChange = false;
+
 	for (int index = 0; index <= L_TXT; ++index)
 	{
 		//GLOBAL本身不保存，因为GLOBAL不是语法样式，而是全局的属性风格
+		//如果全局修改的是全局字体或字体大小，全局也修改一下。避免括弧等大小和全局字体不一样大。
 		if (index == L_GLOBAL)
 		{
+			if (flag != GLOBAL_FONT_SIZE && flag != GLOBAL_FONT)
+			{
 			continue;
+		}
 		}
 
 		QsciLexer *pLexer = ScintillaEditView::createLexer(index);
@@ -427,6 +387,9 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 			{
 			case GLOBAL_FONT:
 			{
+				//非全局修改所有的语法对应样式
+				if (index != L_GLOBAL)
+				{
 				for (int i = 0; i <= 255; ++i)
 				{
 					if (!pLexer->description(i).isEmpty())
@@ -437,9 +400,29 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 					}
 				}
 			}
+				else
+				{
+					//是全局属性修改字体
+					QsciLexerGlobal* pGlobalLexer = dynamic_cast<QsciLexerGlobal*>(pLexer);
+					if (pGlobalLexer != nullptr)
+					{
+						for (int i = 0; i <= GLOBAL_STYLES::URL_HOVERRED; ++i)
+						{
+							oldfont = pLexer->font(i);
+							oldfont.setFamily(m_curStyleData.font.family());
+							pLexer->setFont(oldfont, i);
+
+						}
+						isGlobalChange = true;
+					}
+				}
+			}
 			break;
 			case GLOBAL_FONT_SIZE:
 			{
+				//非全局修改所有的语法对应样式
+				if (index != L_GLOBAL)
+				{
 				for (int i = 0; i <= 255; ++i)
 				{
 					if (!pLexer->description(i).isEmpty())
@@ -447,6 +430,23 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 						oldfont = pLexer->font(i);
 						oldfont.setPointSize(m_curStyleData.font.pointSize());
 						pLexer->setFont(oldfont, i);
+					}
+				}
+			}
+				else
+				{
+					//是全局
+					QsciLexerGlobal* pGlobalLexer = dynamic_cast<QsciLexerGlobal*>(pLexer);
+					if (pGlobalLexer != nullptr)
+					{
+						for (int i = 0; i <= GLOBAL_STYLES::URL_HOVERRED; ++i)
+						{
+							oldfont = pLexer->font(i);
+							oldfont.setPointSize(m_curStyleData.font.pointSize());
+							pLexer->setFont(oldfont, i);
+						
+						}
+						isGlobalChange = true;
 					}
 				}
 			}
@@ -510,6 +510,27 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 		}
 		delete pLexer;
 	}
+
+	//如果全局变化了，把当前全局界面刷新一下
+	//还有，还需要把当前打开文档的全局风格设置一下，否则全局不生效
+	if (isGlobalChange)
+	{
+		m_previousSysLangItem = nullptr;
+		slot_langListCurRowChanged(0);
+
+		StyleSet::reloadGolbalStyleFromSetFile();
+
+		//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
+		CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
+		if (pMainNote != nullptr)
+		{
+			
+			for (int i = 0; i <= GLOBAL_STYLES::URL_HOVERRED; ++i)
+			{
+				pMainNote->setGlobalFont(i);
+}
+		}
+	}
 }
 
 //恢复所有语言的初始配置。与restoreOriginLangOneStyle类似，但是粒度更大
@@ -522,7 +543,6 @@ void  QtLangSet::restoreOriginLangAllStyle()
 
 	for (int index = 0; index <= L_TXT; ++index)
 	{
-
 		pLexer = ScintillaEditView::createLexer(index);
 
 		if (pLexer == nullptr)
@@ -541,7 +561,13 @@ void  QtLangSet::restoreOriginLangAllStyle()
 
 		delete pLexer;
 		pLexer = nullptr;
+
+		//如果是全局的，把当前内存中的全局风格也更新一下
+		if (index == L_GLOBAL)
+		{
+			StyleSet::loadGolbalStyle();
 	}
+}
 }
 
 //只在restoreOriginLangOneStyle中调用
@@ -630,22 +656,12 @@ void QtLangSet::restoreOriginLangOneStyle(GLOBAL_STYLE_SET flag)
 						oldClor = pOriginLexer->color(i);
 						pLexer->setColor(oldClor, i);
 
-						/*if (BLACK_SE == StyleSet::getCurrentSytleId())
-						{
-							restoreLangFontFgColorToDarkStyle(pLexer, i);
-						}*/
-
 					}
 					break;
 					case GLOBAL_BK_COLOR:
 					{
 						oldClor = pOriginLexer->paper(i);
 						pLexer->setPaper(oldClor, i);
-
-						/*if (BLACK_SE == StyleSet::getCurrentSytleId())
-						{
-						restoreLangPaperColorToDarkStyle(pLexer, i);
-						}*/
 					}
 					break;
 					default:
@@ -659,6 +675,7 @@ void QtLangSet::restoreOriginLangOneStyle(GLOBAL_STYLE_SET flag)
 		delete pOriginLexer;
 	}
 }
+
 //预览全局修改字体效果。把当前所有的语法，风格字体都修改一遍
 void QtLangSet::previewAllGoblalChange()
 {
@@ -669,6 +686,19 @@ void QtLangSet::previewAllGoblalChange()
 	for (int i = 0, s = tags.size(); i < s; ++i)
 	{
 		emit viewLexerChange(tags.at(i));
+	}
+
+	//这里还差一步
+	//这里还有问题，还需要把当前打开文档的全局风格设置一下，否则全局不生效
+
+	//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
+	CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
+	if (pMainNote != nullptr)
+	{
+		for (int i = 0; i <= GLOBAL_STYLES::URL_HOVERRED; ++i)
+		{
+			pMainNote->setGlobalFont(i);
+}
 	}
 }
 
@@ -700,7 +730,7 @@ void QtLangSet::slot_fontChange(const QFont &font)
 				else if(!ui.useGlobalFont->isVisible())
 				{
 					//全局样式的非第一个
-					setGlobalFont(m_selectStyleId, m_curStyleData.font);
+					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 
 					//保存全局样式第一条样式本身
 					saveLangeSet(m_selectLexer);
@@ -1241,17 +1271,18 @@ bool QtLangSet::readLangSettings(QsciLexer *lexer, QString tag, int StyleId)
 	}
 	else//这里应该加个逻辑完备的保护。如果没有读取到用户配置，则应该从标准目标去读原始配置
 	{
-		return readLangOriginSettings(lexer, tag, StyleId);
+		return readLangOriginSettings(lexer, tag, StyleId, true);
 	}
 	
 	return false;
 }
 
 //读取特定语言的原始样式设置；StyleId-1则读取当前主题，否则指定的StyleId主题
-bool QtLangSet::readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleId)
+//force:无条件读取
+bool QtLangSet::readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleId, bool force)
 {
 	//默认主题不需要读取，内存中已经存在
-	if (StyleId == 0)
+	if (StyleId == 0 && !force)
 	{
 		return true;
 	}
@@ -1259,8 +1290,6 @@ bool QtLangSet::readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleI
 	//默认皮肤路径放在软件的同级目录下面的themes目录
 	QString cfgPath = QString("%1/themes/%2/%3.ini").arg(QCoreApplication::applicationDirPath()).arg((StyleId == -1)?StyleSet::getCurrentStyle(): StyleSet::getStyleName(StyleId)).arg(tag);
 	QSettings qs(cfgPath, QSettings::IniFormat);
-
-	//QSettings qs(QSettings::IniFormat, QSettings::UserScope, cfgPath);
 	if (QFile::exists(qs.fileName()))
 	{
 		return lexer->readSettings(qs);
@@ -1276,7 +1305,7 @@ void QtLangSet::saveLangeSet(QsciLexer *lexer, int StyleId)
 	{
 		QString tag = lexer->lexerTag();
 
-		QString cfgPath =  QString("notepad/userstyle/%1/%2").arg((StyleId == -1) ? StyleSet::getCurrentStyle() : StyleSet::getStyleName(StyleId)).arg(tag);
+		QString cfgPath =  QString("notepad/userstyle/%1/%2").arg(((StyleId == -1) ? StyleSet::getCurrentStyle() : StyleSet::getStyleName(StyleId))).arg(tag);
 
 		QSettings qs(QSettings::IniFormat, QSettings::UserScope, cfgPath);
 		lexer->writeSettings(qs);
@@ -1338,7 +1367,7 @@ void QtLangSet::slot_changeFgColor()
 				else if(!ui.useGlobalColor->isVisible())
 				{
 					//全局样式的非第一个
-					setGlobalFgColor(m_selectStyleId, color);
+					StyleSet::setGlobalFgColor(m_selectStyleId, color);
 
 					//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
@@ -1436,7 +1465,7 @@ void QtLangSet::slot_changeBkColor()
 				}
 				else if (!ui.useGlobalColor->isVisible())
 		{
-					setGlobalBgColor(m_selectStyleId, color);
+					StyleSet::setGlobalBgColor(m_selectStyleId, color);
 
 					//这里就是全局的样式。通知当前所有的编辑框，去修改他们本身的全局样式
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
@@ -1887,33 +1916,11 @@ void QtLangSet::updateThemes()
 	}
 }
 
-//全局的前景背景和一般的不一样。
-void QtLangSet::setGlobalFgColor(int style, QColor color)
+//增加一个快捷显示全局的按钮，避免用户经常找不到
+void QtLangSet::on_showGlobalItem()
 {
-	One_Stype_Info* pStyle = &StyleSet::s_global_style->global_style;
-
-	if (pStyle[style].fgColor != color)
+	if (ui.langListWidget->currentRow() != 0)
 	{
-		pStyle[style].fgColor = color;
-	}
-}
-
-void QtLangSet::setGlobalBgColor(int style, QColor color)
-{
-	One_Stype_Info* pStyle = &StyleSet::s_global_style->global_style;
-
-	if (pStyle[style].bgColor != color)
-	{
-		pStyle[style].bgColor = color;
-	}
-}
-
-void QtLangSet::setGlobalFont(int style, QFont font)
-{
-	One_Stype_Info* pStyle = &StyleSet::s_global_style->global_style;
-
-	if (pStyle[style].font != font)
-	{
-		pStyle[style].font = font;
+		ui.langListWidget->setCurrentRow(0);
 	}
 }

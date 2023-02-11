@@ -84,11 +84,17 @@ void QsciDisplayWindow::setFoldColor(int margin, QColor fgClack, QColor bkColor)
 
 void QsciDisplayWindow::setStyleOptions()
 {
-	if (StyleSet::m_curStyleId != BLACK_SE)
-	{
+	//if (StyleSet::m_curStyleId != BLACK_SE)
+	//{
 		setMarginsForegroundColor(QColor(0x80, 0x80, 0x80)); //默认0x80, 0x80, 0x80
-	}
-	else
+	//}
+	//else
+	//{
+	//	setMarginsForegroundColor(QColor(0xde, 0xde, 0xde)); //默认0x80, 0x80, 0x80
+	//}
+	//setMarginsBackgroundColor(StyleSet::marginsBackgroundColor);
+	//setFoldMarginColors(StyleSet::marginsBackgroundColor, StyleSet::marginsBackgroundColor);
+
 	setMarginsBackgroundColor(0xf0f0f0);
 	setFoldMarginColors(0xf0f0f0, 0xf0f0f0);
 	{

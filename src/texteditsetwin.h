@@ -11,13 +11,13 @@ public:
 	TextEditSetWin(QWidget *parent = Q_NULLPTR);
 	~TextEditSetWin();
 	void setNotePadWin(QWidget * w);
-	//void setFont(QFont & font);
+
 #if 0
 	void setProgramLangFont(QFont & font);
 #endif
 signals:
 	void sendTabFormatChange(bool, bool);
-	//void signTxtFontChange(QFont& font);
+	//void signAppFontChange(QFont& font);
 	void signProLangFontChange(QFont& font);
 private:
 	
@@ -27,16 +27,19 @@ private:
 
 private slots:
 #if 0
-	void slot_selectFont();
+	void slot_selectAppFont();
 
 	void slot_selectProLangFont();
+
+	void slot_appFontColor();
 #endif
 	void slot_txtFontSet();
+
+
 private:
 	Ui::TextEditSetWin ui;
 
 	QWidget* m_notepadWin;
-	//QFont m_curFont;//text的font
 
 	//QFont m_curProLangFont; //编程语言的font
 };

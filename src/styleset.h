@@ -83,6 +83,7 @@ public:
 	static void setCommonStyle(QColor foldfgColor_, QColor foldbgColor_, QColor marginsBackgroundColor_, QString colorName);
 	static void init();
 	static void loadGolbalStyle();
+	static void reloadGolbalStyleFromSetFile();
 	static void setSkin(int id);
 	static void setCurrentStyle(int themes);
 	static QString getCurrentStyle();
@@ -109,6 +110,10 @@ public:
 	static void setMistyRoseStyle();
 	static void setBlackStyle();
 	static void setCommonStyle();
+
+	static void setGlobalFgColor(int style, QColor color);
+	static void setGlobalBgColor(int style, QColor color);
+	static void setGlobalFont(int style, QFont font);
 
 	static GLOBAL_STYLE_OPS* s_global_style;
 };

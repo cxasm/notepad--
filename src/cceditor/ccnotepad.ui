@@ -79,7 +79,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>23</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -87,8 +87,13 @@
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="title">
-     <string>File(&amp;F)</string>
+     <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuRecene_File">
+     <property name="title">
+      <string>Recene File</string>
+     </property>
+    </widget>
     <addaction name="actionNewFile"/>
     <addaction name="actionOpenFile"/>
     <addaction name="actionSave"/>
@@ -97,13 +102,14 @@
     <addaction name="actionClose_All"/>
     <addaction name="separator"/>
     <addaction name="actionClear_History"/>
+    <addaction name="menuRecene_File"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="title">
-     <string>Edit(&amp;E)</string>
+     <string>&amp;Edit</string>
     </property>
     <widget class="QMenu" name="menuformat_conversion">
      <property name="title">
@@ -180,11 +186,11 @@
    </widget>
    <widget class="QMenu" name="menuSearch">
     <property name="title">
-     <string>Search(&amp;S)</string>
+     <string>&amp;Search</string>
     </property>
     <widget class="QMenu" name="menuBook_Mark">
      <property name="title">
-      <string>Book Mark</string>
+      <string>Bookmark</string>
      </property>
     </widget>
     <widget class="QMenu" name="menuMark_Color">
@@ -204,7 +210,7 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View(&amp;V)</string>
+     <string>&amp;View</string>
     </property>
     <widget class="QMenu" name="menudisplay_symbols">
      <property name="title">
@@ -232,7 +238,7 @@
    </widget>
    <widget class="QMenu" name="menuCode">
     <property name="title">
-     <string>Encoding(&amp;N)</string>
+     <string>E&amp;ncoding</string>
     </property>
     <widget class="QMenu" name="menuASNI">
      <property name="title">
@@ -263,7 +269,7 @@
    </widget>
    <widget class="QMenu" name="menuLanguage">
     <property name="title">
-     <string>Language(&amp;L)</string>
+     <string>&amp;Language</string>
     </property>
     <widget class="QMenu" name="menuP">
      <property name="title">
@@ -306,6 +312,7 @@
      <property name="title">
       <string>R</string>
      </property>
+     <addaction name="actionR_2"/>
      <addaction name="actionRC"/>
      <addaction name="actionRuby"/>
      <addaction name="actionRust"/>
@@ -466,7 +473,7 @@
    </widget>
    <widget class="QMenu" name="menuSet">
     <property name="title">
-     <string>Set(&amp;T)</string>
+     <string>Se&amp;t</string>
     </property>
     <widget class="QMenu" name="menuLanguage_2">
      <property name="title">
@@ -479,6 +486,8 @@
     <addaction name="menuLanguage_2"/>
     <addaction name="actionLanguage_Format"/>
     <addaction name="actionDefine_Language"/>
+    <addaction name="actionLanguage_File_Suffix"/>
+    <addaction name="actionShortcut_Key_Manager"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -495,8 +504,14 @@
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>Tools(&amp;O)</string>
+     <string>T&amp;ools</string>
     </property>
+   </widget>
+   <widget class="QMenu" name="menuPlugin">
+    <property name="title">
+     <string>Plugin</string>
+    </property>
+    <addaction name="actionPlugin_Manager"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -506,6 +521,8 @@
    <addaction name="menuLanguage"/>
    <addaction name="menuSet"/>
    <addaction name="menuTools"/>
+   <addaction name="menuPlugin"/>
+   <addaction name="menuCompare"/>
    <addaction name="menuAbout"/>
    <addaction name="menuAbout_2"/>
   </widget>
@@ -819,7 +836,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Php</string>
+    <string>PHP</string>
    </property>
   </action>
   <action name="actionC">
@@ -939,7 +956,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Virsual Basic</string>
+    <string>Visual Basic</string>
    </property>
   </action>
   <action name="actionJavaScript">
@@ -955,7 +972,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Css</string>
+    <string>CSS</string>
    </property>
   </action>
   <action name="actionPerl">
@@ -987,7 +1004,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Tex</string>
+    <string>TeX</string>
    </property>
   </action>
   <action name="actionFortran">
@@ -1224,7 +1241,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Nncrontab</string>
+    <string>NCrontab</string>
    </property>
   </action>
   <action name="actionNim">
@@ -1248,7 +1265,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>LaTex</string>
+    <string>LaTeX</string>
    </property>
   </action>
   <action name="actionForth">
@@ -1397,7 +1414,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>json</string>
+    <string>JSON</string>
    </property>
   </action>
   <action name="actionD_2">
@@ -1445,7 +1462,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Spice</string>
+    <string>SPICE</string>
    </property>
   </action>
   <action name="actionVerilog">
@@ -1479,7 +1496,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>go</string>
+    <string>Go</string>
    </property>
   </action>
   <action name="actionSearch_Result">
@@ -1573,11 +1590,6 @@
    </property>
    <property name="text">
     <string>Chinese</string>
-   </property>
-  </action>
-  <action name="actionRegister">
-   <property name="text">
-    <string>Register</string>
    </property>
   </action>
   <action name="actionLanguage_Format">
@@ -1904,7 +1916,7 @@
   </action>
   <action name="actioninfo">
    <property name="text">
-    <string>AboutNdd</string>
+    <string>About Notepad--</string>
    </property>
   </action>
   <action name="action1">
@@ -2031,6 +2043,21 @@
   <action name="actionShortcut_Key_Manager">
    <property name="text">
     <string>Shortcut Key Manager</string>
+   </property>
+  </action>
+  <action name="actionR_2">
+   <property name="text">
+    <string>R</string>
+   </property>
+  </action>
+  <action name="actiontest_3">
+   <property name="text">
+    <string>test</string>
+   </property>
+  </action>
+  <action name="actionPlugin_Manager">
+   <property name="text">
+    <string>Plugin Manager</string>
    </property>
   </action>
  </widget>
@@ -2684,22 +2711,6 @@
    <signal>triggered()</signal>
    <receiver>CCNotePad</receiver>
    <slot>slot_changeChinese()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>601</x>
-     <y>394</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionRegister</sender>
-   <signal>triggered()</signal>
-   <receiver>CCNotePad</receiver>
-   <slot>slot_register()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -3447,6 +3458,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionWrap</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>slot_wordwrap(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionNewFile_toggle(bool)</slot>
@@ -3497,7 +3524,7 @@
   <slot>slot_toMistyRose()</slot>
   <slot>slot_changeEnglish()</slot>
   <slot>slot_changeChinese()</slot>
-  <slot>slot_register()</slot>
+
   <slot>slot_langFormat()</slot>
   <slot>slot_reOpenTextMode()</slot>
   <slot>slot_reOpenHexMode()</slot>
@@ -3505,7 +3532,7 @@
   <slot>slot_removeEndBlank()</slot>
   <slot>slot_removeHeadEndBlank()</slot>
   <slot>slot_columnBlockEdit()</slot>
-  <slot>slot_wordwrap()</slot>
+  <slot>slot_wordwrap(bool)</slot>
   <slot>slot_defineLangs()</slot>
   <slot>slot_uppercase()</slot>
   <slot>slot_lowercase()</slot>

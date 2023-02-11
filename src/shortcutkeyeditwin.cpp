@@ -40,3 +40,9 @@ void  ShortcutKeyEditWin::slot_ok()
 	m_newKeys = keys;
 	done(1);
 }
+
+//É¾³ýÎª¿Õ
+void  ShortcutKeyEditWin::on_delete()
+{
+	done(2);
+}

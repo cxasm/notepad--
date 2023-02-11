@@ -14,18 +14,6 @@
    <string>ShortcutKeyEditWin</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>3</number>
-   </property>
-   <property name="topMargin">
-    <number>3</number>
-   </property>
-   <property name="rightMargin">
-    <number>3</number>
-   </property>
-   <property name="bottomMargin">
-    <number>3</number>
-   </property>
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
@@ -57,16 +45,23 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="okBt">
        <property name="text">
         <string>Ok</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="cancelBt">
        <property name="text">
         <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteBt">
+       <property name="text">
+        <string>Delete</string>
        </property>
       </widget>
      </item>
@@ -78,14 +73,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>cancelBt</sender>
    <signal>clicked()</signal>
    <receiver>ShortcutKeyEditWinClass</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>103</y>
+     <x>448</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
      <x>414</x>
@@ -94,14 +89,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>okBt</sender>
    <signal>clicked()</signal>
    <receiver>ShortcutKeyEditWinClass</receiver>
    <slot>slot_ok()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>153</x>
-     <y>95</y>
+     <x>163</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -109,8 +104,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>deleteBt</sender>
+   <signal>clicked()</signal>
+   <receiver>ShortcutKeyEditWinClass</receiver>
+   <slot>on_delete()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>311</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_ok()</slot>
+  <slot>on_reset()</slot>
+  <slot>on_delete()</slot>
  </slots>
 </ui>

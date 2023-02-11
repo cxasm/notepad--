@@ -52,6 +52,23 @@ ShortcutKeyMgr::ShortcutKeyMgr(QWidget *parent)
 	ui.qscintTableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 	ui.qscintTableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 	ui.qscintTableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+
+
+	QString tabQss = "QHeaderView::section{"
+		"border-top:0px solid #E5E5E5;"
+		"border-left:0px solid #E5E5E5;"
+		"border-right:0.5px solid #E5E5E5;"
+		"border-bottom: 0.5px solid #E5E5E5;"
+		"background-color:white;"
+		"padding:4px;"
+		"}";
+
+	ui.tableWidget->horizontalHeader()->setStyleSheet(tabQss);
+	ui.tableWidget->verticalHeader()->setStyleSheet(tabQss);
+
+	ui.qscintTableWidget->horizontalHeader()->setStyleSheet(tabQss);
+	ui.qscintTableWidget->verticalHeader()->setStyleSheet(tabQss);
+
 }
 
 ShortcutKeyMgr::~ShortcutKeyMgr()
@@ -270,7 +287,9 @@ void ShortcutKeyMgr::slot_edit(QTableWidgetItem* item)
 	ShortcutKeyEditWin* pWin = new ShortcutKeyEditWin(this);
 	pWin->setTitle(shortCutTable.at(row).name);
 	pWin->setCurKeyDesc(shortCutTable.at(row).key.toString());
-	if (1 == pWin->exec())
+
+	int ret = pWin->exec();
+	if (1 == ret) //È·¶¨
 	{
 		QKeySequence newKeySeq = pWin->getNewKeySeq();
 
@@ -307,6 +326,29 @@ void ShortcutKeyMgr::slot_edit(QTableWidgetItem* item)
 				{
 					ui.plainTextEdit->setPlainText(tr("conflict error! '%1' Already exist at qscint row %2").arg(newKeySeq.toString()).arg(existId + 1));
 				}
+			}
+		}
+	}
+	else if (2 == ret)//É¾³ý
+	{
+		QKeySequence newKeySeq(QKeySequence::UnknownKey);
+
+		QTableWidgetItem* item = ui.tableWidget->item(row, 1);
+		if (item != nullptr)
+		{
+			if (ModifyShortCutKey(shortCutTable.at(row).iniTag, newKeySeq.toString()))
+			{
+				CCNotePad* pNotePad = dynamic_cast<CCNotePad*>(m_pNoteEdit);
+				if (pNotePad != nullptr)
+				{
+					pNotePad->setUserDefShortcutKey(row);
+				}
+				item->setText(newKeySeq.toString());
+				ui.plainTextEdit->setPlainText(tr("modify row %1 to '%2' shortcut key success!").arg(row + 1).arg("NULL"));
+			}
+	else
+	{
+				ui.plainTextEdit->setPlainText(tr("error:modify row %1 to '%2' shortcut key failed !").arg(row + 1).arg("NULL"));
 			}
 		}
 	}

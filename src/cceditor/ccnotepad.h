@@ -112,7 +112,7 @@ public:
 	}
 #endif
 	
-	bool openFile(QString filePath);
+	bool openFile(QString filePath, int lineNum=-1);
 	bool tryRestoreFile(QString filePath);
 
 	void initTabNewOne();
@@ -178,7 +178,7 @@ public slots:
 	void slot_batch_rename();
 	void slot_options();
 	void slot_donate();
-	void slot_registerCmd(int cmd, int code);
+    //	void slot_registerCmd(int cmd, int code);
 	void slot_viewStyleChange(QString tag, int styleId, QColor & fgColor, QColor & bkColor, QFont & font, bool fontChange);
 	void slot_viewLexerChange(QString tag);
 	void slot_findInDir();
@@ -197,6 +197,7 @@ protected:
 	bool eventFilter(QObject *watched, QEvent *event)override;
 #ifdef Q_OS_WIN
 	bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+	bool nativeOpenfile(QString openFilePath);
 #endif
 #ifdef uos
 void adjustWInPos(QWidget* pWin);
@@ -269,16 +270,6 @@ private slots:
 	void slot_aboutNdd();
 	void slot_fileChange(QString filePath);
 	void slot_tabBarDoubleClicked(int index);
-	/*void slot_toLightBlueStyle();
-	void slot_toDefaultStyle();
-	void slot_toThinBlueStyle();
-	void slot_toRiceYellow();
-	void slot_toYellow();
-	void slot_toSilverStyle();
-	void slot_toDarkStyle();
-	void slot_toLavenderBlush();
-	void slot_toMistyRose();*/
-	void slot_register();
 
 	void slot_slectionChanged();
 	void slot_preHexPage();
@@ -350,10 +341,12 @@ private slots:
 #ifdef NO_PLUGIN
 	void slot_pluginMgr();
 	void onPlugWork(bool check);
+	void sendParaToPlugin(NDD_PROC_DATA& procData);
 #endif
 	void slot_showWebAddr(bool check);
 	void slot_langFileSuffix();
 	void slot_shortcutManager();
+	void on_lineEndChange(int index);
 
 private:
 	void initFindResultDockWin();
@@ -365,7 +358,7 @@ private:
 	void initToolBar();
 
 	void setTxtLexer(ScintillaEditView * pEdit);
-	
+	void saveTabEdit(int tabIndex);
 	void saveReceneOpenFile();
 	void updateSaveAllToolBarStatus();
 	void initReceneOpenFileMenu();
@@ -377,7 +370,7 @@ private:
 	void setSaveAllButtonStatus(bool needSave);
 	void tabClose(int index, bool isInQuit=false);
 	void setDocEolMode(ScintillaEditView * pEdit, RC_LINE_FORM endStatus);
-	void convertDocLineEnd(RC_LINE_FORM endStatus);
+	bool convertDocLineEnd(RC_LINE_FORM endStatus);
 	void transDocToEncord(CODE_ID destCode);
 
 	void syncCurDocEncodeToMenu(QWidget * curEdit);
@@ -394,7 +387,7 @@ private:
 
 	bool checkRoladFile(ScintillaEditView * pEdit);
 	void reloadEditFile(ScintillaEditView * pEidt);
-	void initFindWindow(FindTabIndex type= FIND_TAB);
+	int initFindWindow(FindTabIndex type= FIND_TAB);
 
 	void setToFileRightMenu();
 
@@ -450,7 +443,8 @@ private:
 	void tabClose(QWidget* pEdit);
 
 	void init_toolsMenu();
-
+	void changeBlankShowStatus(int showBlank);
+	void syncBlankShowStatus();
 #ifdef NO_PLUGIN
 	void loadPluginLib();
 	void loadPluginProcs(QString strLibDir, QMenu* pMenu);
@@ -459,11 +453,12 @@ private:
 
 	void setUserDefShortcutKey();
 	void setNormalTextEditInitPro(ScintillaEditView* pEdit, QString filePath, CODE_ID code, RC_LINE_FORM lineEnd, bool isReadOnly, bool isModifyed);
+	void dealRecentFileMenuWhenColseFile(QString closeFilePath);
 private:
 	Ui::CCNotePad ui;
 
 	QLabel* m_codeStatusLabel;
-	QLabel* m_lineEndLabel;
+	QComboBox* m_lineEndLabel;
 	QLabel* m_lineNumLabel;
 	QLabel* m_langDescLabel;
 	QLabel* m_zoomLabel;
@@ -476,8 +471,6 @@ private:
 	QPointer<QDockWidget> m_dockFileListWin;
 	FileListView* m_fileListView;
 
-	//一个用于查找，一个用于排序
-	QMap <QString,QAction*> m_receneOpenFile;
 	QList<QString> m_receneOpenFileList;
 
 	QActionGroup *m_pEncodeActGroup;
