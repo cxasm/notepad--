@@ -96,4 +96,6 @@ QQ群 616606091 开发群，建议懂CPP/QT、愿意参与NDD项目代码贡献�
 
 ![ntscreenshot_20230206_211121](https://user-images.githubusercontent.com/42246867/218263319-3e78b0a9-9fb1-45d1-8f1c-2e850e073425.png)
 
-![ntscreenshot_20230208_220118](https://user-images.githubusercontent.com/42246867/218263327-59b10802-75ec-4bae-9e45-a8caa8f38490.png)
+![截屏2023-02-26 11 41 20](https://user-images.githubusercontent.com/42246867/221394341-743f71a9-11bd-4dc8-aa0d-c24316493dcf.png)
+
+![截屏2023-02-26 11 45 48](https://user-images.githubusercontent.com/42246867/221394356-89cf463c-8dcf-4697-aedd-33700b947653.png)
