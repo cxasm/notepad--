@@ -10,9 +10,7 @@ Introducing Notepad-- a text editor written in C++ that works seamlessly across 
 
 If you come across any bugs or have any feedback, feel free to share it with us.
 
-You can download the latest version at https://gitee.com/cxasm/notepad--/releases/tag/v1.23.
-
-The latest development version can be found at https://gitee.com/cxasm/notepad--/releases/tag/v1.23.
+You can download the latest version at https://gitee.com/cxasm/notepad--/releases/tag/v2.0
 
 We have recently added the plugin writing feature to Notepad-- and we hope that many CPP/QT developers will join us in this endeavor. If you develop a plugin, you can include your name and a donation channel.
 
