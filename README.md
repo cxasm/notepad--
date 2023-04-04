@@ -18,7 +18,7 @@
 
 您可以在这个项目提交bug或反馈问题。
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.0
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.1
 
 由于github访问经常断网，几乎没法提交代码。国内用户请访问 https://gitee.com/cxasm/notepad--
 NDD已初步推出插件编写功能，希望广大的CPP/QT开发者加入我们，插件功能均可以留上您的大名和捐赠渠道，希望
@@ -65,9 +65,7 @@ NDD已初步推出插件编写功能，希望广大的CPP/QT开发者加入我�
 1. 打包使用 OBS (Open Build Service)
 
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.21
-
-最新开发预览版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v1.22
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.1
 
 
 **Qt工程编译说明：** 
