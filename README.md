@@ -65,7 +65,7 @@ NDD已初步推出插件编写功能，希望广大的CPP/QT开发者加入我�
 1. 打包使用 OBS (Open Build Service)
 
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.1
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.3
 
 
 **Qt工程编译说明：** 
