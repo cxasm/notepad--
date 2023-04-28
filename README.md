@@ -89,13 +89,18 @@ QQ群：372613546 959439826(已满） 用户群，做NDD的问题反馈、功能
 
 QQ群 616606091 开发群，建议懂CPP/QT、愿意参与NDD项目代码贡献的开发人士加入。
 
+ndd在windows运行效果：
 
 ![ndd 在windows](https://user-images.githubusercontent.com/42246867/218263344-904424bc-d633-4d1d-a020-f6a3f264cc9a.png)
 
 ![ndd 在windows](https://user-images.githubusercontent.com/42246867/218263319-3e78b0a9-9fb1-45d1-8f1c-2e850e073425.png)
 
+ndd 在macOs运行效果：
+
 ![ndd 在 mac Os](https://user-images.githubusercontent.com/42246867/221394341-743f71a9-11bd-4dc8-aa0d-c24316493dcf.png)
 
 ![ndd 在mac OS 代码对比](https://user-images.githubusercontent.com/42246867/221394356-89cf463c-8dcf-4697-aedd-33700b947653.png)
+
+subtwo在redhat运行效果：
 
 ![subtwo 在redhat 运行效果](https://user-images.githubusercontent.com/42246867/235033326-b2fffca5-625c-4c96-a661-1072f8a8b3ee.png)
