@@ -72,23 +72,10 @@ QFont QsciLexerText::defaultFont(int style) const
 	switch (style)
 	{
 	case Default:
-#if defined(Q_OS_WIN)
 		return s_defaultTxtFont; 
-#elif defined(Q_OS_MAC)
-		//return QFont("Courier", 12);
-		return s_defaultTxtFont;
-#else
-		return s_defaultTxtFont;//sQFont("Bitstream Vera Sans Mono", 9);
-#endif
 		break;
 	case Ascii:
-#if defined(Q_OS_WIN)
-		return QFont("Courier New", 12);
-#elif defined(Q_OS_MAC)
-		return QFont("Courier New", 14);
-#else
 		return s_defaultTxtFont;
-#endif
 		break;
 	case Keyword:
 #if defined(Q_OS_WIN)

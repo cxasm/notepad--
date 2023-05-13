@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Riverbank Computing Limited
+// Copyright (c) 2023 Riverbank Computing Limited
 // Copyright (c) 2011 Archaeopteryx Software, Inc.
 // Copyright (c) 1990-2011, Scientific Toolworks, Inc.
 //
@@ -137,44 +137,45 @@ void QsciScintillaBase::inputMethodEvent(QInputMethodEvent *event)
         return;
     }
 
+    bool initialCompose = false;
     if (sci->pdoc->TentativeActive()) {
         sci->pdoc->TentativeUndo();
     } else {
         // No tentative undo means start of this composition so
         // Fill in any virtual spaces.
-        sci->ClearBeforeTentativeStart();
+        initialCompose = true;
     }
 
     sci->view.imeCaretBlockOverride = false;
 
     if (!event->commitString().isEmpty()) {
         const QString commitStr = event->commitString();
-        const unsigned int commitStrLen = commitStr.length();
+        const int commitStrLen = commitStr.length();
 
-        for (unsigned int i = 0; i < commitStrLen;) {
-            const unsigned int ucWidth = commitStr.at(i).isHighSurrogate() ? 2 : 1;
+        for (int i = 0; i < commitStrLen;) {
+            const int ucWidth = commitStr.at(i).isHighSurrogate() ? 2 : 1;
             const QString oneCharUTF16 = commitStr.mid(i, ucWidth);
             const QByteArray oneChar = textAsBytes(oneCharUTF16);
             const int oneCharLen = oneChar.length();
 
-            sci->AddCharUTF(oneChar.data(), oneCharLen);
+            sci->AddCharUTF(oneChar.data(), oneChar.length());
             i += ucWidth;
         }
 
     } else if (!event->preeditString().isEmpty()) {
         const QString preeditStr = event->preeditString();
-        const unsigned int preeditStrLen = preeditStr.length();
-        if ((preeditStrLen == 0) || (preeditStrLen > MAXLENINPUTIME)) {
+        const int preeditStrLen = preeditStr.length();
+        if (preeditStrLen == 0) {
             sci->ShowCaretAtCurrentPosition();
             return;
         }
 
+        if (initialCompose)
+            sci->ClearBeforeTentativeStart();
         sci->pdoc->TentativeStart(); // TentativeActive() from now on.
 
         std::vector<int> imeIndicator = MapImeIndicators(event);
 
-        const bool recording = sci->recordingMacro;
-        sci->recordingMacro = false;
         for (unsigned int i = 0; i < preeditStrLen;) {
             const unsigned int ucWidth = preeditStr.at(i).isHighSurrogate() ? 2 : 1;
             const QString oneCharUTF16 = preeditStr.mid(i, ucWidth);
@@ -186,7 +187,6 @@ void QsciScintillaBase::inputMethodEvent(QInputMethodEvent *event)
             DrawImeIndicator(sci, imeIndicator[i], oneCharLen);
             i += ucWidth;
         }
-        sci->recordingMacro = recording;
 
         // Move IME carets.
         int imeCaretPos = GetImeCaretPos(event);

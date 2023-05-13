@@ -1,7 +1,7 @@
 TEMPLATE	= lib
 LANGUAGE	= C++
 
-CONFIG	+= qt warn_on
+CONFIG	+= qt warn_on Release
 QT += core gui widgets
 
 HEADERS	+= *.h

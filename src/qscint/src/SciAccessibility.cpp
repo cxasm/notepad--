@@ -1,6 +1,6 @@
-// The implementation of the class that implements accessibility support.
+﻿// The implementation of the class that implements accessibility support.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 

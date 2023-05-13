@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <qobject.h>
 #include<QVector>
 #include<QMap>
@@ -70,8 +70,9 @@ public:
 	static CODE_ID judgeFinalTextCode(CODE_ID code, bool isExistUnKownCode, bool isExistGbk, bool isExistUtf8);
 	static CODE_ID readLineFromFile(uchar * m_fileFpr, const int fileLength, const CODE_ID fileCode, QList<LineFileInfo>& lineInfoVec,int& maxLineSize, int& charsNums, bool &isMaybeHexFile);
 
-	static CODE_ID scanFileRealCode(QString filePath);
+	static CODE_ID scanFileRealCode(QString filePath,int scanLineNum=200);
 	static CODE_ID scanFileOutPut(CODE_ID code, QString filePath, QList<LineFileInfo>& outputLineInfoVec, int & maxLineSize, int & charsNums, bool &isHexFile);
+	static CODE_ID scanFileOutPut(QFile& pFile, CODE_ID code, QString filePath, QString& outText, bool& existGrbledCode);
 
 	static CODE_ID getTextFileEncodeType(uchar* fileFpr, int fileLength, QString filePath="", bool isCheckHead = true);
 	static bool tranUnicodeLeToUtf8Bytes(uchar* fileFpr, const int fileLength, QString& outUtf8Bytes, bool isSkipHead=false);

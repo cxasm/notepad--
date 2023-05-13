@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "common.h"
 #include "rcglobal.h"
@@ -11,7 +11,7 @@
 class ScintillaEditView;
 class ScintillaHexEditView;
 
-//Ğ¡ÓÚ100kµÄÎÄ¼şÒ»´ÎĞÔÈ«²¿¶ÁÈ¡Íê±Ï
+//å°äº100kçš„æ–‡ä»¶ä¸€æ¬¡æ€§å…¨éƒ¨è¯»å–å®Œæ¯•
 const int LITTLE_FILE_MAX = 1024000;
 
 enum ERROR_TYPE {
@@ -29,16 +29,16 @@ struct NewFileIdMgr {
 	}
 };
 
-//¹ÜÀí¶ş½øÖÆÎÄ¼şµÄĞÅÏ¢
+//ç®¡ç†äºŒè¿›åˆ¶æ–‡ä»¶çš„ä¿¡æ¯
 struct HexFileMgr {
 	QString filePath;
 	QFile* file;
 	qint64 fileOffset;
 	qint64 fileSize;
-	qint16 lineSize;//Ã¿´Î¶ÁÈ¡¶àÉÙĞĞ£¬Ä¬ÈÏÎª64ĞĞ£¬Ã»ĞĞ16¸ö×Ö·û
+	qint16 lineSize;//æ¯æ¬¡è¯»å–å¤šå°‘è¡Œï¼Œé»˜è®¤ä¸º64è¡Œï¼Œæ²¡è¡Œ16ä¸ªå­—ç¬¦
 	char* contentBuf;
 	int contentRealSize;
-	bool onetimeRead; //ÊÇ·ñÒ»´ÎĞÔÈ«²¿¶ÁÈ¡µ½ÄÚ´æ¡£Ğ¡ÓÚµÈÓÚLITTLE_FILE_MAXµÄ²Å»áÈ«²¿¶ÁÈ¡
+	bool onetimeRead; //æ˜¯å¦ä¸€æ¬¡æ€§å…¨éƒ¨è¯»å–åˆ°å†…å­˜ã€‚å°äºç­‰äºLITTLE_FILE_MAXçš„æ‰ä¼šå…¨éƒ¨è¯»å–
 	HexFileMgr() :file(nullptr), fileOffset(0), lineSize(64), fileSize(0), contentBuf(nullptr), contentRealSize(0),onetimeRead(false)
 	{
 
@@ -62,17 +62,17 @@ private:
 	HexFileMgr(const HexFileMgr&) = delete;
 };
 
-//¹ÜÀí´óÎÄ±¾ÎÄ¼şµÄĞÅÏ¢
+//ç®¡ç†å¤§æ–‡æœ¬æ–‡ä»¶çš„ä¿¡æ¯
 struct TextFileMgr {
 	QString filePath;
 	QFile* file;
 	qint64 fileOffset;
 	qint64 fileSize;
-	qint16 lineSize;//Ã¿´Î¶ÁÈ¡¶àÉÙĞĞ£¬Ä¬ÈÏÃ¿´Î¶ÁÈ¡1024ĞĞ¡£µ«ÊÇ×î´ó²»³¬¹ı1MµÄÄÚÈİ¡£
+	qint16 lineSize;//æ¯æ¬¡è¯»å–å¤šå°‘è¡Œï¼Œé»˜è®¤æ¯æ¬¡è¯»å–1024è¡Œã€‚ä½†æ˜¯æœ€å¤§ä¸è¶…è¿‡1Mçš„å†…å®¹ã€‚
 	char* contentBuf;
 	int contentRealSize;
 	int loadWithCode;
-	int lineEndType;//ĞĞÎ²ÀàĞÍ£¬win linux mac
+	int lineEndType;//è¡Œå°¾ç±»å‹ï¼Œwin linux mac
 	
 	TextFileMgr() :file(nullptr), fileOffset(0), lineSize(64), fileSize(0), contentBuf(nullptr), contentRealSize(0), loadWithCode(CODE_ID::UNKOWN),lineEndType(RC_LINE_FORM::UNKNOWN_LINE)
 	{
@@ -98,23 +98,23 @@ private:
 };
 
 struct BlockIndex {
-	qint64 fileOffset;//¿éµÄ¿ªÊ¼µØÖ·
-	quint32 fileSize;//¿éµÄ´óĞ¡
-	quint32 lineNumStart;//¿éÖĞĞĞºÅµÄ¿ªÊ¼Öµ
-	quint32 lineNum;//¿éÖĞµÄĞĞÊıÁ¿
+	qint64 fileOffset;//å—çš„å¼€å§‹åœ°å€
+	quint32 fileSize;//å—çš„å¤§å°
+	quint32 lineNumStart;//å—ä¸­è¡Œå·çš„å¼€å§‹å€¼
+	quint32 lineNum;//å—ä¸­çš„è¡Œæ•°é‡
 };
 
-//¹ÜÀí´óÎÄ±¾ÎÄ¼ş,¿ÉÒÔ±à¼­µÄĞÅÏ¢
+//ç®¡ç†å¤§æ–‡æœ¬æ–‡ä»¶,å¯ä»¥ç¼–è¾‘çš„ä¿¡æ¯
 struct BigTextEditFileMgr {
 	QString filePath;
 	QFile* file;
-	uchar* filePtr;//Ê¹ÓÃµÄÊÇÎÄ¼şÓ³ÉäµÄ·½Ê½´ò¿ª
-	quint32 m_curBlockIndex; //µ±Ç°Õ¹Ê¾ÖĞµÄ¿éË÷ÒıĞòºÅ
-	int loadWithCode; //ÒÔºÎÖÖ±àÂëÀ´¼ÓÔØ½âÎöÎÄ¼ş¡£Ä¬ÈÏUTF8
-	int lineEndType;//ĞĞÎ²ÀàĞÍ£¬win linux mac
-	static const qint16 BLOCK_SIZE = 1;//¿é´óĞ¡£¬µ¥Î»M¡£¿ªÊ¼ÊÇ4M£¬·¢ÏÖ¿éÔ½´ó£¬ĞĞÔ½¶à£¬ÄÇÃ´ÔÚÒ»¿éÖĞ¶¨Î»ĞĞµÄÎ»ÖÃÔ½Âı
+	uchar* filePtr;//ä½¿ç”¨çš„æ˜¯æ–‡ä»¶æ˜ å°„çš„æ–¹å¼æ‰“å¼€
+	quint32 m_curBlockIndex; //å½“å‰å±•ç¤ºä¸­çš„å—ç´¢å¼•åºå·
+	int loadWithCode; //ä»¥ä½•ç§ç¼–ç æ¥åŠ è½½è§£ææ–‡ä»¶ã€‚é»˜è®¤UTF8
+	int lineEndType;//è¡Œå°¾ç±»å‹ï¼Œwin linux mac
+	static const qint16 BLOCK_SIZE = 1;//å—å¤§å°ï¼Œå•ä½Mã€‚å¼€å§‹æ˜¯4Mï¼Œå‘ç°å—è¶Šå¤§ï¼Œè¡Œè¶Šå¤šï¼Œé‚£ä¹ˆåœ¨ä¸€å—ä¸­å®šä½è¡Œçš„ä½ç½®è¶Šæ…¢
 
-	QVector<BlockIndex> blocks;//Ã¿Ò»¿éµÄË÷Òı¡£´ò¿ªÎÄ¼şµÄÊ±ºò£¬ĞèÒª½¨Á¢¸ÃË÷Òı
+	QVector<BlockIndex> blocks;//æ¯ä¸€å—çš„ç´¢å¼•ã€‚æ‰“å¼€æ–‡ä»¶çš„æ—¶å€™ï¼Œéœ€è¦å»ºç«‹è¯¥ç´¢å¼•
 	
 	BigTextEditFileMgr():filePtr(nullptr), file(nullptr), m_curBlockIndex(0), loadWithCode(CODE_ID::UNKOWN), lineEndType(RC_LINE_FORM::UNKNOWN_LINE)
 	{
@@ -154,8 +154,13 @@ public:
 
 	void delNewFileNode(int fileIndex);
 
-	int loadFileDataInText(ScintillaEditView * editView, QString filePath, CODE_ID & fileTextCode, RC_LINE_FORM &lineEnd, CCNotePad * callbackObj=nullptr, bool hexAsk = true, QWidget* MsgBoxParent=nullptr);
+	int loadFileDataInTextFromOffset(ScintillaEditView* editView, QString filePath, CODE_ID fileTextCode, QWidget* msgBoxParent, quint64 startReadSize);
 
+	//ä¸‹é¢è¿™ä¸ªæ˜¯æ—§å‡½æ•°ï¼Œä¹‹å‰å¯¹æ¯”æ—¶å€™ç”¨çš„ã€‚
+	//int loadFileDataInText(ScintillaEditView * editView, QString filePath, CODE_ID & fileTextCode, RC_LINE_FORM &lineEnd, CCNotePad * callbackObj=nullptr, bool hexAsk = true, QWidget* MsgBoxParent=nullptr);
+
+	int loadFileDataInText(ScintillaEditView* editView, QString filePath, CODE_ID& fileTextCode, RC_LINE_FORM& lineEnd, CCNotePad* callbackObj = nullptr, bool hexAsk = true, QWidget* msgBoxParent = nullptr);
+	
 	int loadFileForSearch(ScintillaEditView * editView, QString filePath);
 
 	//int loadFileData(ScintillaEditView * editView, QString filePath, CODE_ID & fileTextCode, RC_LINE_FORM & lineEnd);
@@ -187,8 +192,6 @@ public:
 	void closeSuperBigTextFileHand(QString filepath);
 
 	void closeBigTextRoFileHand(QString filepath);
-
-	LangType detectLanguageFromTextBegining(const unsigned char * data, size_t dataLen);
 
 	static FileManager& getInstance() {
 		static FileManager instance;

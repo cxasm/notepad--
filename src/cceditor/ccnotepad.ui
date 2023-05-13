@@ -57,9 +57,6 @@
         <height>22</height>
        </size>
       </property>
-      <property name="elideMode">
-       <enum>Qt::ElideNone</enum>
-      </property>
       <property name="usesScrollButtons">
        <bool>true</bool>
       </property>
@@ -68,6 +65,9 @@
       </property>
       <property name="movable">
        <bool>true</bool>
+      </property>
+      <property name="tabBarAutoHide">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -506,6 +506,7 @@
     <property name="title">
      <string>T&amp;ools</string>
     </property>
+    <addaction name="actionMd5_Sha"/>
    </widget>
    <widget class="QMenu" name="menuPlugin">
     <property name="title">
@@ -1626,6 +1627,9 @@
    <property name="text">
     <string>Column Block Editing</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+X</string>
+   </property>
   </action>
   <action name="actionWrap">
    <property name="checkable">
@@ -2058,6 +2062,11 @@
   <action name="actionPlugin_Manager">
    <property name="text">
     <string>Plugin Manager</string>
+   </property>
+  </action>
+  <action name="actionMd5_Sha">
+   <property name="text">
+    <string>Md5/Sha</string>
    </property>
   </action>
  </widget>
@@ -3474,6 +3483,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionMd5_Sha</sender>
+   <signal>triggered()</signal>
+   <receiver>CCNotePad</receiver>
+   <slot>on_md5hash()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionNewFile_toggle(bool)</slot>
@@ -3577,5 +3602,6 @@
   <slot>slot_showWebAddr(bool)</slot>
   <slot>slot_langFileSuffix()</slot>
   <slot>slot_shortcutManager()</slot>
+  <slot>on_md5hash()</slot>
  </slots>
 </ui>

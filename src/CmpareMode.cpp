@@ -1,4 +1,4 @@
-#include "CmpareMode.h"
+﻿#include "CmpareMode.h"
 #include "Encode.h"
 #include "rcglobal.h"
 
@@ -132,7 +132,6 @@ CODE_ID CmpareMode::getTextFileEncodeType(uchar* fileFpr, int fileLength, QStrin
 //是否跳过前面的LE头。默认不跳过。只有文件块开头第一块，才需要跳过。
 bool CmpareMode::tranUnicodeLeToUtf8Bytes(uchar* fileFpr, const int fileLength, QString &outUtf8Bytes, bool isSkipHead)
 {
-	int lineNums = 0;
 	CODE_ID code = CODE_ID::UNICODE_LE;
 
 	int lineStartPos = (isSkipHead ? 2:0); //uicode_le前面有2个特殊标识，故跳过2
@@ -984,7 +983,9 @@ CODE_ID CmpareMode::readLineFromFile(uchar* m_fileFpr, const int fileLength, con
 
 
 //扫描文件的字符编码，不输出文件
-CODE_ID CmpareMode::scanFileRealCode(QString filePath)
+//扫描多少行scanLineNum 默认100
+//如果是-1 之前全部扫描
+CODE_ID CmpareMode::scanFileRealCode(QString filePath, int scanLineNum)
 {
 	QFile file(filePath);
 	file.open(QIODevice::ReadOnly);
@@ -1052,8 +1053,10 @@ CODE_ID CmpareMode::scanFileRealCode(QString filePath)
 
 		++lineNums;
 
-		//最多扫描200行，加块速度。速度与精确性的权衡
-		if (lineNums >= 200)
+		//默认最多扫描200行，加块速度。速度与精确性的权衡
+		//对于打开文件，默认扫描前面的200行，加快速度。
+		//对于编码转换，为了精确，默认全部都要处理
+		if ((scanLineNum != -1) && (lineNums >= scanLineNum))
 		{
 			break;
 		}
@@ -1095,3 +1098,56 @@ CODE_ID CmpareMode::scanFileOutPut(CODE_ID code, QString filePath, QList<LineFil
 
 	return code;
 }
+
+//读取文件，并输出
+//bytes charsNums:文件字符个数，不是文件大小
+//20220908 自动判断是否是二进制文件。isHexFile 是输出
+//20230304 新增，一次性读取文件，不检测每行文本，加快速度。existGrbledCode 是否存在乱码
+CODE_ID CmpareMode::scanFileOutPut(QFile& pFile, CODE_ID code, QString filePath, QString& outText, bool & existGrbledCode)
+{
+	QByteArray outTextBytes = pFile.readAll();
+
+	if (outTextBytes.size() == 0)
+	{
+		outText = "";
+		existGrbledCode = false;
+		return CODE_ID::UTF8_NOBOM;
+	}
+
+	if (code == UNKOWN)
+	{
+		code = getTextFileEncodeType((uchar * )outTextBytes.data(), pFile.size(), filePath);
+
+		//编码还是检测失败，这里概率是比较小的。
+		if (code == CODE_ID::UNKOWN)
+		{
+			//无条件按照ANSI/GBK编码打开
+			code = CODE_ID::GBK;
+		}
+	}
+
+	int lineStartPos = 0; //uicode_le前面有2个特殊标识，故跳过2
+
+	if (code == CODE_ID::UNICODE_BE || code == CODE_ID::UNICODE_LE)
+	{
+		lineStartPos = 2;
+	}
+	else if (code == CODE_ID::UTF8_BOM)
+	{
+		lineStartPos = 3;
+	}
+		
+	bool codeSucess = Encode::tranStrToUNICODE(code, outTextBytes.data()+ lineStartPos, outTextBytes.size()- lineStartPos, outText);
+
+	//如果存在乱码，而且不是以gbk编码打开，再无条件尝试ASNI/GBK编码打开。如果是国际版，后续还得完善策略，得无条件以ASNI本地编码打开。
+	if (!codeSucess && (code != CODE_ID::GBK))
+	{
+		code = CODE_ID::GBK;
+		outText.clear();
+		codeSucess = Encode::tranStrToUNICODE(code, outTextBytes.data() + lineStartPos, outTextBytes.size() - lineStartPos, outText);
+	}
+	existGrbledCode = !codeSucess;
+
+	return code;
+}
+

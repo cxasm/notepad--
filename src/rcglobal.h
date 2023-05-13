@@ -8,10 +8,10 @@
 //#define TEST_PRE
 
 #ifdef TEST_PRE
-static const char* VersionStr = u8"(内部测试非稳定) v1.22.1";
+static const char* VersionStr = u8"(内部测试非稳定) v2.0.0";
 #else
 
-static const char* VersionStr = "v1.22.2";
+static const char* VersionStr = "v1.23.2";
 #endif // TEST_PRE
 
 

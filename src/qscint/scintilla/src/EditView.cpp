@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file EditView.cxx
  ** Defines the appearance of the main text area of the editor window.
  **/
@@ -833,7 +833,13 @@ static void DrawTextBlob(Surface *surface, const ViewStyle &vsDraw, PRectangle r
 	PRectangle rcChar = rcCChar;
 	rcChar.left++;
 	rcChar.right--;
-	surface->DrawTextClipped(rcChar, ctrlCharsFont,
+	// In the original Scintilla code this was a call to DrawTextClipped().
+	// This caused the clipping to be incorrect (triggered when EOLs are
+	// visible) causing text to overwrite the margins when scrolling.  The
+	// change is consistent with the alternative code paths to where
+	// DrawTextBlob() is called bu tthe root cause maybe in PlatQt.cpp or in Qt
+	// itself.
+	surface->DrawTextNoClip(rcChar, ctrlCharsFont,
 		rcSegment.top + vsDraw.maxAscent, s, static_cast<int>(s ? strlen(s) : 0),
 		textBack, textFore);
 }

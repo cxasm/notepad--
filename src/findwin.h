@@ -63,10 +63,13 @@ public:
 	void setCurrentTab(FindTabIndex index);
 	void setTabWidget(QTabWidget * editTabWidget);
 	void setFindText(QString & text);
+	void keywordWinGetFouse(FindTabIndex tabIndex);
 	void setReplaceFindText(QString& text);
 	void setDirFindText(QString& text);
+	void setMarkFindText(QString& text);
 	void disableReplace();
 	void setFindHistory(QList<QString>* findHistory);
+	void setReplaceHistory(QList<QString>* replaceHistory);
 	int markAllWord(QString& word);
 	void removeLineHeadEndBlank(int mode);
 	static void showCallTip(QsciScintilla * pEdit, int pos);
@@ -74,11 +77,10 @@ public:
 	void findNext();
 	void findPrev();
 	void setFindBackward(bool isBackward);
-	int findAtBack(QString keyword);
+
+	int findAtBack(QStringList& keyword);
+	int markAtBack(QStringList& keyword);
 	int replaceAtBack(QStringList& keyword, QStringList& replace);
-
-
-
 protected:
 	
 	virtual void focusInEvent(QFocusEvent *ev);
@@ -96,8 +98,10 @@ signals:
 private:
 	void updateParameterFromUI();
 	void addFindHistory(QString & text);
+	void addReplaceHistory(QString& text);
 	bool isFirstFind();
-	void addCurFindRecord(ScintillaEditView * pEdit, FindRecords & recordRet, bool isMark=false);
+	
+	QString addCurFindRecord(ScintillaEditView * pEdit, FindRecords & recordRet, bool isMark=false, bool getResult=false);
 
 	bool findTextInFile(QString & filePath, int & findNums, QVector<FindRecords*>* allfileInDirRecord);
 
@@ -123,9 +127,11 @@ private:
 
 	int replaceAll();
 
-	int markAll();
+	int markAll(QSet<int>* outLineNum=nullptr);
 
-	int findAllInCurDoc();
+	int findAllInCurDoc(QStringList * reResult=nullptr);
+
+	void findAllInOpenDoc(int index = -1);
 
 private slots:
 
@@ -169,6 +175,10 @@ private slots:
 
 	void slot_tabIndexChange(int index);
 
+	void on_copyReFindResult();
+
+	void on_markAndBook();
+
 private:
 	Ui::FindWin ui;
 
@@ -211,6 +221,8 @@ private:
 	QString m_lastClickBtName;
 
 	QList<QString>* m_findHistory;
+
+	QList<QString>* m_replaceHistory;
 
 	ScintillaEditView* pEditTemp;
 

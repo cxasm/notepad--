@@ -1,4 +1,4 @@
-#include "scintillahexeditview.h"
+﻿#include "scintillahexeditview.h"
 #include "styleset.h"
 
 #include "ccnotepad.h"
@@ -6,9 +6,10 @@
 #include <QMimeData>
 #include <QScrollBar>
 
-// initialize the static variable
 bool ScintillaHexEditView::_SciInit = false;
 #define DEFAULT_FONT_NAME "Courier New"
+
+const int STYLE_COLOR_SELECT = 1;
 
 ScintillaHexEditView::ScintillaHexEditView(QWidget *parent):QsciScintilla(parent), m_NoteWin(nullptr)
 {
@@ -98,16 +99,9 @@ void ScintillaHexEditView::slot_scrollYValueChange(int value)
 
 void ScintillaHexEditView::dragEnterEvent(QDragEnterEvent* event)
 {
-	//if (event->mimeData()->hasFormat("text/uri-list")) //只能打开文本文件
-	//{
-	//	event->accept(); //可以在这个窗口部件上拖放对象
-	//}
-	//else
-	//{
-	//	event->ignore();
-	//}
 	event->accept();
 	}
+	
 
 void ScintillaHexEditView::dropEvent(QDropEvent* e)
 {
@@ -130,3 +124,10 @@ void ScintillaHexEditView::updateThemes()
 	setMarginsBackgroundColor(StyleSet::s_global_style->line_number_margin.bgColor);
 	setPaper(StyleSet::s_global_style->default_style.bgColor);
 }
+
+void  ScintillaHexEditView::setStyle(int style, int startPos, int length)
+{
+	SendScintilla(SCI_STARTSTYLING, startPos);
+	SendScintilla(SCI_SETSTYLING, length, style);
+}
+

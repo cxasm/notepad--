@@ -1,6 +1,6 @@
 ﻿// This module implements the QsciCommandSet class.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
@@ -47,7 +47,9 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
         const char *desc;
     };
 
+    //20230216 屏蔽一些生僻的命令，加宽速度，让出快捷键
     static struct sci_cmd cmd_table[] = {
+
         {
             QsciCommand::LineDown,
             Qt::Key_Down,
@@ -58,6 +60,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 #endif
             QT_TRANSLATE_NOOP("QsciCommand", "Move down one line")
         },
+
         {
             QsciCommand::LineDownExtend,
             Qt::Key_Down | Qt::SHIFT,
@@ -122,12 +125,13 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Scroll view up one line")
         },
+#if 0
         {
             QsciCommand::ScrollToStart,
 #if defined(USING_OSX_KEYS)
             Qt::Key_Home,
 #else
-            0,
+            Qt::Key_Home | Qt::CTRL,
 #endif
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Scroll to start of document")
@@ -137,11 +141,13 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 #if defined(USING_OSX_KEYS)
             Qt::Key_End,
 #else
-            0,
+            Qt::Key_End | Qt::CTRL,
 #endif
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Scroll to end of document")
         },
+#endif
+#if 0
         {
             QsciCommand::VerticalCentreCaret,
 #if defined(USING_OSX_KEYS)
@@ -159,6 +165,10 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move down one paragraph")
         },
+#endif
+
+#if 0 
+                //测试无效
         {
             QsciCommand::ParaDownExtend,
             Qt::Key_BracketRight | Qt::CTRL | Qt::SHIFT,
@@ -166,12 +176,15 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection down one paragraph")
         },
+#endif 
         {
             QsciCommand::ParaUp,
             Qt::Key_BracketLeft | Qt::CTRL,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move up one paragraph")
         },
+
+#if 0
         {
             QsciCommand::ParaUpExtend,
             Qt::Key_BracketLeft | Qt::CTRL | Qt::SHIFT,
@@ -179,6 +192,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection up one paragraph")
         },
+#endif
         {
             QsciCommand::CharLeft,
             Qt::Key_Left,
@@ -189,6 +203,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 #endif
             QT_TRANSLATE_NOOP("QsciCommand", "Move left one character")
         },
+
+
         {
             QsciCommand::CharLeftExtend,
             Qt::Key_Left | Qt::SHIFT,
@@ -200,6 +216,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection left one character")
         },
+
         {
             QsciCommand::CharLeftRectExtend,
             Qt::Key_Left | Qt::ALT | Qt::SHIFT,
@@ -243,6 +260,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend rectangular selection right one character")
         },
+
+#if 0
         {
             QsciCommand::WordLeft,
 #if defined(USING_OSX_KEYS)
@@ -253,6 +272,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move left one word")
         },
+#endif
         {
             QsciCommand::WordLeftExtend,
 #if defined(USING_OSX_KEYS)
@@ -263,6 +283,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Extend selection left one word")
         },
+#if 0
         {
             QsciCommand::WordRight,
 #if defined(USING_OSX_KEYS)
@@ -273,12 +294,16 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move right one word")
         },
+#endif
+#if 0
         {
             QsciCommand::WordRightExtend,
             Qt::Key_Right | Qt::CTRL | Qt::SHIFT,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Extend selection right one word")
         },
+#endif
+#if 0
         {
             QsciCommand::WordLeftEnd,
             0,
@@ -313,6 +338,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection to end of next word")
         },
+#endif
+#if 0
         {
             QsciCommand::WordPartLeft,
             Qt::Key_Slash | Qt::CTRL,
@@ -339,6 +366,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection right one word part")
         },
+#endif
+#if 0
         {
             QsciCommand::Home,
 #if defined(USING_OSX_KEYS)
@@ -371,6 +400,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend rectangular selection to start of document line")
         },
+#endif
+#if 0
         {
             QsciCommand::HomeDisplay,
 #if defined(USING_OSX_KEYS)
@@ -406,6 +437,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection to start of display or document line")
         },
+#endif
+
         {
             QsciCommand::VCHome,
 #if defined(USING_OSX_KEYS)
@@ -417,6 +450,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                 "Move to first visible character in document line")
         },
+
         {
             QsciCommand::VCHomeExtend,
 #if defined(USING_OSX_KEYS)
@@ -428,6 +462,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                 "Extend selection to first visible character in document line")
         },
+#if 0
         {
             QsciCommand::VCHomeRectExtend,
 #if defined(USING_OSX_KEYS)
@@ -453,6 +488,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection to first visible character in display or document line")
         },
+#endif
         {
             QsciCommand::LineEnd,
 #if defined(USING_OSX_KEYS)
@@ -463,6 +499,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move to end of document line")
         },
+
         {
             QsciCommand::LineEndExtend,
 #if defined(USING_OSX_KEYS)
@@ -474,6 +511,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection to end of document line")
         },
+#if 0
         {
             QsciCommand::LineEndRectExtend,
 #if defined(USING_OSX_KEYS)
@@ -485,6 +523,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend rectangular selection to end of document line")
         },
+#endif
+#if 0
         {
             QsciCommand::LineEndDisplay,
 #if defined(USING_OSX_KEYS)
@@ -495,6 +535,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move to end of display line")
         },
+#endif
+#if 0
         {
             QsciCommand::LineEndDisplayExtend,
 #if defined(USING_OSX_KEYS)
@@ -520,6 +562,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend selection to end of display or document line")
         },
+#endif
         {
             QsciCommand::DocumentStart,
 #if defined(USING_OSX_KEYS)
@@ -568,7 +611,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Move up one page")
         },
-        {
+      /*  {
             QsciCommand::PageUpExtend,
             Qt::Key_PageUp | Qt::SHIFT,
             0,
@@ -580,7 +623,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend rectangular selection up one page")
-        },
+        },*/
         {
             QsciCommand::PageDown,
             Qt::Key_PageDown,
@@ -591,7 +634,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 #endif
             QT_TRANSLATE_NOOP("QsciCommand", "Move down one page")
         },
-        {
+        /*{
             QsciCommand::PageDownExtend,
             Qt::Key_PageDown | Qt::SHIFT,
 #if defined(USING_OSX_KEYS)
@@ -611,7 +654,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 #endif
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Extend rectangular selection down one page")
-        },
+        },*/
+#if 0
         {
             QsciCommand::StutteredPageUp,
             0,
@@ -638,6 +682,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Stuttered extend selection down one page")
         },
+#endif
         {
             QsciCommand::Delete,
             Qt::Key_Delete,
@@ -658,6 +703,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 #endif
             QT_TRANSLATE_NOOP("QsciCommand", "Delete previous character")
         },
+#if 0
         {
             QsciCommand::DeleteBackNotLine,
             0,
@@ -677,6 +723,8 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Delete word to right")
         },
+#endif
+#if 0
         {
             QsciCommand::DeleteWordRightEnd,
 #if defined(USING_OSX_KEYS)
@@ -688,6 +736,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Delete right to end of next word")
         },
+#endif
         {
             QsciCommand::DeleteLineLeft,
             Qt::Key_Backspace | Qt::CTRL | Qt::SHIFT,
@@ -729,18 +778,21 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Transpose current and previous lines")
         },*/
+#if 0
         {
             QsciCommand::LineDuplicate,
             0,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Duplicate the current line")
         },
+#endif
         {
             QsciCommand::SelectAll,
             Qt::Key_A | Qt::CTRL,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Select all")
         },
+#if 0
         {
             QsciCommand::MoveSelectedLinesUp,
             0,
@@ -754,12 +806,15 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             QT_TRANSLATE_NOOP("QsciCommand",
                     "Move selected lines down one line")
         },
+#endif
+#if 0
         {
             QsciCommand::SelectionDuplicate,
             Qt::Key_D | Qt::CTRL,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Duplicate selection")
         },
+#endif
         {
             QsciCommand::SelectionLowerCase,
             Qt::Key_U | Qt::CTRL,
@@ -802,18 +857,21 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             Qt::Key_Return | Qt::SHIFT,
             QT_TRANSLATE_NOOP("QsciCommand", "Insert newline")
         },
+#if 0
         {
             QsciCommand::Formfeed,
             0,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Formfeed")
         },
+#endif                   
         {
             QsciCommand::Tab,
             Qt::Key_Tab,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Indent one level")
         },
+#if 0
         {
             QsciCommand::Backtab,
             Qt::Key_Tab | Qt::SHIFT,
@@ -826,6 +884,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Cancel")
         },
+#endif
         {
             QsciCommand::Undo,
             Qt::Key_Z | Qt::CTRL,
@@ -842,9 +901,10 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Redo last command")
         },
+#if 1
         {
             QsciCommand::ZoomIn,
-            Qt::Key_Plus | Qt::CTRL,
+            Qt::Key_Equal | Qt::CTRL,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Zoom in")
         },
@@ -853,7 +913,9 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
             Qt::Key_Minus | Qt::CTRL,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Zoom out")
-        },
+        }, 
+#endif
+#if 0
 		{
 		   QsciCommand::MoveLineUp,
 		   Qt::Key_Up | Qt::CTRL | Qt::SHIFT,
@@ -867,6 +929,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
 		   0,
 		   QT_TRANSLATE_NOOP("QsciCommand", "Move Line down")
 		},
+#endif
     };
 
     // Clear the default map.

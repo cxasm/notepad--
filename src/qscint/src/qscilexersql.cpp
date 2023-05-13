@@ -1,6 +1,6 @@
 ﻿// This module implements the QsciLexerSQL class.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
@@ -305,7 +305,7 @@ QString QsciLexerSQL::description(int style) const
         return tr("SQL*Plus comment");
 
     case CommentLineHash:
-        return tr("# comment line");
+        return tr("comment line");
 
     case CommentDocKeyword:
         return tr("JavaDoc keyword");

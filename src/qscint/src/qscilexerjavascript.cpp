@@ -1,7 +1,7 @@
 ﻿#include "Qsci/qscilexerjavascript.h"
 // This module implements the QsciLexerJavaScript class.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 

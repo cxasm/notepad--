@@ -1,4 +1,4 @@
-#include "filemanager.h"
+﻿#include "filemanager.h"
 #include "scintillaeditview.h"
 #include "scintillahexeditview.h"
 #include "CmpareMode.h"
@@ -9,7 +9,9 @@
 #include <QFile>
 #include <QtGlobal>
 #include <qscilexer.h>
+#include <QFileInfo>
 
+LangType detectLanguage(QString& headContent, QString& filepath);
 
 FileManager::FileManager():m_lastErrorCode(NONE_ERROR)
 {
@@ -218,6 +220,68 @@ void FileManager::delNewFileNode(int fileIndex)
 	}
 }
 
+//和loadFileDataInText类似，但是不是从头开始读取文件，而是从startReadSize开始
+//不检查编码，直接按照fileTextCode进行读取
+int FileManager::loadFileDataInTextFromOffset(ScintillaEditView* editView, QString filePath, CODE_ID fileTextCode, QWidget* msgBoxParent, quint64 startReadSize)
+{
+	QFile file(filePath);
+
+	//如果文件不存在，直接返回
+	if (!file.exists())
+	{
+		return -1;
+	}
+
+	QFlags<QFileDevice::Permission> power = QFile::permissions(filePath);
+
+	//直接以只读的方式打开，至于能不能保存，是保存时需要考虑的问题。
+	//只需要在保存的时候获取admin权限即可
+	QIODevice::OpenMode mode;
+
+	mode = QIODevice::ExistingOnly | QIODevice::ReadOnly;
+
+	if (!file.open(mode))
+	{
+		QMessageBox::warning(msgBoxParent, tr("Error"), tr("Open File %1 failed").arg(filePath));
+		return 2;
+	}
+
+	quint64 fileSize = file.size();
+
+	//如果文件是空的。检查一下，有可能在临时文件损坏情况下出现，外面需要使用
+	if (fileSize == 0)
+	{
+		file.close();
+		return 0;
+	}
+
+	//如果读取的内容，超过了当前文件大小，则直接返回。这里是返回0，视作成功，没有新内容要读
+	if (startReadSize >= fileSize)
+	{
+		file.close();
+		return 0;
+	}
+
+	QByteArray bytes;
+
+	if (file.seek(startReadSize))
+	{
+		//读取后面所有的内容
+		bytes = file.readAll();
+	}
+
+	file.close();
+
+	QString text;
+
+	Encode::tranStrToUNICODE(fileTextCode, bytes.data(), bytes.count(), text);
+	
+	editView->append(text);
+
+	return 0;
+}
+
+#if 0
 
 //这里是以文本方式加载文件。但是可能遇到的是二进制文件，里面会做判断
 //二进制时hexAsk是否询问，当用户指定打开格式时，不需要询问
@@ -406,6 +470,172 @@ int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePat
 	return 0;
 }
 
+#endif
+
+//20230304新增加：不再一行一行读取文件，而是一次性读取到内存，加快文本文件打开时的处理速度
+//这里是以文本方式加载文件。但是可能遇到的是二进制文件，里面会做判断
+//二进制时hexAsk是否询问，当用户指定打开格式时，不需要询问
+//MsgBoxParent::尽量把这个给一下，让MsgBox有图标，不那么难看。
+int FileManager::loadFileDataInText(ScintillaEditView* editView, QString filePath, CODE_ID& fileTextCode, RC_LINE_FORM& lineEnd, CCNotePad* callbackObj, bool hexAsk, QWidget* msgBoxParent)
+{
+	QFile file(filePath);
+
+	//如果文件不存在，直接返回
+	if (!file.exists())
+	{
+		return -1;
+	}
+
+	QFlags<QFileDevice::Permission> power = QFile::permissions(filePath);
+
+	//直接以只读的方式打开，至于能不能保存，是保存时需要考虑的问题。
+	//只需要在保存的时候获取admin权限即可
+	QIODevice::OpenMode mode;
+
+	mode = QIODevice::ExistingOnly | QIODevice::ReadOnly;
+
+	if (!file.open(mode))
+	{
+		qDebug() << file.error();
+#ifdef Q_OS_WIN
+		//打开失败，这里一般是权限问题导致。如果是windows，在外面申请权限后继续处理
+		if (QFileDevice::OpenError == file.error())
+		{
+			if (callbackObj != nullptr)
+			{
+				return callbackObj->runAsAdmin(filePath);
+			}
+		return 1;
+	}
+#endif
+#ifdef Q_OS_UNIX
+		QMessageBox::warning(msgBoxParent, tr("Error"), tr("Open File %1 failed").arg(filePath));
+#endif
+		return 2;
+	}
+
+	qint64 fileSize = file.size();
+
+	//如果文件是空的。检查一下，有可能在临时文件损坏情况下出现，外面需要使用
+	if (fileSize == 0)
+	{
+		m_lastErrorCode = ERROR_TYPE::OPEN_EMPTY_FILE;
+		file.close();
+		return 0;
+	}
+
+	qint64 bufferSizeRequested = fileSize + qMin((qint64)(1 << 20), (qint64)(fileSize / 6));
+
+	if (bufferSizeRequested > INT_MAX)
+	{
+		QMessageBox::warning(msgBoxParent, tr("Error"), tr("File is too big to be opened by Notepad--"));
+		file.close();
+		return 3;
+	}
+
+	QString fileText;
+	bool isErrorCode = false;
+
+	fileTextCode = CmpareMode::scanFileOutPut(file, fileTextCode, filePath, fileText, isErrorCode);
+
+	//如果文件是空的。检查一下，有可能在临时文件损坏情况下出现，外面需要使用
+	if (fileText.size() == 0)
+	{
+		m_lastErrorCode = ERROR_TYPE::OPEN_EMPTY_FILE;
+		file.close();
+		return 0;
+	}
+
+	if (isErrorCode && hexAsk)
+	{
+		//检测到文件很可能是二进制文件，询问用户，是否以二进制加载
+		int ret = QMessageBox::question(msgBoxParent, tr("Open with Text or Hex? [Exist Garbled Code]"), tr("The file %1 is likely to be binary. Do you want to open it in binary?").arg(filePath), tr("Hex Open"), tr("Text Open"), tr("Cancel"));
+
+		if (ret == 0)
+		{
+			//16进制打开
+			file.close();
+			return 4;
+		}
+		else if (ret == 1)
+		{
+			//继续以文本打开
+		}
+		else
+		{
+			//取消，不打开
+			file.close();
+			return 2;
+		}
+	}
+
+	//以第一行的换行为文本的换行符。暂时只考虑win unix 。mac \r 已经淘汰，暂时不管
+	lineEnd = RC_LINE_FORM::UNKNOWN_LINE;
+
+	int pos = fileText.indexOf("\n");
+	if (pos >=1)
+	{
+		if (fileText[pos - 1] == QChar('\r'))
+		{
+			lineEnd = RC_LINE_FORM::DOS_LINE;
+		}
+		else
+		{
+			lineEnd = RC_LINE_FORM::UNIX_LINE;
+		}
+	}
+
+	if (lineEnd == UNKNOWN_LINE)
+	{
+#ifdef _WIN32
+		lineEnd = DOS_LINE;
+#else
+		lineEnd = UNIX_LINE;
+#endif
+	}
+
+	file.close();
+
+
+	//优先根据文件后缀来确定其语法风格
+	LexerInfo lxdata = CCNotePad::getLangLexerIdByFileExt(filePath);
+
+	if (lxdata.lexerId != L_TXT)
+	{
+		QsciLexer* lexer = editView->createLexer(lxdata.lexerId, lxdata.tagName);
+		editView->setLexer(lexer);
+	}
+	else
+	{
+		//利用前面100个字符，进行一个编程语言的判断
+		QString headContens = fileText.mid(0, 100);
+
+		LangType _language = detectLanguage(headContens, filePath);
+
+		if (_language >= 0 && _language < L_EXTERNAL)
+		{
+			QsciLexer* lexer = editView->createLexer(_language);
+			editView->setLexer(lexer);
+		}
+	}
+
+	//如果检测到时16进制文件，但是强行以二进制打开，则有限走setUtf8Text。
+	if (!isErrorCode)
+	{
+		editView->setText(fileText);
+	}
+	else
+	{
+		//20230203有github用户反馈，说存在乱码的文件被截断，所以后续还是不走截断
+		editView->setText(fileText);
+
+		return 6;
+	}
+
+	return 0;
+}
+
+
 //加载文件，只为查找使用
 int FileManager::loadFileForSearch(ScintillaEditView* editView, QString filePath)
 {
@@ -413,15 +643,9 @@ int FileManager::loadFileForSearch(ScintillaEditView* editView, QString filePath
 
 	QFlags<QFileDevice::Permission> power = QFile::permissions(filePath);
 
-	if (!power.testFlag(QFile::ReadOwner))
-	{
-		//文件不能读
-		return 1;
-	}
-
 	QIODevice::OpenMode mode;
 
-	if (!power.testFlag(QFile::WriteOwner))
+	if (!power.testFlag(QFile::WriteUser))
 	{
 		//文件不能写
 		mode = QIODevice::ExistingOnly | QIODevice::ReadOnly;
@@ -433,7 +657,7 @@ int FileManager::loadFileForSearch(ScintillaEditView* editView, QString filePath
 
 	if (!file.open(mode))
 	{
-		qDebug() << file.error();
+		//qDebug() << file.error();
 		return 2;
 	}
 
@@ -441,46 +665,30 @@ int FileManager::loadFileForSearch(ScintillaEditView* editView, QString filePath
 
 	qint64 bufferSizeRequested = fileSize + qMin((qint64)(1 << 20), (qint64)(fileSize / 6));
 
-	// As a 32bit application, we cannot allocate 2 buffer of more than INT_MAX size (it takes the whole address space)
 	if (bufferSizeRequested > INT_MAX)
 	{
 		file.close();
 		return 3;
 	}
 
-	QList<LineFileInfo> outputLineInfoVec;
-
-	int maxLineSize = 0;
-	int charsNums = 0;
-	bool isHexFile = false;
-
+	bool existGrbledCode = false;
+	QString outText;
 	CODE_ID fileTextCode = CODE_ID::UNKOWN;
 
-	CmpareMode::scanFileOutPut(fileTextCode, filePath, outputLineInfoVec, maxLineSize, charsNums, isHexFile);
+	fileTextCode = CmpareMode::scanFileOutPut(file, fileTextCode, filePath, outText, existGrbledCode);
 
-	if (isHexFile)
+	//20230218 这里必须指明一下编码，否则后续会导致编码被修改
+	editView->setProperty(Edit_Text_Code, fileTextCode);
+
+	if (existGrbledCode)
 	{
-		qDebug() << filePath;
+		//qDebug() << filePath;
 		file.close();
 		return 4;
 	}
-
-	if (maxLineSize > 0)
-	{
-		editView->execute(SCI_SETSCROLLWIDTH, maxLineSize * 10);
-	}
-
-	QString text;
-	text.reserve(charsNums + 1);
-
-	for (QList<LineFileInfo>::iterator it = outputLineInfoVec.begin(); it != outputLineInfoVec.end(); ++it)
-	{
-		text.append(it->unicodeStr);
-	}
-
 	file.close();
 
-	editView->setText(text);
+	editView->setText(outText);
 
 	return 0;
 }
@@ -1220,92 +1428,49 @@ void FileManager::closeBigTextRoFileHand(QString filepath)
 	}
 }
 
-//检查文件的编程语言
-LangType FileManager::detectLanguageFromTextBegining(const unsigned char *data, size_t dataLen)
+//初步检查文件的编程语言。两个标准： 1 文件头部标签 2 文件特定名称
+LangType detectLanguage(QString& headContent, QString& filepath)
 {
 	struct FirstLineLanguages
 	{
-		std::string pattern;
+		QString pattern;
 		LangType lang;
 	};
 
-	// Is the buffer at least the size of a BOM?
-	if (dataLen <= 3)
-		return L_TXT;
-
-	// Eliminate BOM if present
-	size_t i = 0;
-	if ((data[0] == 0xEF && data[1] == 0xBB && data[2] == 0xBF) || // UTF8 BOM
-		(data[0] == 0xFE && data[1] == 0xFF && data[2] == 0x00) || // UTF16 BE BOM
-		(data[0] == 0xFF && data[1] == 0xFE && data[2] == 0x00))   // UTF16 LE BOM
-		i += 3;
-
-	// Skip any space-like char
-	for (; i < dataLen; ++i)
-	{
-		if (data[i] != ' ' && data[i] != '\t' && data[i] != '\n' && data[i] != '\r')
-			break;
-	}
-
-	// Create the buffer to need to test
-	const size_t longestLength = 40; // shebangs can be large
-	std::string buf2Test = std::string((const char *)data + i, longestLength);
-
-	// Is there a \r or \n in the buffer? If so, truncate it
-	auto cr = buf2Test.find("\r");
-	auto nl = buf2Test.find("\n");
-	auto crnl = qMin(cr, nl);
-	if (crnl != std::string::npos && crnl < longestLength)
-		buf2Test = std::string((const char *)data + i, crnl);
-
-	// First test for a Unix-like Shebang
-	// See https://en.wikipedia.org/wiki/Shebang_%28Unix%29 for more details about Shebang
-	std::string shebang = "#!";
-
-	size_t foundPos = buf2Test.find(shebang);
-	if (foundPos == 0)
-	{
-		// Make a list of the most commonly used languages
-        const size_t NB_SHEBANG_LANGUAGES = 7;
-		FirstLineLanguages ShebangLangs[NB_SHEBANG_LANGUAGES] = {
-			{ "sh",		L_BASH },
-			{ "python", L_PYTHON },
-			{ "perl",	L_PERL },
-			{ "php",	L_PHP },
-			{ "ruby",	L_RUBY },
-            { "node",	L_JAVASCRIPT },
-            { "Makefile",	L_MAKEFILE}
-		};
-
-		// Go through the list of languages
-		for (i = 0; i < NB_SHEBANG_LANGUAGES; ++i)
-		{
-			if (buf2Test.find(ShebangLangs[i].pattern) != std::string::npos)
-			{
-				return ShebangLangs[i].lang;
-			}
-		}
-
-		// Unrecognized shebang (there is always room for improvement ;-)
-		return L_TXT;
-	}
-
-	// Are there any other patterns we know off?
-	const size_t NB_FIRST_LINE_LANGUAGES = 5;
-	FirstLineLanguages languages[NB_FIRST_LINE_LANGUAGES] = {
+	const size_t FIRST_LINE_LANGUAGES = 5;
+	FirstLineLanguages languages[FIRST_LINE_LANGUAGES] = {
 		{ "<?xml",			L_XML },
 		{ "<?php",			L_PHP },
 		{ "<html",			L_HTML },
 		{ "<!DOCTYPE html",	L_HTML },
-		{ "<?",				L_PHP } // MUST be after "<?php" and "<?xml" to get the result as accurate as possible
+		{ "<?",				L_PHP }
 	};
 
-	for (i = 0; i < NB_FIRST_LINE_LANGUAGES; ++i)
+	int foundPos = -1;
+	for (int i = 0; i < FIRST_LINE_LANGUAGES; ++i)
 	{
-		foundPos = buf2Test.find(languages[i].pattern);
+		foundPos = headContent.indexOf(languages[i].pattern);
 		if (foundPos == 0)
 		{
 			return languages[i].lang;
+		}
+	}
+
+	const size_t NAME_CHECK_LANGUAGES = 3;
+	FirstLineLanguages NAME_LEXER[NAME_CHECK_LANGUAGES] = {
+		{ "make",			L_MAKEFILE },
+		{ "makefile",		L_MAKEFILE },
+		{ "CMakeLists",		L_MAKEFILE },
+	};
+
+	QFileInfo fi(filepath);
+	QString baseName = fi.baseName();
+
+	for (int i = 0; i < NAME_CHECK_LANGUAGES; ++i)
+	{
+		if (0 == NAME_LEXER[i].pattern.compare(baseName, Qt::CaseInsensitive))
+		{
+			return NAME_LEXER[i].lang;
 		}
 	}
 

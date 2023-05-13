@@ -39,31 +39,13 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="MyTreeView" name="resultTreeView">
-     <property name="font">
-      <font>
-       <family>Microsoft YaHei</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
+    <widget class="FindResultView" name="displayView">
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
-     <property name="lineWidth">
-      <number>1</number>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAsNeeded</enum>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::DoubleClicked</set>
-     </property>
-     <property name="animated">
-      <bool>true</bool>
-     </property>
-     <attribute name="headerVisible">
-      <bool>true</bool>
-     </attribute>
     </widget>
    </item>
   </layout>
@@ -71,9 +53,10 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>MyTreeView</class>
-   <extends>QTreeView</extends>
-   <header>mytreeview.h</header>
+   <class>FindResultView</class>
+   <extends>QFrame</extends>
+   <header location="global">findresultview.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

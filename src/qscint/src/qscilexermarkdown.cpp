@@ -1,6 +1,6 @@
-// This module implements the QsciLexerMarkdown class.
+﻿// This module implements the QsciLexerMarkdown class.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
@@ -189,8 +189,8 @@ QColor QsciLexerMarkdown::defaultPaper(int style) const
     case UnorderedListItem:
         return QColor(0xde, 0xd8, 0xc3);
 
-    case OrderedListItem:
-        return QColor(0xb8, 0xc3, 0xe1);
+    /*case OrderedListItem:
+        return QColor(0xb8, 0xc3, 0xe1);*/
 
     case BlockQuote:
         return QColor(0xcb, 0xdc, 0xcb);

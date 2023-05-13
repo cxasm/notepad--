@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <qsciscintilla.h>
 #include <Scintilla.h>
 #include <SciLexer.h>
@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include "common.h"
 #include "Sorters.h"
+#include "markdownview.h"
 
 
 typedef sptr_t(*SCINTILLA_FUNC) (sptr_t ptr, unsigned int, uptr_t, sptr_t);
@@ -139,9 +140,6 @@ public:
 	bool gotoPrePos();
 	bool gotoNextPos();
 
-
-	/*virtual void adjuctSkinStyle();*/
-
 	//设置文档的缩进参考线
 	void setIndentGuide(bool willBeShowed);
 
@@ -210,16 +208,27 @@ public:
 	//获取当前块的开始行号。只在大文件只读模式下有效。其余模式下均返回0
 	quint32 getBigTextBlockStartLine();
 	void setBigTextBlockStartLine(quint32 line);
+	void collapse(int level, bool mode);
+	void comment(int type);
+#ifdef Q_OS_WIN
+	void deleteTailFileThread();
+#endif
+
+	void bookmarkAdd(QSet<int>& lineSet);
+
+	static ScintillaEditView* createEditForSearch();
+
 signals:
 	void delayWork();
 
 protected:
-
 	virtual void addHotSpot();
 	void setStylesFont(const QFont& f, int style, int setBitMask = ALL_SET_Bit);
+	void keyPressEvent(QKeyEvent* event) override;
+	virtual void mouseReleaseEvent(QMouseEvent* ev) override;
 
 private:
-
+	ScintillaEditView();
 	void getText(char * dest, size_t start, size_t end) const;
 
 	QString getGenericTextAsQString(size_t start, size_t end) const;
@@ -236,6 +245,12 @@ private:
 	void getVisibleStartAndEndPosition(int * startPos, int * endPos);
 	void changeStyleColor(int sytleId);
 	void initStyleColorMenu();
+
+	bool isFolded(size_t line);
+	void fold(size_t line, bool mode);
+	void collapseFoldIndentBased(int level, bool mode);
+	bool isFoldIndentBased() const;
+
 
 public:
 	static const int _SC_MARGE_LINENUMBER;
@@ -283,8 +298,8 @@ private slots:
 	void slot_clearHightWord();
 
 	void slot_bookMarkClicked(int margin, int line, Qt::KeyboardModifiers state);
-
-
+	void on_viewMarkdown();
+	void on_updataMarkdown();
 
 private:
 
@@ -313,10 +328,18 @@ private:
 	quint32 m_curBlockLineStartNum;
 
 	QMap<qint64, quint32> m_addrLineNumMap;//大文本模式下，地址和行号的对应关系。只需要首尾即可
+
+	QPointer<MarkdownView> m_markdownWin;
+
 public:
 	static int s_tabLens;
 	static bool s_noUseTab;
 	static int s_bigTextSize;
 
 	bool m_hasHighlight;
+
+
+#ifdef Q_OS_WIN
+	std::atomic<bool> m_isInTailStatus;
+#endif
 };

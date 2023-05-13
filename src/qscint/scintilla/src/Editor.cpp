@@ -5622,7 +5622,7 @@ void Editor::StyleSetMessage(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		vs.styles[wParam].back = ColourDesired(static_cast<int>(lParam));
 		break;
 	case SCI_STYLESETBOLD:
-		vs.styles[wParam].weight = lParam != 0 ? SC_WEIGHT_BOLD : SC_WEIGHT_NORMAL;
+		vs.styles[wParam].weight = ((lParam != 0) ? SC_WEIGHT_BOLD : SC_WEIGHT_NORMAL);
 		break;
 	case SCI_STYLESETWEIGHT:
 		vs.styles[wParam].weight = static_cast<int>(lParam);

@@ -84,7 +84,7 @@
              <number>50</number>
             </property>
             <property name="maximum">
-             <number>300</number>
+             <number>600</number>
             </property>
             <property name="value">
              <number>100</number>
@@ -94,7 +94,7 @@
           <item>
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>(50-300MB)</string>
+             <string>(50-600MB)</string>
             </property>
            </widget>
           </item>
@@ -218,6 +218,13 @@
       <widget class="QCheckBox" name="restoreFile">
        <property name="text">
         <string>Restore files opened on close</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="openfileRecord">
+       <property name="text">
+        <string>Clear openfile list record on close</string>
        </property>
       </widget>
      </item>

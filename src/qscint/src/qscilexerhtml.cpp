@@ -1,6 +1,6 @@
 ﻿// This module implements the QsciLexerHTML class.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
@@ -312,21 +312,21 @@ QFont QsciLexerHTML::defaultFont(int style) const
     case Default:
     case Entity:
 #if defined(Q_OS_WIN)
-        f = QFont("Courier New",13);
+        f = QFont("Courier New", QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Courier New", 13);
+        f = QFont("Courier New", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Charter",10);
+        f = QFont("Bitstream Charter", QsciLexer::s_defaultFontSize);
 #endif
         break;
 
     case HTMLComment:
 #if defined(Q_OS_WIN)
-        f = QFont("Courier New",9);
+        f = QFont("Courier New", QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Verdana", 12);
+        f = QFont("Verdana", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Sans",8);
+        f = QFont("Bitstream Vera Sans", QsciLexer::s_defaultFontSize);
 #endif
         break;
 
@@ -354,9 +354,9 @@ QFont QsciLexerHTML::defaultFont(int style) const
 #if defined(Q_OS_WIN)
         f = QFont("Courier New",QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Comic Sans MS", 12);
+        f = QFont("Comic Sans MS", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Serif",9);
+        f = QFont("Bitstream Vera Serif", QsciLexer::s_defaultFontSize);
 #endif
         f.setBold(true);
         break;
@@ -381,9 +381,9 @@ QFont QsciLexerHTML::defaultFont(int style) const
 #if defined(Q_OS_WIN)
         f = QFont("Courier New",QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Comic Sans MS", 12);
+        f = QFont("Comic Sans MS", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Serif",9);
+        f = QFont("Bitstream Vera Serif", QsciLexer::s_defaultFontSize);
 #endif
         break;
 
@@ -400,9 +400,9 @@ QFont QsciLexerHTML::defaultFont(int style) const
 #if defined(Q_OS_WIN)
         f = QFont("Courier New",QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Lucida Grande", 12);
+        f = QFont("Lucida Grande", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Serif",9);
+        f = QFont("Bitstream Vera Serif", QsciLexer::s_defaultFontSize);
 #endif
         break;
 
@@ -411,9 +411,9 @@ QFont QsciLexerHTML::defaultFont(int style) const
 #if defined(Q_OS_WIN)
         f = QFont("Courier New",QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Lucida Grande", 12);
+        f = QFont("Lucida Grande", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Serif",9);
+        f = QFont("Bitstream Vera Serif", QsciLexer::s_defaultFontSize);
 #endif
         f.setBold(false);
         break;
@@ -425,9 +425,9 @@ QFont QsciLexerHTML::defaultFont(int style) const
 #if defined(Q_OS_WIN)
         f = QFont("Courier New",QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Courier New", 12);
+        f = QFont("Courier New", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Sans Mono",9);
+        f = QFont("Bitstream Vera Sans Mono", QsciLexer::s_defaultFontSize);
 #endif
         break;
 
@@ -442,9 +442,9 @@ QFont QsciLexerHTML::defaultFont(int style) const
 #if defined(Q_OS_WIN)
         f = QFont("Courier New",QsciLexer::s_defaultFontSize);
 #elif defined(Q_OS_MAC)
-        f = QFont("Comic Sans MS", 12);
+        f = QFont("Comic Sans MS", QsciLexer::s_defaultFontSize);
 #else
-        f = QFont("Bitstream Vera Serif",9);
+        f = QFont("Bitstream Vera Serif", QsciLexer::s_defaultFontSize);
 #endif
         f.setItalic(true);
         break;

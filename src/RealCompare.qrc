@@ -145,5 +145,7 @@
         <file>Resources/img/expand.png</file>
         <file>Resources/img/fold.png</file>
         <file>qss/common.qss</file>
+        <file>notepad/tailf.png</file>
+        <file>Resources/edit/styledeepblue/tailf.png</file>
     </qresource>
 </RCC>

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QMainWindow>
 #include "ui_shortcutkeymgr.h"
@@ -36,9 +36,27 @@ enum Shortcut_Key_ID {
 	Batch_rename_ID,
 	Format_Xml_ID,
 	Format_Json_ID,
+	ADD_DEL_LINE_COM,
+	ADD_BK_COM,
+	DEL_BK_COM,
+	S_K_FOLD_1,
+	S_K_FOLD_2,
+	S_K_FOLD_3,
+	S_K_FOLD_4,
+	S_K_FOLD_5,
+	S_K_FOLD_6,
+	S_K_FOLD_7,
+	S_K_FOLD_8,
+	S_K_UNFOLD_1,
+	S_K_UNFOLD_2,
+	S_K_UNFOLD_3,
+	S_K_UNFOLD_4,
+	S_K_UNFOLD_5,
+	S_K_UNFOLD_6,
+	S_K_UNFOLD_7,
+	S_K_UNFOLD_8,
 
-
-	Shortcut_End_ID,//×ÜÊÇÔÚ×îµ×ÏÂ
+	Shortcut_End_ID,//æ€»æ˜¯åœ¨æœ€åº•ä¸‹
 };
 
 static const char* New_File = "newfile";
@@ -74,6 +92,26 @@ static const char* Batch_rename = "batchrename";
 static const char* Format_Xml = "formatxml";
 static const char* Format_Json = "formatjson";
 
+static const char* ADD_DELETE_LINE_COMMENT = "linecom";
+static const char* ADD_BLOCK_COMMENT = "bkcom";
+static const char* CANCEL_BLOCK_COMMENT = "cbkcom";
+
+static const char* FOLD_1 = "fold_1";
+static const char* FOLD_2 = "fold_2";
+static const char* FOLD_3 = "fold_3";
+static const char* FOLD_4 = "fold_4";
+static const char* FOLD_5 = "fold_5";
+static const char* FOLD_6 = "fold_6";
+static const char* FOLD_7 = "fold_7";
+static const char* FOLD_8 = "fold_8";
+static const char* UNFOLD_1 = "unfold_1";
+static const char* UNFOLD_2 = "unfold_2";
+static const char* UNFOLD_3 = "unfold_3";
+static const char* UNFOLD_4 = "unfold_4";
+static const char* UNFOLD_5 = "unfold_5";
+static const char* UNFOLD_6 = "unfold_6";
+static const char* UNFOLD_7 = "unfold_7";
+static const char* UNFOLD_8 = "unfold_8";
 
 class ShortcutKeyMgr : public QMainWindow
 {

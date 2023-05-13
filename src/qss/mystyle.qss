@@ -59,7 +59,6 @@ QTreeWidget{
 QTreeWidget::item
 {
 height:22px;
-/*background-color:rgba(255, 255, 255, 255); */
 } 
 QTreeView::item::selected
 {

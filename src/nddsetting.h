@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <QSettings>
 #include <QVariant>
 
@@ -10,24 +10,29 @@ static QString SHOWSPACE_KEY = "blank";
 static QString MAX_BIG_TEXT = "maxtsize";
 static QString SOFT_STATUS = "rstatus";
 static QString SOFT_KEY = "rkey";
-static QString RESTORE_CLOSE_FILE = "restore"; //»Ö¸´¹Ø±ÕÊ±´ò¿ªµÄÎÄ¼ş
-static QString PRO_DIR = "prodir";//·ÅÖÃÅäÖÃÎÄ¼şµÄÂ·¾¶
-//static QString RESTORE_SIZE = "rsize";//±£´æ¹Ø±ÕÊ±µÄ´óĞ¡
-static QString WIN_POS = "pos";//±£´æ¹Ø±ÕÊÇµÄ´óĞ¡
-static QString ICON_SIZE = "iconsize";//Í¼±ê´óĞ¡
-static QString ZOOMVALUE = "zoom"; //·Å´ó±¶Êı
-static QString VERSION = "version";//µ±Ç°°æ±¾
-static QString FINDRESULTPOS = "findpos";//²éÕÒ´°¿ÚĞü¸¡µÄÎ»ÖÃ
-static QString FILELISTPOS = "filepos";//ÎÄ¼şÁĞ±íĞü¸¡¿òµÄÎ»ÖÃ
-static QString FILELISTSHOW = "showfilelist"; //ÎÄ¼şÁĞ±í¿òÊÇ·ñÏÔÊ¾
-static QString TOOLBARSHOW = "showbar"; //ÊÇ·ñÏÔÊ¾¹¤¾ßÀ¸
-static QString FINDWINSIZE = "findwinsize";//±£´æ²éÕÒ¿òµÄ´óĞ¡¡£150%·Å´óÊ±½çÃæÓÀ¾Ã¡£±£Áô±ÜÃâÃ¿´ÎÊÖ¶¯µ÷Õû
-static QString SHOWWEBADDR = "showweb";//¸ßÁÁwebµØÖ·£¬Ë«»÷ÍøÒ³´ò¿ª
-static QString FIND_RESULT_FONT_SIZE = "frfs";//²éÕÒ½á¹ûµÄÄ¬ÈÏ×ÖÌå´óĞ¡£¬Ä¬ÈÏÎª14
+static QString RESTORE_CLOSE_FILE = "restore"; //æ¢å¤å…³é—­æ—¶æ‰“å¼€çš„æ–‡ä»¶
+static QString PRO_DIR = "prodir";//æ”¾ç½®é…ç½®æ–‡ä»¶çš„è·¯å¾„
+//static QString RESTORE_SIZE = "rsize";//ä¿å­˜å…³é—­æ—¶çš„å¤§å°
+static QString WIN_POS = "pos";//ä¿å­˜å…³é—­æ˜¯çš„å¤§å°
+static QString ICON_SIZE = "iconsize";//å›¾æ ‡å¤§å°
+static QString ZOOMVALUE = "zoom"; //æ”¾å¤§å€æ•°
+static QString VERSION = "version";//å½“å‰ç‰ˆæœ¬
+static QString FINDRESULTPOS = "findpos";//æŸ¥æ‰¾çª—å£æ‚¬æµ®çš„ä½ç½®
+static QString FILELISTPOS = "filepos";//æ–‡ä»¶åˆ—è¡¨æ‚¬æµ®æ¡†çš„ä½ç½®
+static QString FILELISTSHOW = "showfilelist"; //æ–‡ä»¶åˆ—è¡¨æ¡†æ˜¯å¦æ˜¾ç¤º
+static QString TOOLBARSHOW = "showbar"; //æ˜¯å¦æ˜¾ç¤ºå·¥å…·æ 
+static QString FINDWINSIZE = "findwinsize";//ä¿å­˜æŸ¥æ‰¾æ¡†çš„å¤§å°ã€‚150%æ”¾å¤§æ—¶ç•Œé¢æ°¸ä¹…ã€‚ä¿ç•™é¿å…æ¯æ¬¡æ‰‹åŠ¨è°ƒæ•´
+static QString SHOWWEBADDR = "showweb";//é«˜äº®webåœ°å€ï¼ŒåŒå‡»ç½‘é¡µæ‰“å¼€
+static QString FIND_RESULT_FONT_SIZE = "frfs";//æŸ¥æ‰¾ç»“æœçš„é»˜è®¤å­—ä½“å¤§å°ï¼Œé»˜è®¤ä¸º14
+static QString LAST_ACTION_TAB_INDEX = "lati";//ä¸Šæ¬¡å…³é—­æ—¶ï¼Œå½“å‰æ¿€æ´»çš„tabæ ‡ç­¾é¡µåºå·
+
+static QString RECENT_OPEN_FILE = "recentopenfile";
+static QString LAST_OPEN_DIR = "lastdir";
+static QString CLEAR_OPENFILE_ON_CLOSE = "clearopenfile"; //å…³é—­æ—¶æ¸…ç©ºå†å²æ–‡ä»¶
 
 
-//ÏÂÃæÕâ¸öÊÇwinpos.iniÖĞµÄkey£¬±ÜÃâµ¥¸öÎÄ¼şÌ«´ó£¬ÍÏÂıÆô¶¯ËÙ¶È
-static QString BATCH_FIND_REPLACE_POS = "bfpos";//ÅúÁ¿²éÕÒÌæ»»´°¿ÚµÄ´óĞ¡
+//ä¸‹é¢è¿™ä¸ªæ˜¯winpos.iniä¸­çš„keyï¼Œé¿å…å•ä¸ªæ–‡ä»¶å¤ªå¤§ï¼Œæ‹–æ…¢å¯åŠ¨é€Ÿåº¦
+static QString BATCH_FIND_REPLACE_POS = "bfpos";//æ‰¹é‡æŸ¥æ‰¾æ›¿æ¢çª—å£çš„å¤§å°
 
 class NddSetting
 {
@@ -58,14 +63,20 @@ public:
 
 	static void updataWinPos(QString key, QByteArray& value);
 
-	
+	static QString getKeyValueFromDelaySets(QString key);
+
+	static bool updataKeyValueFromDelaySets(QString key, QString  value);
+
+	static int getKeyValueFromDelayNumSets(QString key);
+
+	static bool updataKeyValueFromDelayNumSets(QString key, int value);
 
 	static bool isDbExist()
 	{
 		return s_isExistDb;
 	}
 private:
-	static void winPosInit();
+	static void nddDelaySetInit();
 private:
 
 	static bool s_isExistDb;
@@ -74,5 +85,7 @@ private:
 
 	static QSettings* s_nddSet;
 
-	static QSettings* s_winPosSet;
+	//åŸºæœ¬å’Œs_nddSetä¸€æ ·ï¼Œä¸è¿‡åœ¨å¯åŠ¨çš„æ—¶å€™ï¼Œä¸éœ€è¦è¯»å–è¯¥æ–‡ä»¶ã€‚åŠ å¿«å¯åŠ¨é€Ÿåº¦
+	//å¯åŠ¨å®Œæ¯•åï¼Œå…¶ä»–æ“ä½œè§¦å‘åŠ è½½è¯¥æ–‡ä»¶
+	static QSettings* s_nddDelaySet;
 };

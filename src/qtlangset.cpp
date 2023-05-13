@@ -1,4 +1,4 @@
-#include "qtlangset.h"
+ï»¿#include "qtlangset.h"
 #include "scintillaeditview.h"
 #include "nddsetting.h"
 #include "rcglobal.h"
@@ -42,7 +42,7 @@ QtLangSet::~QtLangSet()
 }
 
 
-//ÔÚÍ¬²½×ÖÌåÊ±£¬Îñ±ØÏÈ¹Ø±Õ¹ØÁª²Ûº¯Êı£¬±ÜÃâÑ­»·´¥·¢¡£Îñ±ØÅä¶ÔÊ¹ÓÃ
+//åœ¨åŒæ­¥å­—ä½“æ—¶ï¼ŒåŠ¡å¿…å…ˆå…³é—­å…³è”æ§½å‡½æ•°ï¼Œé¿å…å¾ªç¯è§¦å‘ã€‚åŠ¡å¿…é…å¯¹ä½¿ç”¨
 void QtLangSet::enableFontChangeSensitive(bool isSensitive)
 {
 	if (isSensitive)
@@ -65,8 +65,8 @@ void QtLangSet::enableFontChangeSensitive(bool isSensitive)
 
 void QtLangSet::startSignSlot()
 {
-	//¿ªÊ¼±¾À´Ê¹ÓÃµÄÊÇQListWidget::currentItemChangedĞÅºÅ£¬µ«ÊÇ·¢ÏÖ¸ÃĞÅºÅ´æÔÚÄªÃûÆäÃîµÄ´¥·¢»úÖÆ¡£
-	//¹À¼ÆÊÇQT5.12µÄbug¡£ËùÒÔ»»³ÉitemClickedĞÅºÅ
+	//å¼€å§‹æœ¬æ¥ä½¿ç”¨çš„æ˜¯QListWidget::currentItemChangedä¿¡å·ï¼Œä½†æ˜¯å‘ç°è¯¥ä¿¡å·å­˜åœ¨è«åå…¶å¦™çš„è§¦å‘æœºåˆ¶ã€‚
+	//ä¼°è®¡æ˜¯QT5.12çš„bugã€‚æ‰€ä»¥æ¢æˆitemClickedä¿¡å·
 	connect(ui.langListWidget, &QListWidget::itemClicked, this, &QtLangSet::slot_itemSelect);
 	connect(ui.langListWidget, &QListWidget::currentRowChanged, this, &QtLangSet::slot_langListCurRowChanged);
 
@@ -83,12 +83,12 @@ void QtLangSet::startSignSlot()
 	connect(ui.fontComboBox, &QFontComboBox::currentFontChanged, this, &QtLangSet::slot_fontChange);
 }
 
-//ÈÃ³õÊ¼»¯Ê±Ñ¡Ôñµ±Ç°±à¼­Æ÷µÄÓïÑÔ
+//è®©åˆå§‹åŒ–æ—¶é€‰æ‹©å½“å‰ç¼–è¾‘å™¨çš„è¯­è¨€
 void QtLangSet::selectInitLangTag(QString initLangTag)
 {
 
-	//µÚÒ»´Î±ØĞëÒÔ³õÊ¼»¯lexidÏÔÊ¾¡£ÕâÑù×öÊµÔÚÊÇÒòÎª³õÊ¼»¯listÆô¶¯ºó£¬»á×Ô¶¯°ÑµÚÒ»¸öÉèÖÃÎªµ±Ç°¡£
-	//ÕâÀï»¹ÊÇÓĞÎÊÌâ£¬ÊÇqt5.12.4µÄbug»úÖÆµ¼ÖÂ:Èç¹ûÃ»ÓĞÑ¡ÔñQListWidget£¬»á×ÜÊÇ×Ô¶¯Ñ¡ÔñµÚÒ»¸ö
+	//ç¬¬ä¸€æ¬¡å¿…é¡»ä»¥åˆå§‹åŒ–lexidæ˜¾ç¤ºã€‚è¿™æ ·åšå®åœ¨æ˜¯å› ä¸ºåˆå§‹åŒ–listå¯åŠ¨åï¼Œä¼šè‡ªåŠ¨æŠŠç¬¬ä¸€ä¸ªè®¾ç½®ä¸ºå½“å‰ã€‚
+	//è¿™é‡Œè¿˜æ˜¯æœ‰é—®é¢˜ï¼Œæ˜¯qt5.12.4çš„bugæœºåˆ¶å¯¼è‡´:å¦‚æœæ²¡æœ‰é€‰æ‹©QListWidgetï¼Œä¼šæ€»æ˜¯è‡ªåŠ¨é€‰æ‹©ç¬¬ä¸€ä¸ª
 	if (!initLangTag.isEmpty())
 	{
 		QList<QListWidgetItem*> destItems = ui.langListWidget->findItems(initLangTag,Qt::MatchExactly);
@@ -121,7 +121,7 @@ void QtLangSet::selectInitLangTag(QString initLangTag)
 
 void QtLangSet::slot_fontBoldChange(int state)
 {
-	//¼´Ê±ÉèÖÃ·ç¸ñ
+	//å³æ—¶è®¾ç½®é£æ ¼
 	if (m_selectLexer != nullptr)
 	{
 		if (m_curStyleData.font.bold() != ((state == Qt::Unchecked) ? false : true))
@@ -139,19 +139,19 @@ void QtLangSet::slot_fontBoldChange(int state)
 				}
 				else if (ui.useGlobalFont->isVisible() && !ui.useGbFontBold->isChecked())
 				{
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 			}
 				else if (!ui.useGlobalFont->isVisible())
 				{
-					//È«¾Ö·ÇµÚÒ»¸öÑùÊ½£¬ĞŞ¸Äµ±Ç°È«¾Ö×ÖÌå´óĞ¡
-						//È«¾ÖÑùÊ½µÄ·ÇµÚÒ»¸ö
+					//å…¨å±€éç¬¬ä¸€ä¸ªæ ·å¼ï¼Œä¿®æ”¹å½“å‰å…¨å±€å­—ä½“å¤§å°
+						//å…¨å±€æ ·å¼çš„éç¬¬ä¸€ä¸ª
 					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 					{
@@ -169,7 +169,7 @@ void QtLangSet::slot_fontBoldChange(int state)
 
 void QtLangSet::slot_fontItalicChange(int state)
 {
-	//¼´Ê±ÉèÖÃ·ç¸ñ
+	//å³æ—¶è®¾ç½®é£æ ¼
 	if (m_selectLexer != nullptr)
 	{
 		if (m_curStyleData.font.italic() != ((state == Qt::Unchecked) ? false : true))
@@ -186,17 +186,17 @@ void QtLangSet::slot_fontItalicChange(int state)
 				}
 				else if (ui.useGlobalFont->isVisible() && !ui.useGbFontItalic->isChecked())
 				{
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 			}
 				else if (!ui.useGlobalFont->isVisible())
 				{
-					//È«¾Ö·ÇµÚÒ»¸öÑùÊ½£¬ĞŞ¸Äµ±Ç°È«¾Ö×ÖÌå´óĞ¡
-						//È«¾ÖÑùÊ½µÄ·ÇµÚÒ»¸ö
+					//å…¨å±€éç¬¬ä¸€ä¸ªæ ·å¼ï¼Œä¿®æ”¹å½“å‰å…¨å±€å­—ä½“å¤§å°
+						//å…¨å±€æ ·å¼çš„éç¬¬ä¸€ä¸ª
 					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 					saveLangeSet(m_selectLexer);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 					{
@@ -214,7 +214,7 @@ void QtLangSet::slot_fontItalicChange(int state)
 
 void QtLangSet::slot_fontUnderlineChange(int state)
 {
-	//¼´Ê±ÉèÖÃ·ç¸ñ
+	//å³æ—¶è®¾ç½®é£æ ¼
 	if (m_selectLexer != nullptr)
 	{
 		if (m_curStyleData.font.underline() != ((state == Qt::Unchecked) ? false : true))
@@ -231,17 +231,17 @@ void QtLangSet::slot_fontUnderlineChange(int state)
 				}
 				else if (ui.useGlobalFont->isVisible() && !ui.useGbFontUnderline->isChecked())
 				{
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 			}
 				else if (!ui.useGlobalFont->isVisible())
 				{
-					//È«¾Ö·ÇµÚÒ»¸öÑùÊ½£¬ĞŞ¸Äµ±Ç°È«¾Ö×ÖÌå´óĞ¡
-						//È«¾ÖÑùÊ½µÄ·ÇµÚÒ»¸ö
+					//å…¨å±€éç¬¬ä¸€ä¸ªæ ·å¼ï¼Œä¿®æ”¹å½“å‰å…¨å±€å­—ä½“å¤§å°
+						//å…¨å±€æ ·å¼çš„éç¬¬ä¸€ä¸ª
 					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 					saveLangeSet(m_selectLexer);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 					{
@@ -257,13 +257,13 @@ void QtLangSet::slot_fontUnderlineChange(int state)
 	}
 }
 
-//·¢ÏÖÒ»¸öqtÏÖÏó£ºÔÚdebug¶Ï×¡¸Ãslot_fontSizeChangeº¯Êı£¬»áµ¼ÖÂ²Û´¥·¢2´Î£»²»¶Ï×¡»òÕßreleaseÄ£Ê½Ö±½ÓÅÜ£¬²»»á´¥·¢2´Î
+//å‘ç°ä¸€ä¸ªqtç°è±¡ï¼šåœ¨debugæ–­ä½è¯¥slot_fontSizeChangeå‡½æ•°ï¼Œä¼šå¯¼è‡´æ§½è§¦å‘2æ¬¡ï¼›ä¸æ–­ä½æˆ–è€…releaseæ¨¡å¼ç›´æ¥è·‘ï¼Œä¸ä¼šè§¦å‘2æ¬¡
 void QtLangSet::slot_fontSizeChange(int v)
 {
-	//¼´Ê±ÉèÖÃ·ç¸ñ
+	//å³æ—¶è®¾ç½®é£æ ¼
 	if (m_selectLexer != nullptr)
 	{
-		//È«¾ÖĞŞ¸Ä£¬°ÑËùÓĞÓïÑÔµÄËùÓĞ·ç¸ñ¶¼ÉèÖÃ
+		//å…¨å±€ä¿®æ”¹ï¼ŒæŠŠæ‰€æœ‰è¯­è¨€çš„æ‰€æœ‰é£æ ¼éƒ½è®¾ç½®
 		if (m_isGlobelItem)
 		{
 			if (m_curStyleData.font.pointSize() != v)
@@ -273,7 +273,7 @@ void QtLangSet::slot_fontSizeChange(int v)
 				m_isStyleChange = true;
 				m_selectLexer->setFont(m_curStyleData.font, m_selectStyleId);
 
-				//È«¾ÖµÚÒ»¸öÑùÊ½£¬ĞŞ¸ÄËùÓĞÓï·¨ÑùÊ½
+				//å…¨å±€ç¬¬ä¸€ä¸ªæ ·å¼ï¼Œä¿®æ”¹æ‰€æœ‰è¯­æ³•æ ·å¼
 				if (ui.useGlobalFont->isVisible() && ui.useGbFontSize->isChecked())
 				{
 					slot_useAlobalFontSize(true);
@@ -281,17 +281,17 @@ void QtLangSet::slot_fontSizeChange(int v)
 				}
 				else if (ui.useGlobalFont->isVisible() && !ui.useGbFontSize->isChecked())
 				{
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 			}
 				else if (!ui.useGlobalFont->isVisible())
 				{
-					//È«¾Ö·ÇµÚÒ»¸öÑùÊ½£¬ĞŞ¸Äµ±Ç°È«¾Ö×ÖÌå´óĞ¡
-					//È«¾ÖÑùÊ½µÄ·ÇµÚÒ»¸ö
+					//å…¨å±€éç¬¬ä¸€ä¸ªæ ·å¼ï¼Œä¿®æ”¹å½“å‰å…¨å±€å­—ä½“å¤§å°
+					//å…¨å±€æ ·å¼çš„éç¬¬ä¸€ä¸ª
 					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 					saveLangeSet(m_selectLexer);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 					{
@@ -325,7 +325,7 @@ void QtLangSet::slot_fontSizeChange(int v)
 			m_curStyleData.font.setPointSize(v);
 			m_selectLexer->setFont(m_curStyleData.font, m_selectStyleId);
 			m_isStyleChange = true;
-			//¼´Ê±ÉèÖÃ·ç¸ñ
+			//å³æ—¶è®¾ç½®é£æ ¼
 			if (m_selectLexer != nullptr)
 			{
 				int row = ui.styleListWidget->count();
@@ -337,7 +337,7 @@ void QtLangSet::slot_fontSizeChange(int v)
 					item = ui.styleListWidget->item(i);
 					int styleId = item->data(Qt::UserRole).toInt();
 
-					//ËùÓĞ×ÖÌå´óĞ¡ĞŞ¸ÄÎªÒ»ÖÂ
+					//æ‰€æœ‰å­—ä½“å¤§å°ä¿®æ”¹ä¸ºä¸€è‡´
 					QFont f = m_selectLexer->font(styleId);
 					f.setPointSize(v);
 					m_selectLexer->setFont(f, styleId);
@@ -360,7 +360,7 @@ void QtLangSet::getCurUseLexerTags(QVector<QString>& tag)
 	}
 }
 
-//Ê¹ÓÃÈ«¾ÖÉèÖÃÉè¶¨ËùÓĞÓïÑÔ·ç¸ñ
+//ä½¿ç”¨å…¨å±€è®¾ç½®è®¾å®šæ‰€æœ‰è¯­è¨€é£æ ¼
 void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 {
 	QFont oldfont;
@@ -369,11 +369,12 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 
 	for (int index = 0; index <= L_TXT; ++index)
 	{
-		//GLOBAL±¾Éí²»±£´æ£¬ÒòÎªGLOBAL²»ÊÇÓï·¨ÑùÊ½£¬¶øÊÇÈ«¾ÖµÄÊôĞÔ·ç¸ñ
-		//Èç¹ûÈ«¾ÖĞŞ¸ÄµÄÊÇÈ«¾Ö×ÖÌå»ò×ÖÌå´óĞ¡£¬È«¾ÖÒ²ĞŞ¸ÄÒ»ÏÂ¡£±ÜÃâÀ¨»¡µÈ´óĞ¡ºÍÈ«¾Ö×ÖÌå²»Ò»Ñù´ó¡£
+		//GLOBALæœ¬èº«ä¸ä¿å­˜ï¼Œå› ä¸ºGLOBALä¸æ˜¯è¯­æ³•æ ·å¼ï¼Œè€Œæ˜¯å…¨å±€çš„å±æ€§é£æ ¼
+		//å¦‚æœå…¨å±€ä¿®æ”¹çš„æ˜¯å…¨å±€å­—ä½“æˆ–å­—ä½“å¤§å°ï¼Œå…¨å±€ä¹Ÿä¿®æ”¹ä¸€ä¸‹ã€‚é¿å…æ‹¬å¼§ç­‰å¤§å°å’Œå…¨å±€å­—ä½“ä¸ä¸€æ ·å¤§ã€‚
+		//å…¨å±€é¢œè‰²å‰æ™¯å’ŒèƒŒæ™¯æ—¶ï¼Œä¹Ÿè¦ç‰¹æ®Šå¯¹å¾…ï¼Œè¦å•ç‹¬ä¿®æ”¹å…¨å±€defaultçš„ä¿®æ”¹ï¼›å¦åˆ™ç¼–è¾‘ç•Œé¢çœ‹èµ·æ¥é¢œè‰²æ‚ä¹±
 		if (index == L_GLOBAL)
 		{
-			if (flag != GLOBAL_FONT_SIZE && flag != GLOBAL_FONT)
+			if (flag != GLOBAL_FONT_SIZE && flag != GLOBAL_FONT && flag != GLOBAL_FG_COLOR && flag != GLOBAL_BK_COLOR)
 			{
 			continue;
 		}
@@ -387,7 +388,7 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 			{
 			case GLOBAL_FONT:
 			{
-				//·ÇÈ«¾ÖĞŞ¸ÄËùÓĞµÄÓï·¨¶ÔÓ¦ÑùÊ½
+				//éå…¨å±€ä¿®æ”¹æ‰€æœ‰çš„è¯­æ³•å¯¹åº”æ ·å¼
 				if (index != L_GLOBAL)
 				{
 				for (int i = 0; i <= 255; ++i)
@@ -402,7 +403,7 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 			}
 				else
 				{
-					//ÊÇÈ«¾ÖÊôĞÔĞŞ¸Ä×ÖÌå
+					//æ˜¯å…¨å±€å±æ€§ä¿®æ”¹å­—ä½“
 					QsciLexerGlobal* pGlobalLexer = dynamic_cast<QsciLexerGlobal*>(pLexer);
 					if (pGlobalLexer != nullptr)
 					{
@@ -420,7 +421,7 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 			break;
 			case GLOBAL_FONT_SIZE:
 			{
-				//·ÇÈ«¾ÖĞŞ¸ÄËùÓĞµÄÓï·¨¶ÔÓ¦ÑùÊ½
+				//éå…¨å±€ä¿®æ”¹æ‰€æœ‰çš„è¯­æ³•å¯¹åº”æ ·å¼
 				if (index != L_GLOBAL)
 				{
 				for (int i = 0; i <= 255; ++i)
@@ -435,7 +436,7 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 			}
 				else
 				{
-					//ÊÇÈ«¾Ö
+					//æ˜¯å…¨å±€
 					QsciLexerGlobal* pGlobalLexer = dynamic_cast<QsciLexerGlobal*>(pLexer);
 					if (pGlobalLexer != nullptr)
 					{
@@ -492,14 +493,37 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 			break;
 			case GLOBAL_FG_COLOR:
 			{
+				//éå…¨å±€ä¿®æ”¹æ‰€æœ‰çš„è¯­æ³•å¯¹åº”æ ·å¼
+				if (index != L_GLOBAL)
+				{
 				pLexer->setColor(m_curStyleData.color, -1);
+					pLexer->setDefaultColor(m_curStyleData.color);
+			}
+				else
+				{
+					//å…¨å±€æ—¶ï¼Œåªä¿®æ”¹defaultçš„é¢œè‰²
+					pLexer->setColor(m_curStyleData.color, GLOBAL_STYLES::GLOBAL_OVERRIDE);
+					pLexer->setColor(m_curStyleData.color, GLOBAL_STYLES::DEFAULT_STYLE);
+					isGlobalChange = true;
+				}
 			}
 			break;
 			case GLOBAL_BK_COLOR:
 			{
+				//éå…¨å±€ä¿®æ”¹æ‰€æœ‰çš„è¯­æ³•å¯¹åº”æ ·å¼
+				if (index != L_GLOBAL)
+				{
 				pLexer->setPaper(m_curStyleData.paper, -1);
-				//Ä¬ÈÏÖ½±³¾°É«»áºÍQPalette±£³ÖÒ»ÖÂ¡£µ¥¶ÀĞèÒªµ¥¶ÀÉèÖÃÒ»ÏÂ
+				//é»˜è®¤çº¸èƒŒæ™¯è‰²ä¼šå’ŒQPaletteä¿æŒä¸€è‡´ã€‚å•ç‹¬éœ€è¦å•ç‹¬è®¾ç½®ä¸€ä¸‹
 				pLexer->setDefaultPaper(m_curStyleData.paper);
+			}
+				else
+				{
+					//å…¨å±€æ—¶ï¼Œåªä¿®æ”¹defaultçš„é¢œè‰²
+					pLexer->setPaper(m_curStyleData.paper, GLOBAL_STYLES::GLOBAL_OVERRIDE);
+					pLexer->setPaper(m_curStyleData.paper, GLOBAL_STYLES::DEFAULT_STYLE);
+					isGlobalChange = true;
+				}
 			}
 			break;
 			default:
@@ -511,34 +535,39 @@ void QtLangSet::updateAllLangeStyleWithGlobal(GLOBAL_STYLE_SET flag)
 		delete pLexer;
 	}
 
-	//Èç¹ûÈ«¾Ö±ä»¯ÁË£¬°Ñµ±Ç°È«¾Ö½çÃæË¢ĞÂÒ»ÏÂ
-	//»¹ÓĞ£¬»¹ĞèÒª°Ñµ±Ç°´ò¿ªÎÄµµµÄÈ«¾Ö·ç¸ñÉèÖÃÒ»ÏÂ£¬·ñÔòÈ«¾Ö²»ÉúĞ§
+	//å¦‚æœå…¨å±€å˜åŒ–äº†ï¼ŒæŠŠå½“å‰å…¨å±€ç•Œé¢åˆ·æ–°ä¸€ä¸‹
+	//è¿˜æœ‰ï¼Œè¿˜éœ€è¦æŠŠå½“å‰æ‰“å¼€æ–‡æ¡£çš„å…¨å±€é£æ ¼è®¾ç½®ä¸€ä¸‹ï¼Œå¦åˆ™å…¨å±€ä¸ç”Ÿæ•ˆ
 	if (isGlobalChange)
 	{
+		refreshGlobalSet();
+	}
+}
+
+void QtLangSet::refreshGlobalSet()
+{
 		m_previousSysLangItem = nullptr;
 		slot_langListCurRowChanged(0);
 
 		StyleSet::reloadGolbalStyleFromSetFile();
 
-		//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+		//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 		CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 		if (pMainNote != nullptr)
 		{
-			
+
 			for (int i = 0; i <= GLOBAL_STYLES::URL_HOVERRED; ++i)
 			{
 				pMainNote->setGlobalFont(i);
 }
 		}
 	}
-}
 
-//»Ö¸´ËùÓĞÓïÑÔµÄ³õÊ¼ÅäÖÃ¡£ÓërestoreOriginLangOneStyleÀàËÆ£¬µ«ÊÇÁ£¶È¸ü´ó
+//æ¢å¤æ‰€æœ‰è¯­è¨€çš„åˆå§‹é…ç½®ã€‚ä¸restoreOriginLangOneStyleç±»ä¼¼ï¼Œä½†æ˜¯ç²’åº¦æ›´å¤§
 void  QtLangSet::restoreOriginLangAllStyle()
 {
 	QsciLexer *pLexer = nullptr;
 
-	//Ò»µ©ÖØÖÃ£¬µ±Ç°ĞŞ¸ÄÎŞÌõ¼ş²»±£´æ¡£·ñÔò±ÜÃâµ±Ç°µÄ¸Õ¸ÕÖØÖÃ£¬ÓÖ±»±£´æ
+	//ä¸€æ—¦é‡ç½®ï¼Œå½“å‰ä¿®æ”¹æ— æ¡ä»¶ä¸ä¿å­˜ã€‚å¦åˆ™é¿å…å½“å‰çš„åˆšåˆšé‡ç½®ï¼Œåˆè¢«ä¿å­˜
 	m_isStyleChange = false;
 
 	for (int index = 0; index <= L_TXT; ++index)
@@ -550,7 +579,7 @@ void  QtLangSet::restoreOriginLangAllStyle()
 			continue;
 		}
 
-		//Èç¹û´æÔÚ×Ô¶¨ÒåµÄÅäÖÃ£¬Ö±½ÓÈ«²¿É¾³ıµô
+		//å¦‚æœå­˜åœ¨è‡ªå®šä¹‰çš„é…ç½®ï¼Œç›´æ¥å…¨éƒ¨åˆ é™¤æ‰
 		QString cfgPath = QString("notepad/userstyle/%1/%2").arg(StyleSet::getCurrentStyle()).arg(pLexer->lexerTag());
 		QSettings qs(QSettings::IniFormat, QSettings::UserScope, cfgPath);
 
@@ -562,7 +591,7 @@ void  QtLangSet::restoreOriginLangAllStyle()
 		delete pLexer;
 		pLexer = nullptr;
 
-		//Èç¹ûÊÇÈ«¾ÖµÄ£¬°Ñµ±Ç°ÄÚ´æÖĞµÄÈ«¾Ö·ç¸ñÒ²¸üĞÂÒ»ÏÂ
+		//å¦‚æœæ˜¯å…¨å±€çš„ï¼ŒæŠŠå½“å‰å†…å­˜ä¸­çš„å…¨å±€é£æ ¼ä¹Ÿæ›´æ–°ä¸€ä¸‹
 		if (index == L_GLOBAL)
 		{
 			StyleSet::loadGolbalStyle();
@@ -570,7 +599,7 @@ void  QtLangSet::restoreOriginLangAllStyle()
 }
 }
 
-//Ö»ÔÚrestoreOriginLangOneStyleÖĞµ÷ÓÃ
+//åªåœ¨restoreOriginLangOneStyleä¸­è°ƒç”¨
 static void restoreLangFontFgColorToDarkStyle(QsciLexer *pLexer, int i)
 {
 	//if (QtLangSet::s_darkColorMap.contains(pLexer->color(i).name()))
@@ -579,11 +608,11 @@ static void restoreLangFontFgColorToDarkStyle(QsciLexer *pLexer, int i)
 	//}
 	}
 
-//Ö»ÔÚrestoreOriginLangOneStyleÖĞµ÷ÓÃ
+//åªåœ¨restoreOriginLangOneStyleä¸­è°ƒç”¨
 static void restoreLangPaperColorToDarkStyle(QsciLexer *pLexer, int i)
 {
-	//×¢ÒâÏÂÃæÕâ¸öÑÕÉ«ºÍvoid StyleSet::setBlackStyle()ÖĞ±£³ÖÒ»ÖÂ
-	//±³¾°Ò²±ä³É°µºÚÉ«
+	//æ³¨æ„ä¸‹é¢è¿™ä¸ªé¢œè‰²å’Œvoid StyleSet::setBlackStyle()ä¸­ä¿æŒä¸€è‡´
+	//èƒŒæ™¯ä¹Ÿå˜æˆæš—é»‘è‰²
 	if (StyleSet::foldbgColor != pLexer->paper(i))
 	{
 		pLexer->setPaper(StyleSet::foldbgColor, i);
@@ -591,7 +620,7 @@ static void restoreLangPaperColorToDarkStyle(QsciLexer *pLexer, int i)
 	}
 }
 
-//»Ö¸´ËùÓĞÓïÑÔµÄ³õÊ¼ÅäÖÃ,Ö»»Ö¸´GLOBAL_STYLE_SETÖ¸¶¨µÄ·ç¸ñ
+//æ¢å¤æ‰€æœ‰è¯­è¨€çš„åˆå§‹é…ç½®,åªæ¢å¤GLOBAL_STYLE_SETæŒ‡å®šçš„é£æ ¼
 void QtLangSet::restoreOriginLangOneStyle(GLOBAL_STYLE_SET flag)
 {
 
@@ -655,7 +684,6 @@ void QtLangSet::restoreOriginLangOneStyle(GLOBAL_STYLE_SET flag)
 					{
 						oldClor = pOriginLexer->color(i);
 						pLexer->setColor(oldClor, i);
-
 					}
 					break;
 					case GLOBAL_BK_COLOR:
@@ -669,14 +697,33 @@ void QtLangSet::restoreOriginLangOneStyle(GLOBAL_STYLE_SET flag)
 					}
 				}
 			}
+
+			switch (flag)
+			{
+			case GLOBAL_FG_COLOR:
+				//æŠŠé»˜è®¤é¢œè‰²ä¿®æ”¹ä¸€ä¸‹
+				oldClor = pOriginLexer->defaultColor();
+				pLexer->setDefaultColor(oldClor);
+				break;
+			case GLOBAL_BK_COLOR:
+				//æŠŠé»˜è®¤é¢œè‰²ä¿®æ”¹ä¸€ä¸‹
+				oldClor = pOriginLexer->defaultPaper();
+				pLexer->setDefaultPaper(oldClor);
+				break;
+
+			}
 			saveLangeSet(pLexer);
 		}
 		delete pLexer;
 		delete pOriginLexer;
 	}
+
+	//å…¨å±€å˜åŒ–äº†ï¼ŒæŠŠå½“å‰å…¨å±€ç•Œé¢åˆ·æ–°ä¸€ä¸‹
+	//è¿˜æœ‰ï¼Œè¿˜éœ€è¦æŠŠå½“å‰æ‰“å¼€æ–‡æ¡£çš„å…¨å±€é£æ ¼è®¾ç½®ä¸€ä¸‹ï¼Œå¦åˆ™å…¨å±€ä¸ç”Ÿæ•ˆ
+	refreshGlobalSet();
 }
 
-//Ô¤ÀÀÈ«¾ÖĞŞ¸Ä×ÖÌåĞ§¹û¡£°Ñµ±Ç°ËùÓĞµÄÓï·¨£¬·ç¸ñ×ÖÌå¶¼ĞŞ¸ÄÒ»±é
+//é¢„è§ˆå…¨å±€ä¿®æ”¹å­—ä½“æ•ˆæœã€‚æŠŠå½“å‰æ‰€æœ‰çš„è¯­æ³•ï¼Œé£æ ¼å­—ä½“éƒ½ä¿®æ”¹ä¸€é
 void QtLangSet::previewAllGoblalChange()
 {
 	QVector<QString> tags;
@@ -688,10 +735,10 @@ void QtLangSet::previewAllGoblalChange()
 		emit viewLexerChange(tags.at(i));
 	}
 
-	//ÕâÀï»¹²îÒ»²½
-	//ÕâÀï»¹ÓĞÎÊÌâ£¬»¹ĞèÒª°Ñµ±Ç°´ò¿ªÎÄµµµÄÈ«¾Ö·ç¸ñÉèÖÃÒ»ÏÂ£¬·ñÔòÈ«¾Ö²»ÉúĞ§
+	//è¿™é‡Œè¿˜å·®ä¸€æ­¥
+	//è¿™é‡Œè¿˜æœ‰é—®é¢˜ï¼Œè¿˜éœ€è¦æŠŠå½“å‰æ‰“å¼€æ–‡æ¡£çš„å…¨å±€é£æ ¼è®¾ç½®ä¸€ä¸‹ï¼Œå¦åˆ™å…¨å±€ä¸ç”Ÿæ•ˆ
 
-	//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+	//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 	CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 	if (pMainNote != nullptr)
 	{
@@ -704,10 +751,10 @@ void QtLangSet::previewAllGoblalChange()
 
 void QtLangSet::slot_fontChange(const QFont &font)
 {
-	//¼´Ê±ÉèÖÃ·ç¸ñ
+	//å³æ—¶è®¾ç½®é£æ ¼
 	if (m_selectLexer != nullptr)
 	{
-		//È«¾ÖĞŞ¸Ä
+		//å…¨å±€ä¿®æ”¹
 		if (m_isGlobelItem)
 	  {
 			if (m_curStyleData.font != font)
@@ -716,7 +763,7 @@ void QtLangSet::slot_fontChange(const QFont &font)
 				m_selectLexer->setFont(m_curStyleData.font, m_selectStyleId);
 				m_isStyleChange = true;
 
-				//ĞŞ¸ÄËùÓĞ×ÖÌå
+				//ä¿®æ”¹æ‰€æœ‰å­—ä½“
 				if (ui.useGlobalFont->isVisible() && ui.useGbFont->isChecked())
 				{
 						slot_useAlobalFont(true);
@@ -724,18 +771,18 @@ void QtLangSet::slot_fontChange(const QFont &font)
 					}
 				else if (ui.useGlobalFont->isVisible() && !ui.useGbFont->isChecked())
 				{
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 				}
 				else if(!ui.useGlobalFont->isVisible())
 				{
-					//È«¾ÖÑùÊ½µÄ·ÇµÚÒ»¸ö
+					//å…¨å±€æ ·å¼çš„éç¬¬ä¸€ä¸ª
 					StyleSet::setGlobalFont(m_selectStyleId, m_curStyleData.font);
 
-					//±£´æÈ«¾ÖÑùÊ½µÚÒ»ÌõÑùÊ½±¾Éí
+					//ä¿å­˜å…¨å±€æ ·å¼ç¬¬ä¸€æ¡æ ·å¼æœ¬èº«
 					saveLangeSet(m_selectLexer);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 					{
@@ -747,7 +794,7 @@ void QtLangSet::slot_fontChange(const QFont &font)
 		else
 		{
 #if 0
-			//Í³Ò»ĞŞ¸Ä×ÖÌå£¬´óĞ¡ºÍ·ç¸ñ±£´æ²»±ä
+			//ç»Ÿä¸€ä¿®æ”¹å­—ä½“ï¼Œå¤§å°å’Œé£æ ¼ä¿å­˜ä¸å˜
 			QFont oldf = m_curStyleData.font;
 			m_curStyleData.font = font;
 			m_curStyleData.font.setBold(oldf.bold());
@@ -755,7 +802,7 @@ void QtLangSet::slot_fontChange(const QFont &font)
 			m_curStyleData.font.setUnderline(oldf.underline());
 
 			m_isStyleChange = true;
-			//¼´Ê±ÉèÖÃ·ç¸ñ
+			//å³æ—¶è®¾ç½®é£æ ¼
 			if (m_selectLexer != nullptr)
 			{
 				int row = ui.styleListWidget->count();
@@ -768,7 +815,7 @@ void QtLangSet::slot_fontChange(const QFont &font)
 					int styleId = item->data(Qt::UserRole).toInt();
 					QFont f = m_selectLexer->font(styleId);
 
-					//ĞÂ×ÖÌåµÄÃûÍ³Ò»ÉèÖÃ£¬µ«ÊÇ·ç¸ñ×ÖÌå´óĞ¡±£´æÀÏµÄÒ»ÖÂ
+					//æ–°å­—ä½“çš„åç»Ÿä¸€è®¾ç½®ï¼Œä½†æ˜¯é£æ ¼å­—ä½“å¤§å°ä¿å­˜è€çš„ä¸€è‡´
 					QFont newFont = m_curStyleData.font;
 					newFont.setBold(f.bold());
 					newFont.setItalic(f.italic());
@@ -811,20 +858,20 @@ void QtLangSet::initLangList()
 		}
 	}
 
-	//»³ÒÉÕâ¸öÊÇ¶ÓÁĞÁ´½ÓµÄ£¬»áÑÓ³ÙÖ´ĞĞ¡£¹Ê×ÜÊÇµ¼ÖÂÑ¡ÔñµÄÑ¡²»ÖĞ£¬¶øÊÇµÚÒ»¸öÓïÑÔasp¡£
+	//æ€€ç–‘è¿™ä¸ªæ˜¯é˜Ÿåˆ—é“¾æ¥çš„ï¼Œä¼šå»¶è¿Ÿæ‰§è¡Œã€‚æ•…æ€»æ˜¯å¯¼è‡´é€‰æ‹©çš„é€‰ä¸ä¸­ï¼Œè€Œæ˜¯ç¬¬ä¸€ä¸ªè¯­è¨€aspã€‚
 	ui.langListWidget->sortItems(Qt::AscendingOrder);
 
-	//ÊÖ¶¯ĞŞ¸ÄµÚÒ»¸öÃû³ÆÎªÖĞÎÄ¡£
+	//æ‰‹åŠ¨ä¿®æ”¹ç¬¬ä¸€ä¸ªåç§°ä¸ºä¸­æ–‡ã€‚
 	if (ui.langListWidget->item(0)->text() == QString("AllGlobal"))
 	{
 		ui.langListWidget->item(0)->setText(tr("AllGlobal"));
 }
 }
 
-//isLoadToUIÊÇ·ñ¼ÓÔØÏÔÊ¾µ½µ±Ç°UI½çÃæ
+//isLoadToUIæ˜¯å¦åŠ è½½æ˜¾ç¤ºåˆ°å½“å‰UIç•Œé¢
 bool QtLangSet::readLangSetFile(QString langName,QString &keyword, QString &motherLang, QString & extTypes)
 {
-	QString userLangFile = QString("notepad/userlang/%1").arg(langName);//×Ô¶¨ÒåÓïÑÔÖĞ²»ÄÜÓĞ.×Ö·û£¬·ñÔò¿ÉÄÜÓĞ´í£¬ºóĞøÒª¼ì²é
+	QString userLangFile = QString("notepad/userlang/%1").arg(langName);//è‡ªå®šä¹‰è¯­è¨€ä¸­ä¸èƒ½æœ‰.å­—ç¬¦ï¼Œå¦åˆ™å¯èƒ½æœ‰é”™ï¼Œåç»­è¦æ£€æŸ¥
 	QSettings qs(QSettings::IniFormat, QSettings::UserScope, userLangFile);
 	qs.setIniCodec("UTF-8");
 	//qDebug() << qs.fileName();
@@ -834,11 +881,11 @@ bool QtLangSet::readLangSetFile(QString langName,QString &keyword, QString &moth
 		return false;
 	}
 
-	//×Ô¶¨ÒåÓïÑÔ¸ñÊ½¡£
+	//è‡ªå®šä¹‰è¯­è¨€æ ¼å¼ã€‚
 	//mz:ndd
 	//name:xxx
-	//mother:xxx none/cpp/html ¾ÍÈıÖÖ
-	//ext:xx xx xx ÎÄ¼ş¹ØÁªºó×ºÃû
+	//mother:xxx none/cpp/html å°±ä¸‰ç§
+	//ext:xx xx xx æ–‡ä»¶å…³è”åç¼€å
 	//keword:xxx
 	keyword = qs.value("keyword").toString();
 	extTypes = qs.value("ext").toString();
@@ -847,20 +894,20 @@ bool QtLangSet::readLangSetFile(QString langName,QString &keyword, QString &moth
 	return true;
 }
 
-//³õÊ¼»¯ÓÃ»§×Ô¶¨ÒåµÄÓïÑÔÅäÖÃ
+//åˆå§‹åŒ–ç”¨æˆ·è‡ªå®šä¹‰çš„è¯­è¨€é…ç½®
 void QtLangSet::initUserDefineLangList()
 {
 	QString userLangDirPath = getUserLangDirPath();
 
-	//±éÀúÎÄ¼ş¼Ğ
+	//éå†æ–‡ä»¶å¤¹
 	QDir dir_file(userLangDirPath);
 	QFileInfoList list_file = dir_file.entryInfoList(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks, QDir::Name);
 
 	for (int i = 0; i < list_file.size(); ++i)
-	{  //½«µ±Ç°Ä¿Â¼ÖĞËùÓĞÎÄ¼şÌí¼Óµ½treewidgetÖĞ
+	{  //å°†å½“å‰ç›®å½•ä¸­æ‰€æœ‰æ–‡ä»¶æ·»åŠ åˆ°treewidgetä¸­
 		QFileInfo fileInfo = list_file.at(i);
 
-		//Õâ¸öÎÄ¼şÊÇextºÍtagµÄÓ³ÉäÎÄ¼ş£¬²»×öÅäÖÃ½âÎö
+		//è¿™ä¸ªæ–‡ä»¶æ˜¯extå’Œtagçš„æ˜ å°„æ–‡ä»¶ï¼Œä¸åšé…ç½®è§£æ
 		if (fileInfo.baseName() == "ext_tag")
 		{
 			continue;
@@ -872,9 +919,9 @@ void QtLangSet::initUserDefineLangList()
 }
 
 
-//ÇĞ»»µ±Ç°ÓïÑÔ¡£
-//QListWidget::currentItemChangedÕâ¸öĞÅºÅqt5.12.10ÖĞÓ¦¸ÃÊÇ´æÔÚbug,×ÜÊÇÄªÃûÆäÃîµÄÒª·¢Ò»´ÎcurrentItemChangedĞÅºÅ³öÀ´¡£µ¼ÖÂµÚÒ»´Î¸ÃÑ¡µÄÏî±»¸²¸Ç¡£
-//»»³ÉitemClickedĞÅºÅ
+//åˆ‡æ¢å½“å‰è¯­è¨€ã€‚
+//QListWidget::currentItemChangedè¿™ä¸ªä¿¡å·qt5.12.10ä¸­åº”è¯¥æ˜¯å­˜åœ¨bug,æ€»æ˜¯è«åå…¶å¦™çš„è¦å‘ä¸€æ¬¡currentItemChangedä¿¡å·å‡ºæ¥ã€‚å¯¼è‡´ç¬¬ä¸€æ¬¡è¯¥é€‰çš„é¡¹è¢«è¦†ç›–ã€‚
+//æ¢æˆitemClickedä¿¡å·
 void QtLangSet::slot_itemSelect(QListWidgetItem *item)
 {
 	if (item == nullptr)
@@ -883,7 +930,7 @@ void QtLangSet::slot_itemSelect(QListWidgetItem *item)
 	}
 	//qDebug() << item->text() << (previous ? previous->text() : 0);
 
-	//Èç¹ûÇ°ºóÖ÷Ìâ·¢ÉúÁË±ä»¯£¬ÔòÒÀ¾ÉÒª×ß¸üĞÂ£¬·ÀÖ¹Ö÷ÌâÇĞ»»ºóÃ»¼°Ê±¸üĞÂ
+	//å¦‚æœå‰åä¸»é¢˜å‘ç”Ÿäº†å˜åŒ–ï¼Œåˆ™ä¾æ—§è¦èµ°æ›´æ–°ï¼Œé˜²æ­¢ä¸»é¢˜åˆ‡æ¢åæ²¡åŠæ—¶æ›´æ–°
 	if (m_previousSysLangItem == item && (m_lastThemesId == m_themesId))
 	{
 		return;
@@ -896,11 +943,11 @@ void QtLangSet::slot_itemSelect(QListWidgetItem *item)
 
 	ui.userLangListWidget->setCurrentItem(nullptr);
 
-	//±£´æÇ°Ò»¸öÒÑ¾­ĞŞ¸ÄµÄ¡£Ñ¯ÎÊÓÃ»§ÊÇ·ñ±£´æ
+	//ä¿å­˜å‰ä¸€ä¸ªå·²ç»ä¿®æ”¹çš„ã€‚è¯¢é—®ç”¨æˆ·æ˜¯å¦ä¿å­˜
 	if (m_isStyleChange && m_previousSysLangItem != nullptr && m_selectLexer !=nullptr)
 	{
-		//Ö»ÓĞµ±Ç°ÊÇ·ÇÈ«¾Ö£¬²ÅĞèÒªÌáÊ¾ÓÃ»§ÊÇ·ñÒª±£³Ö¡£
-		//È«¾ÖµÄ²»ĞèÒªÌáÊ¾£¬ÒòÎªÒÑ¾­ÎŞÌõ¼şÈ«²¿±£´æ¹ıÁË¡£
+		//åªæœ‰å½“å‰æ˜¯éå…¨å±€ï¼Œæ‰éœ€è¦æç¤ºç”¨æˆ·æ˜¯å¦è¦ä¿æŒã€‚
+		//å…¨å±€çš„ä¸éœ€è¦æç¤ºï¼Œå› ä¸ºå·²ç»æ— æ¡ä»¶å…¨éƒ¨ä¿å­˜è¿‡äº†ã€‚
 		if (!m_isGlobelItem)
 		{
 			if (QMessageBox::Yes == QMessageBox::question(this, tr("Save Change"), tr("%1 style configuration has been modified. Do you want to save it?").arg(m_previousSysLangItem->text())))
@@ -925,7 +972,7 @@ void QtLangSet::slot_itemSelect(QListWidgetItem *item)
 
 	int lexId = item->data(Qt::UserRole).toInt();
 
-	//È«¾ÖµÄÕâ¸öÒªµ¥¶À¶Ô´ı£¬ÔİÊ±Ã»ÓĞÈÎºÎ·ç¸ñ¡£
+	//å…¨å±€çš„è¿™ä¸ªè¦å•ç‹¬å¯¹å¾…ï¼Œæš‚æ—¶æ²¡æœ‰ä»»ä½•é£æ ¼ã€‚
 	if (lexId == L_GLOBAL)
 	{
 		m_isGlobelItem = true;
@@ -948,7 +995,7 @@ void QtLangSet::slot_itemSelect(QListWidgetItem *item)
 		ui.keywordTe->setPlainText(keyword);
 		ui.motherLangCb->setCurrentIndex(0);
 
-		//ÉèÖÃ¹ØÁªÎÄ¼şÏî
+		//è®¾ç½®å…³è”æ–‡ä»¶é¡¹
 		QString langName = item->text();
 		QStringList extList;
 		ExtLexerManager::getInstance()->getExtlistByLangTag(langName, extList);
@@ -968,7 +1015,7 @@ void QtLangSet::slot_itemSelect(QListWidgetItem *item)
 
 	m_previousSysLangItem = item;
 
-	//×Ô¶¯ÏÔÊ¾µÚÒ»ÌõµÄ½á¹û
+	//è‡ªåŠ¨æ˜¾ç¤ºç¬¬ä¸€æ¡çš„ç»“æœ
 	QListWidgetItem *itemtemp = ui.styleListWidget->item(0);
 	if (itemtemp != nullptr)
 	{
@@ -988,7 +1035,7 @@ void QtLangSet::slot_langListCurRowChanged(int row)
 	slot_itemSelect(current);
 }
 
-//¸ù¾İÄ¸Ç×Ä£¿éÓïÑÔ£¬°ÑÊôĞÔ·ç¸ñÏÔÊ¾³öÀ´
+//æ ¹æ®æ¯äº²æ¨¡å—è¯­è¨€ï¼ŒæŠŠå±æ€§é£æ ¼æ˜¾ç¤ºå‡ºæ¥
 void QtLangSet::displayUserMotherLangsStyle(QString langTagName, UserLangMother motherLang)
 {
 	QsciLexer *pLexer = nullptr;
@@ -1010,7 +1057,7 @@ void QtLangSet::displayUserMotherLangsStyle(QString langTagName, UserLangMother 
 
 	if (nullptr != pLexer)
 	{
-		//ÕâÀïÒ»¶¨ÒªÒÔĞÂÓïÑÔµÄÃû³Æ×÷ÎªlexerµÄtag¡£
+		//è¿™é‡Œä¸€å®šè¦ä»¥æ–°è¯­è¨€çš„åç§°ä½œä¸ºlexerçš„tagã€‚
 		//pLexer->setLexerTag(langTagName);
 		pLexer->setIsUserDefineKeywords(true);
 
@@ -1033,7 +1080,7 @@ void QtLangSet::displayUserMotherLangsStyle(QString langTagName, UserLangMother 
 		}
 	}
 
-	//×Ô¶¯ÏÔÊ¾µÚÒ»ÌõµÄ½á¹û
+	//è‡ªåŠ¨æ˜¾ç¤ºç¬¬ä¸€æ¡çš„ç»“æœ
 	QListWidgetItem *itemtemp = ui.styleListWidget->item(0);
 	if (itemtemp != nullptr)
 	{
@@ -1046,7 +1093,7 @@ void QtLangSet::displayUserMotherLangsStyle(QString langTagName, UserLangMother 
 }
 
 
-//µã»÷µ±Ç°ÓÃ»§×Ô¶¨ÒåÓïÑÔµÄÓïÑÔitem¡£todo:ÔİÊ±Ã»ÓĞ×öÇ°Ò»¸öµÄĞŞ¸Ä±£´æ£¬ĞèÒªÓÃ»§Ã¿´ÎĞŞ¸Äºó×Ô¼ºµã»÷save£¬·ñÔò¿ÉÄÜ²»»á±£´æ
+//ç‚¹å‡»å½“å‰ç”¨æˆ·è‡ªå®šä¹‰è¯­è¨€çš„è¯­è¨€itemã€‚todo:æš‚æ—¶æ²¡æœ‰åšå‰ä¸€ä¸ªçš„ä¿®æ”¹ä¿å­˜ï¼Œéœ€è¦ç”¨æˆ·æ¯æ¬¡ä¿®æ”¹åè‡ªå·±ç‚¹å‡»saveï¼Œå¦åˆ™å¯èƒ½ä¸ä¼šä¿å­˜
 void QtLangSet::slot_userLangItemSelect(QListWidgetItem *item)
 {
 	if (item == nullptr)
@@ -1054,7 +1101,7 @@ void QtLangSet::slot_userLangItemSelect(QListWidgetItem *item)
 		return;
 	}
 
-	//¿Ï¶¨²»ÄÜÊÇÈ«¾ÖÉèÖÃÁË
+	//è‚¯å®šä¸èƒ½æ˜¯å…¨å±€è®¾ç½®äº†
 	if(m_isGlobelItem || (ui.stackedWidget->currentIndex() == 1))
 	{
 		m_isGlobelItem = false;
@@ -1086,7 +1133,7 @@ void QtLangSet::slot_userLangItemSelect(QListWidgetItem *item)
 		ui.motherLangCb->setCurrentText(motherLang);
 		ui.extFileType->setText(extTypes);
 
-		//¸ù¾İÄ¸Ç×Ä£¿éÓïÑÔ£¬°ÑÊôĞÔ·ç¸ñÏÔÊ¾³öÀ´
+		//æ ¹æ®æ¯äº²æ¨¡å—è¯­è¨€ï¼ŒæŠŠå±æ€§é£æ ¼æ˜¾ç¤ºå‡ºæ¥
 		displayUserMotherLangsStyle(langName, (UserLangMother)(LangType::L_USER_TXT + ui.motherLangCb->currentIndex()));
 	}
 	else
@@ -1096,7 +1143,7 @@ void QtLangSet::slot_userLangItemSelect(QListWidgetItem *item)
 }
 
 
-//»ñÈ¡µ±Ç°uiÉÏµÄ×ÖÌå
+//è·å–å½“å‰uiä¸Šçš„å­—ä½“
 void QtLangSet::getCurUiFont(QFont& font)
 {
 	font = ui.fontComboBox->currentFont();
@@ -1111,7 +1158,7 @@ void QtLangSet::closeEvent(QCloseEvent * e)
 	saveCurLangSettings();
 }
 
-//°ÑitemµÄ¶ÔÓ¦·ç¸ñÏÔÊ¾ÔÚ½çÃæÉÏ
+//æŠŠitemçš„å¯¹åº”é£æ ¼æ˜¾ç¤ºåœ¨ç•Œé¢ä¸Š
 void QtLangSet::syncShowStyleItemToUI(QListWidgetItem *item)
 {
 	if (item != nullptr && m_selectLexer != nullptr)
@@ -1154,9 +1201,11 @@ void QtLangSet::syncShowStyleItemToUI(QListWidgetItem *item)
 		QsciLexer::StyleData & sd = m_selectLexer->styleData(styleId);
 		m_curStyleData = sd;
 		setStyleShow(sd.font, sd.color, sd.paper);
-		m_isStyleChange = false;
 
-		//Èç¹ûÊÇÈ«¾Ö£¬Ôò°Ñ²»ÄÜĞŞ¸ÄµÄÈ«¾ÖÑùÊ½»Òµô£¬±ÜÃâ¸ÉÈÅÓÃ»§µÄÑ¡Ôñ
+		//è¿™é‡Œä¸èƒ½ç›´æ¥è®¾ç½®ä¸ºéä¿®æ”¹ï¼Œå¦‚æœä¹‹å‰å·²ç»ä¿®æ”¹è¿‡ï¼Œåˆ™è¿˜æ˜¯è¦è®¤å®šä¸ºä¿®æ”¹ã€‚
+		//m_isStyleChange = false;
+
+		//å¦‚æœæ˜¯å…¨å±€ï¼Œåˆ™æŠŠä¸èƒ½ä¿®æ”¹çš„å…¨å±€æ ·å¼ç°æ‰ï¼Œé¿å…å¹²æ‰°ç”¨æˆ·çš„é€‰æ‹©
 		if (m_isGlobelItem)
 		{
 			QsciLexerGlobal* pGlobalLexer = dynamic_cast<QsciLexerGlobal*>(m_selectLexer);
@@ -1191,10 +1240,10 @@ void QtLangSet::syncShowStyleItemToUI(QListWidgetItem *item)
 		}
 	}
 }
-//µã»÷µ±Ç°µÄ·ç¸ñitem
+//ç‚¹å‡»å½“å‰çš„é£æ ¼item
 void QtLangSet::slot_styleItemSelect(QListWidgetItem *current)
 {
-	qDebug() << "slot_styleItemSelect";
+    //qDebug() << "slot_styleItemSelect";
 
 	syncShowStyleItemToUI(current);
 
@@ -1217,10 +1266,10 @@ void QtLangSet::slot_styleItemSelect(QListWidgetItem *current)
 
 }
 
-//Ê¹ÓÃ¼üÅÌÉÏÏÂÇĞ»»
+//ä½¿ç”¨é”®ç›˜ä¸Šä¸‹åˆ‡æ¢
 void QtLangSet::slot_styleListCurRowChanged(int row)
 {
-	qDebug() << "slot_curRowChanged";
+    //qDebug() << "slot_curRowChanged";
 	QListWidgetItem* current = ui.styleListWidget->item(row);
 	slot_styleItemSelect(current);
 }
@@ -1242,7 +1291,7 @@ void QtLangSet::fillBackgroundColor(QColor &bkColor)
 
 void QtLangSet::setStyleShow(QFont& font, QColor& fcColor, QColor &bkColor)
 {
-	//ĞŞ¸Ä×ÖÌå»á´¥·¢²Ûº¯ÊıÖ´ĞĞ£¬Îñ±ØÏÈ¹Ø±ÕÒ»ÏÂĞÅºÅ
+	//ä¿®æ”¹å­—ä½“ä¼šè§¦å‘æ§½å‡½æ•°æ‰§è¡Œï¼ŒåŠ¡å¿…å…ˆå…³é—­ä¸€ä¸‹ä¿¡å·
 	enableFontChangeSensitive(false);
 
 	ui.fontComboBox->setCurrentFont(font);
@@ -1259,7 +1308,7 @@ void QtLangSet::setStyleShow(QFont& font, QColor& fcColor, QColor &bkColor)
 	
 }
 
-//¶ÁÈ¡ÌØ¶¨ÓïÑÔµÄÉèÖÃ£»StyleId-1Ôò¶ÁÈ¡µ±Ç°Ö÷Ìâ£¬·ñÔòÖ¸¶¨µÄStyleIdÖ÷Ìâ
+//è¯»å–ç‰¹å®šè¯­è¨€çš„è®¾ç½®ï¼›StyleId-1åˆ™è¯»å–å½“å‰ä¸»é¢˜ï¼Œå¦åˆ™æŒ‡å®šçš„StyleIdä¸»é¢˜
 bool QtLangSet::readLangSettings(QsciLexer *lexer, QString tag, int StyleId)
 {
 	QString cfgPath = QString("notepad/userstyle/%1/%2").arg((StyleId == -1) ? StyleSet::getCurrentStyle() : StyleSet::getStyleName(StyleId)).arg(tag);
@@ -1269,7 +1318,7 @@ bool QtLangSet::readLangSettings(QsciLexer *lexer, QString tag, int StyleId)
 	{
 		return lexer->readSettings(qs);
 	}
-	else//ÕâÀïÓ¦¸Ã¼Ó¸öÂß¼­Íê±¸µÄ±£»¤¡£Èç¹ûÃ»ÓĞ¶ÁÈ¡µ½ÓÃ»§ÅäÖÃ£¬ÔòÓ¦¸Ã´Ó±ê×¼Ä¿±êÈ¥¶ÁÔ­Ê¼ÅäÖÃ
+	else//è¿™é‡Œåº”è¯¥åŠ ä¸ªé€»è¾‘å®Œå¤‡çš„ä¿æŠ¤ã€‚å¦‚æœæ²¡æœ‰è¯»å–åˆ°ç”¨æˆ·é…ç½®ï¼Œåˆ™åº”è¯¥ä»æ ‡å‡†ç›®æ ‡å»è¯»åŸå§‹é…ç½®
 	{
 		return readLangOriginSettings(lexer, tag, StyleId, true);
 	}
@@ -1277,17 +1326,17 @@ bool QtLangSet::readLangSettings(QsciLexer *lexer, QString tag, int StyleId)
 	return false;
 }
 
-//¶ÁÈ¡ÌØ¶¨ÓïÑÔµÄÔ­Ê¼ÑùÊ½ÉèÖÃ£»StyleId-1Ôò¶ÁÈ¡µ±Ç°Ö÷Ìâ£¬·ñÔòÖ¸¶¨µÄStyleIdÖ÷Ìâ
-//force:ÎŞÌõ¼ş¶ÁÈ¡
+//è¯»å–ç‰¹å®šè¯­è¨€çš„åŸå§‹æ ·å¼è®¾ç½®ï¼›StyleId-1åˆ™è¯»å–å½“å‰ä¸»é¢˜ï¼Œå¦åˆ™æŒ‡å®šçš„StyleIdä¸»é¢˜
+//force:æ— æ¡ä»¶è¯»å–
 bool QtLangSet::readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleId, bool force)
 {
-	//Ä¬ÈÏÖ÷Ìâ²»ĞèÒª¶ÁÈ¡£¬ÄÚ´æÖĞÒÑ¾­´æÔÚ
+	//é»˜è®¤ä¸»é¢˜ä¸éœ€è¦è¯»å–ï¼Œå†…å­˜ä¸­å·²ç»å­˜åœ¨
 	if (StyleId == 0 && !force)
 	{
 		return true;
 	}
 
-	//Ä¬ÈÏÆ¤·ôÂ·¾¶·ÅÔÚÈí¼şµÄÍ¬¼¶Ä¿Â¼ÏÂÃæµÄthemesÄ¿Â¼
+	//é»˜è®¤çš®è‚¤è·¯å¾„æ”¾åœ¨è½¯ä»¶çš„åŒçº§ç›®å½•ä¸‹é¢çš„themesç›®å½•
 	QString cfgPath = QString("%1/themes/%2/%3.ini").arg(QCoreApplication::applicationDirPath()).arg((StyleId == -1)?StyleSet::getCurrentStyle(): StyleSet::getStyleName(StyleId)).arg(tag);
 	QSettings qs(cfgPath, QSettings::IniFormat);
 	if (QFile::exists(qs.fileName()))
@@ -1298,7 +1347,7 @@ bool QtLangSet::readLangOriginSettings(QsciLexer* lexer, QString tag, int StyleI
 }
 
 
-//±£´æÒ»ÖÖÓïÑÔµÄÅäÖÃ¡£
+//ä¿å­˜ä¸€ç§è¯­è¨€çš„é…ç½®ã€‚
 void QtLangSet::saveLangeSet(QsciLexer *lexer, int StyleId)
 {
 	if (lexer != nullptr)
@@ -1313,7 +1362,7 @@ void QtLangSet::saveLangeSet(QsciLexer *lexer, int StyleId)
 	}
 }
 
-//±£´æµ±Ç°Ñ¡¶¨ÓïÑÔµÄÅäÖÃ
+//ä¿å­˜å½“å‰é€‰å®šè¯­è¨€çš„é…ç½®
 bool QtLangSet::saveCurLangSettings()
 {
 	if (m_isStyleChange && m_selectLexer != nullptr)
@@ -1337,13 +1386,13 @@ bool QtLangSet::isUseGlobalBgColor()
 	return ui.useGlobalColor->isVisible() && ui.useGbBc->isChecked();
 }
 
-//ĞŞ¸ÄÇ°¾°É«
+//ä¿®æ”¹å‰æ™¯è‰²
 void QtLangSet::slot_changeFgColor()
 {
 	QColor color = QColorDialog::getColor(m_curStyleData.color, this, tr("Style Foreground Color"));
 	if (color.isValid())
 	{
-		//È«¾ÖĞŞ¸Ä
+		//å…¨å±€ä¿®æ”¹
 		if (m_isGlobelItem)
 		{
 			if (m_curStyleData.color != color)
@@ -1352,24 +1401,24 @@ void QtLangSet::slot_changeFgColor()
 				fillForegroundColor(color);
 				m_isStyleChange = true;
 
-				//¼´Ê±ÉèÖÃ·ç¸ñ
+				//å³æ—¶è®¾ç½®é£æ ¼
 				if (m_selectLexer != nullptr)
 				{
-					//´ËÊ±Ò»¶¨ÊÇQsciLexerGlobal
+					//æ­¤æ—¶ä¸€å®šæ˜¯QsciLexerGlobal
 					m_selectLexer->setColor(color, m_selectStyleId);
 				}
 
-				//Ö»ÓĞÔÚµÚÒ»¸öÈ«¾ÖÑùÊ½Ê±£¬isUseGlobalFgColorÏÂÃæ²ÅÎªtrue¡£°ÑËùÓĞÓïÑÔµÄËùÓĞ·ç¸ñ¶¼ÉèÖÃ
+				//åªæœ‰åœ¨ç¬¬ä¸€ä¸ªå…¨å±€æ ·å¼æ—¶ï¼ŒisUseGlobalFgColorä¸‹é¢æ‰ä¸ºtrueã€‚æŠŠæ‰€æœ‰è¯­è¨€çš„æ‰€æœ‰é£æ ¼éƒ½è®¾ç½®
 				if (isUseGlobalFgColor())
 				{
 					slot_useAlobalFgColor(true);
 				}
 				else if(!ui.useGlobalColor->isVisible())
 				{
-					//È«¾ÖÑùÊ½µÄ·ÇµÚÒ»¸ö
+					//å…¨å±€æ ·å¼çš„éç¬¬ä¸€ä¸ª
 					StyleSet::setGlobalFgColor(m_selectStyleId, color);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 					{
@@ -1383,14 +1432,14 @@ void QtLangSet::slot_changeFgColor()
 		}
 		else
 		{
-			//µ±Ç°Ç°¾°É«ÊÇ·ñ±ä»¯
+			//å½“å‰å‰æ™¯è‰²æ˜¯å¦å˜åŒ–
 			if (m_curStyleData.color != color)
 			{
 				m_curStyleData.color = color;
 				fillForegroundColor(color);
 				m_isStyleChange = true;
 
-				//¼´Ê±ÉèÖÃ·ç¸ñ
+				//å³æ—¶è®¾ç½®é£æ ¼
 				if (m_selectLexer != nullptr)
 				{
 					m_selectLexer->setColor(color, m_selectStyleId);
@@ -1401,14 +1450,14 @@ void QtLangSet::slot_changeFgColor()
 		}
 		/*else if (!ui.modiryAllColor->isChecked())
 		{
-			µ±Ç°Ç°¾°É«ÊÇ·ñ±ä»¯
+			å½“å‰å‰æ™¯è‰²æ˜¯å¦å˜åŒ–
 			if (m_curStyleData.color != color)
 			{
 			m_curStyleData.color = color;
 			fillForegroundColor(color);
 			m_isStyleChange = true;
 
-				¼´Ê±ÉèÖÃ·ç¸ñ
+				å³æ—¶è®¾ç½®é£æ ¼
 			if (m_selectLexer != nullptr)
 			{
 					m_selectLexer->setColor(color, m_selectStyleId);
@@ -1419,13 +1468,13 @@ void QtLangSet::slot_changeFgColor()
 		}*/
 		/*else
 				{
-			È«²¿·ç¸ñÑÕÉ«ĞŞ¸Ä
-			µ±Ç°Ç°¾°É«ÊÇ·ñ±ä»¯
+			å…¨éƒ¨é£æ ¼é¢œè‰²ä¿®æ”¹
+			å½“å‰å‰æ™¯è‰²æ˜¯å¦å˜åŒ–
 			m_curStyleData.color = color;
 			fillForegroundColor(color);
 			m_isStyleChange = true;
 
-			¼´Ê±ÉèÖÃ·ç¸ñ
+			å³æ—¶è®¾ç½®é£æ ¼
 			if (m_selectLexer != nullptr)
 			{
 					m_selectLexer->setColor(color, -1);
@@ -1438,13 +1487,13 @@ void QtLangSet::slot_changeFgColor()
 	
 }
 
-//ĞŞ¸Ä±³¾°É«
+//ä¿®æ”¹èƒŒæ™¯è‰²
 void QtLangSet::slot_changeBkColor()
 {
 	QColor color = QColorDialog::getColor(m_curStyleData.paper, this, tr("Style Background Color"));
 	if (color.isValid())
 	{
-		//È«¾ÖĞŞ¸Ä£¬°ÑËùÓĞÓïÑÔµÄËùÓĞ·ç¸ñ¶¼ÉèÖÃ
+		//å…¨å±€ä¿®æ”¹ï¼ŒæŠŠæ‰€æœ‰è¯­è¨€çš„æ‰€æœ‰é£æ ¼éƒ½è®¾ç½®
 		if (m_isGlobelItem)
 		{
 			if (m_curStyleData.paper != color)
@@ -1453,7 +1502,7 @@ void QtLangSet::slot_changeBkColor()
 				fillBackgroundColor(color);
 				m_isStyleChange = true;
 
-				//¼´Ê±ÉèÖÃ·ç¸ñ
+				//å³æ—¶è®¾ç½®é£æ ¼
 				if (m_selectLexer != nullptr)
 				{
 					m_selectLexer->setPaper(color, m_selectStyleId);
@@ -1467,7 +1516,7 @@ void QtLangSet::slot_changeBkColor()
 		{
 					StyleSet::setGlobalBgColor(m_selectStyleId, color);
 
-					//ÕâÀï¾ÍÊÇÈ«¾ÖµÄÑùÊ½¡£Í¨Öªµ±Ç°ËùÓĞµÄ±à¼­¿ò£¬È¥ĞŞ¸ÄËûÃÇ±¾ÉíµÄÈ«¾ÖÑùÊ½
+					//è¿™é‡Œå°±æ˜¯å…¨å±€çš„æ ·å¼ã€‚é€šçŸ¥å½“å‰æ‰€æœ‰çš„ç¼–è¾‘æ¡†ï¼Œå»ä¿®æ”¹ä»–ä»¬æœ¬èº«çš„å…¨å±€æ ·å¼
 					CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
 					if (pMainNote != nullptr)
 		{
@@ -1478,16 +1527,34 @@ void QtLangSet::slot_changeBkColor()
 	}
 
 		}
+		else
+		{
+			//å½“å‰èƒŒæ™¯è‰²æ˜¯å¦å˜åŒ–
+			if (m_curStyleData.paper != color)
+			{
+				m_curStyleData.paper = color;
+				fillBackgroundColor(color);
+				m_isStyleChange = true;
+
+				//å³æ—¶è®¾ç½®é£æ ¼
+				if (m_selectLexer != nullptr)
+				{
+					m_selectLexer->setPaper(color, m_selectStyleId);
+
+					emit viewStyleChange(m_selectLexer->lexerTag(), m_selectStyleId, m_curStyleData.color, m_curStyleData.paper, m_curStyleData.font, false);
+				}
+			}
+		}
 	//	else if (!ui.modiryAllColor->isChecked())
 	//	{
-	//	//µ±Ç°Ç°¾°É«ÊÇ·ñ±ä»¯
+	//	//å½“å‰å‰æ™¯è‰²æ˜¯å¦å˜åŒ–
 	//	if (m_curStyleData.paper != color)
 	//	{
 	//		m_curStyleData.paper = color;
 	//		fillBackgroundColor(color);
 	//		m_isStyleChange = true;
 
-	//		//¼´Ê±ÉèÖÃ·ç¸ñ
+	//		//å³æ—¶è®¾ç½®é£æ ¼
 	//		if (m_selectLexer != nullptr)
 	//		{
 	//			m_selectLexer->setPaper(color, m_selectStyleId);
@@ -1495,33 +1562,16 @@ void QtLangSet::slot_changeBkColor()
 	//		}
 	//	}
 	//}
-		else
-		{
-			//È«²¿·ç¸ñÑÕÉ«ĞŞ¸Ä
-			//µ±Ç°Ç°¾°É«ÊÇ·ñ±ä»¯
-			m_curStyleData.paper = color;
-			fillBackgroundColor(color);
-			m_isStyleChange = true;
-
-			//¼´Ê±ÉèÖÃ·ç¸ñ
-			if (m_selectLexer != nullptr)
-			{
-				m_selectLexer->setPaper(color, -1);
 				
-				saveCurLangSettings();
-				emit viewLexerChange(m_selectLexer->lexerTag());
 }
-
 		}
-	}
-}
 
 void QtLangSet::slot_saveClick()
 {
 	saveCurLangSettings();
 }
 
-//»Ö¸´³õÊ¼»¯ÉèÖÃ
+//æ¢å¤åˆå§‹åŒ–è®¾ç½®
 void QtLangSet::slot_reset()
 {
 	if (m_selectLexer != nullptr)
@@ -1533,10 +1583,10 @@ void QtLangSet::slot_reset()
 				return;
 			}
 
-			//Ò»µ©ÖØÖÃ£¬µ±Ç°ĞŞ¸ÄÎŞÌõ¼ş²»±£´æ¡£·ñÔò±ÜÃâµ±Ç°µÄ¸Õ¸ÕÖØÖÃ£¬ÓÖ±»±£´æ
+			//ä¸€æ—¦é‡ç½®ï¼Œå½“å‰ä¿®æ”¹æ— æ¡ä»¶ä¸ä¿å­˜ã€‚å¦åˆ™é¿å…å½“å‰çš„åˆšåˆšé‡ç½®ï¼Œåˆè¢«ä¿å­˜
 			m_isStyleChange = false;
 
-			//Èç¹û´æÔÚ×Ô¶¨ÒåµÄÅäÖÃ£¬Ò²É¾³ıµô
+			//å¦‚æœå­˜åœ¨è‡ªå®šä¹‰çš„é…ç½®ï¼Œä¹Ÿåˆ é™¤æ‰
 			QString cfgPath = QString("notepad/userstyle/%1/%2").arg(StyleSet::getCurrentStyle()).arg(m_selectLexer->lexerTag());
 
 			QSettings qs(QSettings::IniFormat, QSettings::UserScope, cfgPath);
@@ -1545,15 +1595,15 @@ void QtLangSet::slot_reset()
 				QFile::remove(qs.fileName());
 			}
 
-			//Ò»¶¨ÒªÏÈ±£´æ£¬ÒòÎªselectInitLangTagºó¿ÉÄÜ»á±ä»¯
+			//ä¸€å®šè¦å…ˆä¿å­˜ï¼Œå› ä¸ºselectInitLangTagåå¯èƒ½ä¼šå˜åŒ–
 			int row = ui.styleListWidget->currentRow();
 
-			//Ç¿ĞĞÈÃslot_itemSelectÀïÃæµÄ½øĞĞÇĞ»»
+			//å¼ºè¡Œè®©slot_itemSelecté‡Œé¢çš„è¿›è¡Œåˆ‡æ¢
 			m_previousSysLangItem = nullptr;
 
 			selectInitLangTag(m_selectLexer->lexerTag());
 
-			//ÊÖ¶¯Ë¢ĞÂUI
+			//æ‰‹åŠ¨åˆ·æ–°UI
 			QListWidgetItem* styleItem = ui.styleListWidget->item(row);
 
 			m_selectStyleId = -1;
@@ -1566,7 +1616,7 @@ void QtLangSet::slot_reset()
 		{
 			if (ui.useGlobalFont->isVisible())
 			{
-			//Èç¹ûÊÇÈ«¾ÖÖØÖÃ£¬Ôò°ÑËùÓĞÓïÑÔ¶¼ÖØÖÃ
+			//å¦‚æœæ˜¯å…¨å±€é‡ç½®ï¼Œåˆ™æŠŠæ‰€æœ‰è¯­è¨€éƒ½é‡ç½®
 			if (QMessageBox::Yes != QMessageBox::question(this, tr("Reset All Style"), tr("Are you sure to reset All language sytle")))
 			{
 				return;
@@ -1575,7 +1625,7 @@ void QtLangSet::slot_reset()
 
 			previewAllGoblalChange();
 
-			//ÊÖ¶¯Ë¢ĞÂUI¡£È«¾ÖÄ¿Ç°Ö»ÓĞÒ»ĞĞÈ«¾ÖÉèÖÃ
+			//æ‰‹åŠ¨åˆ·æ–°UIã€‚å…¨å±€ç›®å‰åªæœ‰ä¸€è¡Œå…¨å±€è®¾ç½®
 
 			if (m_selectLexer != nullptr)
 			{
@@ -1592,11 +1642,11 @@ void QtLangSet::slot_reset()
 		}
 			else
 			{
-				//ÖØÖÃËùÓĞÈ«¾ÖÑùÊ½
-				//Ò»µ©ÖØÖÃ£¬µ±Ç°ĞŞ¸ÄÎŞÌõ¼ş²»±£´æ¡£·ñÔò±ÜÃâµ±Ç°µÄ¸Õ¸ÕÖØÖÃ£¬ÓÖ±»±£´æ
+				//é‡ç½®æ‰€æœ‰å…¨å±€æ ·å¼
+				//ä¸€æ—¦é‡ç½®ï¼Œå½“å‰ä¿®æ”¹æ— æ¡ä»¶ä¸ä¿å­˜ã€‚å¦åˆ™é¿å…å½“å‰çš„åˆšåˆšé‡ç½®ï¼Œåˆè¢«ä¿å­˜
 				m_isStyleChange = false;
 
-				//Èç¹û´æÔÚ×Ô¶¨ÒåµÄÅäÖÃ£¬Ò²É¾³ıµô
+				//å¦‚æœå­˜åœ¨è‡ªå®šä¹‰çš„é…ç½®ï¼Œä¹Ÿåˆ é™¤æ‰
 				QString cfgPath = QString("notepad/userstyle/%1/%2").arg(StyleSet::getCurrentStyle()).arg(m_selectLexer->lexerTag());
 
 				QSettings qs(QSettings::IniFormat, QSettings::UserScope, cfgPath);
@@ -1605,24 +1655,24 @@ void QtLangSet::slot_reset()
 					QFile::remove(qs.fileName());
 	}
 
-				//Ò»¶¨ÒªÏÈ±£´æ£¬ÒòÎªselectInitLangTagºó¿ÉÄÜ»á±ä»¯
+				//ä¸€å®šè¦å…ˆä¿å­˜ï¼Œå› ä¸ºselectInitLangTagåå¯èƒ½ä¼šå˜åŒ–
 
 				int row = ui.styleListWidget->currentRow();
 
-				//Ç¿ĞĞÈÃslot_itemSelectÀïÃæµÄ½øĞĞÇĞ»»
+				//å¼ºè¡Œè®©slot_itemSelecté‡Œé¢çš„è¿›è¡Œåˆ‡æ¢
 				m_previousSysLangItem = nullptr;
 
-				//ÕâÀï±ØĞëĞ´ALLglobal£¬·ñÔòÖĞÎÄ²éÕÒ²»µ½
+				//è¿™é‡Œå¿…é¡»å†™ALLglobalï¼Œå¦åˆ™ä¸­æ–‡æŸ¥æ‰¾ä¸åˆ°
 				selectInitLangTag(tr("AllGlobal"));
 
-				//ÊÖ¶¯Ë¢ĞÂUI
+				//æ‰‹åŠ¨åˆ·æ–°UI
 				QListWidgetItem* styleItem = ui.styleListWidget->item(row);
 
 				m_selectStyleId = -1;
 
 				syncShowStyleItemToUI(styleItem);
 
-				//ÖØĞÂ´Ó¼ÓÔØÒ»´Î´¿¾»µÄÈ«¾ÖÑùÊ½¡£ÒòÎªÇ°Ãæ±£´æµÄÒÑ¾­É¾ÁË£¬ËùÒÔ¼ÓÔØµÄÊÇ´¿¾»µÄ¡£
+				//é‡æ–°ä»åŠ è½½ä¸€æ¬¡çº¯å‡€çš„å…¨å±€æ ·å¼ã€‚å› ä¸ºå‰é¢ä¿å­˜çš„å·²ç»åˆ äº†ï¼Œæ‰€ä»¥åŠ è½½çš„æ˜¯çº¯å‡€çš„ã€‚
 				StyleSet::loadGolbalStyle();
 
 				updateThemes();
@@ -1733,8 +1783,8 @@ void QtLangSet::slot_useAlobalFontItalic(bool check)
 
 
 
-//°ÑÄ¬ÈÏÓïÑÔ·ç¸ñµÄ²¿·ÖÑÕÉ«£¬Ìæ»»Îª°µÉ«ÏÂÏÔÑÛµÄÑÕÉ«
-//Õâ¸öº¯ÊıÊÇ¿ÉÒÔ´¦Àí×Ô¶¨ÒåÓïÑÔµÄ¡£
+//æŠŠé»˜è®¤è¯­è¨€é£æ ¼çš„éƒ¨åˆ†é¢œè‰²ï¼Œæ›¿æ¢ä¸ºæš—è‰²ä¸‹æ˜¾çœ¼çš„é¢œè‰²
+//è¿™ä¸ªå‡½æ•°æ˜¯å¯ä»¥å¤„ç†è‡ªå®šä¹‰è¯­è¨€çš„ã€‚
 //void QtLangSet::setLangFontFgColorToDarkStyle(LangType langId, QString tag)
 //{
 //	QColor blackColor(Qt::black);
@@ -1744,7 +1794,7 @@ void QtLangSet::slot_useAlobalFontItalic(bool check)
 //	QColor lightColor1(0xffaa00);
 //
 //
-//	//C++×¢ÊÍµÄÄ¬ÈÏÑÕÉ«£¬²»ÏÔÑÛ
+//	//C++æ³¨é‡Šçš„é»˜è®¤é¢œè‰²ï¼Œä¸æ˜¾çœ¼
 //	QColor blackColor2(0x007f00);
 //	QColor lightColor2(0x009000);
 //
@@ -1755,7 +1805,7 @@ void QtLangSet::slot_useAlobalFontItalic(bool check)
 //	QColor blackColor4(0x8000ff);
 //	QColor lightColor4(0xffaa00);
 //
-//	×¢ÒâÏÂÃæÕâ¸öÑÕÉ«ºÍvoid StyleSet::setBlackStyle()ÖĞ±£³ÖÒ»ÖÂ
+//	æ³¨æ„ä¸‹é¢è¿™ä¸ªé¢œè‰²å’Œvoid StyleSet::setBlackStyle()ä¸­ä¿æŒä¸€è‡´
 //	QColor bkPaperColor(0, 0, 0);
 //
 //	QsciLexer *pLexer = ScintillaEditView::createLexer(langId, tag);
@@ -1791,24 +1841,24 @@ void QtLangSet::slot_useAlobalFontItalic(bool check)
 //					pLexer->setColor(QtLangSet::s_darkColorMap.value(pLexer->color(i).name()), i);
 //				}
 //
-//				±³¾°Ò²±ä³É°µºÚÉ«
+//				èƒŒæ™¯ä¹Ÿå˜æˆæš—é»‘è‰²
 //				if (StyleSet::foldbgColor != pLexer->paper(i))
 //				{
 //					pLexer->setPaper(StyleSet::foldbgColor, i);
 //				}
 //			}
 //		}
-//		Ä¬ÈÏÖ½±³¾°É«»áºÍQPalette±£³ÖÒ»ÖÂ¡£µ«ÊÇÒòÎªºÚÉ«ÌØÉ«£¬Æä±³¾°ºÍQPalette²»Ò»Ñù£¬ËùÓĞĞèÒªµ¥¶ÀÉèÖÃÒ»ÏÂ
+//		é»˜è®¤çº¸èƒŒæ™¯è‰²ä¼šå’ŒQPaletteä¿æŒä¸€è‡´ã€‚ä½†æ˜¯å› ä¸ºé»‘è‰²ç‰¹è‰²ï¼Œå…¶èƒŒæ™¯å’ŒQPaletteä¸ä¸€æ ·ï¼Œæ‰€æœ‰éœ€è¦å•ç‹¬è®¾ç½®ä¸€ä¸‹
 //		pLexer->setDefaultPaper(StyleSet::foldbgColor);
 //			saveLangeSet(pLexer);
 //			delete pLexer;
 //		}
 //	}
 
-//°Ñ°µÉ«ÏµÏÂÃæ²»ÈİÒ×¿´ÇåµÄÑÕÉ«¸øÌæ»»Ò»ÏÂ¡£Ä¬ÈÏÊÇÓĞ·ç¸ñµÄ£¬µ«ÊÇÄ¬ÈÏ·ç¸ñÊÇÁÁÉ«ÏµµÄ¡£
-//°Ñ·²ÊÇ0x000000µÄ×ÖÌå£¬±ä³É0xdedede
-//·²ÊÇ0x0000ffµÄÑÕÉ«£¬±ä³É0xffff00
-//Õâ¸öº¯ÊıÃ»ÓĞ´¦Àí×Ô¶¨ÒåÓïÑÔ¡£
+//æŠŠæš—è‰²ç³»ä¸‹é¢ä¸å®¹æ˜“çœ‹æ¸…çš„é¢œè‰²ç»™æ›¿æ¢ä¸€ä¸‹ã€‚é»˜è®¤æ˜¯æœ‰é£æ ¼çš„ï¼Œä½†æ˜¯é»˜è®¤é£æ ¼æ˜¯äº®è‰²ç³»çš„ã€‚
+//æŠŠå‡¡æ˜¯0x000000çš„å­—ä½“ï¼Œå˜æˆ0xdedede
+//å‡¡æ˜¯0x0000ffçš„é¢œè‰²ï¼Œå˜æˆ0xffff00
+//è¿™ä¸ªå‡½æ•°æ²¡æœ‰å¤„ç†è‡ªå®šä¹‰è¯­è¨€ã€‚
 //void QtLangSet::setAllLangFontFgColorToDarkStyle()
 //{
 //	initDarkColorMap();
@@ -1820,14 +1870,14 @@ void QtLangSet::slot_useAlobalFontItalic(bool check)
 //}
 
 
-//´ÓÄ¬ÈÏÖ÷ÌâÄ£°å´´½¨Ò»·İÓÃ»§µÄÓïÑÔ·ç¸ñÎÄ¼ş
+//ä»é»˜è®¤ä¸»é¢˜æ¨¡æ¿åˆ›å»ºä¸€ä»½ç”¨æˆ·çš„è¯­è¨€é£æ ¼æ–‡ä»¶
 void QtLangSet::createOneLangStyleFromThemes(int styleId, LangType langId, QString tag)
 {
 	if (langId == L_GLOBAL)
 	{
 		qDebug("global call");
 	}
-	//Ö¸¶¨´ÓÔ­Ê¼Ä£°åµÄÖ÷ÌâÖĞ¶ÁÈ¡Ò»·İÊı¾İ
+	//æŒ‡å®šä»åŸå§‹æ¨¡æ¿çš„ä¸»é¢˜ä¸­è¯»å–ä¸€ä»½æ•°æ®
 	QsciLexer* pLexer = ScintillaEditView::createLexer(langId, tag, true, styleId);
 	if (nullptr != pLexer)
 	{
@@ -1836,7 +1886,7 @@ void QtLangSet::createOneLangStyleFromThemes(int styleId, LangType langId, QStri
 	}
 }
 
-//´ÓÔ­Ê¼Ö÷ÌâÄ£°åÖĞ£¬´´½¨Ò»·İÓÃ»§Ö÷ÌâÎÄ¼ş
+//ä»åŸå§‹ä¸»é¢˜æ¨¡æ¿ä¸­ï¼Œåˆ›å»ºä¸€ä»½ç”¨æˆ·ä¸»é¢˜æ–‡ä»¶
 void QtLangSet::createUserStyleFormThemes(int styleId)
 {
 	for (int index = 0; index <= L_TXT; ++index)
@@ -1845,7 +1895,7 @@ void QtLangSet::createUserStyleFormThemes(int styleId)
 	}
 }
 
-//¼ì²éµ±Ç°ÊÇ·ñÒÑ¾­´æÔÚ°µºÚÉ«ÓïÑÔÅäÖÃ
+//æ£€æŸ¥å½“å‰æ˜¯å¦å·²ç»å­˜åœ¨æš—é»‘è‰²è¯­è¨€é…ç½®
 //bool QtLangSet::isExistDarkLangSetings()
 //{
 //	QString cfgPath = QString("notepad/userstyle/black/AllGlobal");
@@ -1853,7 +1903,7 @@ void QtLangSet::createUserStyleFormThemes(int styleId)
 //	return QFile::exists(qs.fileName());
 //}
 
-//¼ì²éµ±Ç°ÊÇ·ñÒÑ¾­´æÔÚÖ÷ÌâÅäÖÃ
+//æ£€æŸ¥å½“å‰æ˜¯å¦å·²ç»å­˜åœ¨ä¸»é¢˜é…ç½®
 bool QtLangSet::isExistThemesSetings(int styleId)
 {
 	QString cfgPath = QString("notepad/userstyle/%1/AllGlobal").arg(StyleSet::getStyleName(styleId));
@@ -1861,10 +1911,10 @@ bool QtLangSet::isExistThemesSetings(int styleId)
 	return QFile::exists(qs.fileName());
 }
 
-//µ±Ç°Ö÷Ìâ·¢Éú±ä»¯
+//å½“å‰ä¸»é¢˜å‘ç”Ÿå˜åŒ–
 void QtLangSet::on_themesChange(int styleIndex)
 {
-	//µÚÒ»´ÎÆô¶¯Ê±£¬·ÀÖ¹³õÊ¼Çé¿öÃ»ÓĞ³õÊ¼»¯Ö÷Ìâ£¬¹Ê¼ì²âÒ»ÏÂisExistThemesSetings
+	//ç¬¬ä¸€æ¬¡å¯åŠ¨æ—¶ï¼Œé˜²æ­¢åˆå§‹æƒ…å†µæ²¡æœ‰åˆå§‹åŒ–ä¸»é¢˜ï¼Œæ•…æ£€æµ‹ä¸€ä¸‹isExistThemesSetings
 	if (m_themesId == styleIndex && isExistThemesSetings(styleIndex))
 	{
 		return;
@@ -1873,12 +1923,12 @@ void QtLangSet::on_themesChange(int styleIndex)
 
 	m_themesId = styleIndex;
 
-	//Õâ¸öÓĞ¸öñîºÏ£ºÏÈÒªÉèÖÃQsciLexerµÄµ±Ç°Ö÷Ìâ¡£Ö»ÓĞÄ¬ÈÏÖ÷Ìâ²ÅÓĞÏêÏ¸¶ÀÁ¢µÄ·ç¸ñ¡£
-	//·ÇÄ¬ÈÏÖ÷Ìâ£¬Æä³õÊ¼·ç¸ñÈ«ÊÇÄ¬ÈÏÑùÊ½¡£
+	//è¿™ä¸ªæœ‰ä¸ªè€¦åˆï¼šå…ˆè¦è®¾ç½®QsciLexerçš„å½“å‰ä¸»é¢˜ã€‚åªæœ‰é»˜è®¤ä¸»é¢˜æ‰æœ‰è¯¦ç»†ç‹¬ç«‹çš„é£æ ¼ã€‚
+	//éé»˜è®¤ä¸»é¢˜ï¼Œå…¶åˆå§‹é£æ ¼å…¨æ˜¯é»˜è®¤æ ·å¼ã€‚
 
 	QsciLexer::setCurThemes(m_themesId);
 
-	//Èç¹û²»´æÔÚÖ÷ÌâÉèÖÃ£¬Ôò´ÓÄ£°åÀïÃæ¿½±´Ò»·İ³öÀ´
+	//å¦‚æœä¸å­˜åœ¨ä¸»é¢˜è®¾ç½®ï¼Œåˆ™ä»æ¨¡æ¿é‡Œé¢æ‹·è´ä¸€ä»½å‡ºæ¥
 	if (!isExistThemesSetings(styleIndex))
 	{
 		createUserStyleFormThemes(styleIndex);
@@ -1888,15 +1938,15 @@ void QtLangSet::on_themesChange(int styleIndex)
 
 	NddSetting::updataKeyValueFromNumSets(SKIN_KEY, m_themesId);
 
-	//ÕâÀï¾ÍÒª¼°Ê±ÇĞ»»µ±Ç°Ö÷Ìâ£¬Ô¤ÀÀÑÕÉ«
+	//è¿™é‡Œå°±è¦åŠæ—¶åˆ‡æ¢å½“å‰ä¸»é¢˜ï¼Œé¢„è§ˆé¢œè‰²
 	updateThemes();
 
-	//ÏÂÒ»²½¾ÍÊÇÒª¸üºÃµ±Ç°±à¼­Æ÷µÄÓï·¨ÉèÖÃ
+	//ä¸‹ä¸€æ­¥å°±æ˜¯è¦æ›´å¥½å½“å‰ç¼–è¾‘å™¨çš„è¯­æ³•è®¾ç½®
 	previewAllGoblalChange();
 
 	int row = ui.langListWidget->currentRow();
 
-	//ÊÖ¶¯Ë¢ĞÂUI
+	//æ‰‹åŠ¨åˆ·æ–°UI
 	QListWidgetItem* styleItem = ui.langListWidget->item(row);
 
 	slot_itemSelect(styleItem);
@@ -1906,7 +1956,7 @@ void QtLangSet::on_themesChange(int styleIndex)
 	ui.statusBar->showMessage(tr("themes changed finished ..."), 5000);
 }
 
-//¸üĞÂµ±Ç°±à¼­¿òÖĞÖ÷ÌâµÄÑùÊ½
+//æ›´æ–°å½“å‰ç¼–è¾‘æ¡†ä¸­ä¸»é¢˜çš„æ ·å¼
 void QtLangSet::updateThemes()
 {
 	CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
@@ -1916,7 +1966,7 @@ void QtLangSet::updateThemes()
 	}
 }
 
-//Ôö¼ÓÒ»¸ö¿ì½İÏÔÊ¾È«¾ÖµÄ°´Å¥£¬±ÜÃâÓÃ»§¾­³£ÕÒ²»µ½
+//å¢åŠ ä¸€ä¸ªå¿«æ·æ˜¾ç¤ºå…¨å±€çš„æŒ‰é’®ï¼Œé¿å…ç”¨æˆ·ç»å¸¸æ‰¾ä¸åˆ°
 void QtLangSet::on_showGlobalItem()
 {
 	if (ui.langListWidget->currentRow() != 0)

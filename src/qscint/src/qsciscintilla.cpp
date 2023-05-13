@@ -2,7 +2,7 @@
 // Scintilla.  It is modelled on QTextEdit - a method of the same name should
 // behave in the same way.
 //
-// Copyright (c) 2021 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2023 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
@@ -2370,7 +2370,9 @@ QString QsciScintilla::selectedText() const
     if (!selText)
         return QString();
 
-    char *buf = new char[SendScintilla(SCI_GETSELECTIONEND) - SendScintilla(SCI_GETSELECTIONSTART) + 1];
+    //char *buf = new char[SendScintilla(SCI_GETSELECTIONEND) - SendScintilla(SCI_GETSELECTIONSTART) + 1];
+    int size = SendScintilla(SCI_GETSELTEXT, 0);
+    char* buf = new char[size];
 
     SendScintilla(SCI_GETSELTEXT, buf);
 
@@ -4698,6 +4700,7 @@ QMenu *QsciScintilla::createStandardContextMenu()
     }
 
     action = menu->addAction(tr("&Copy"), this, SLOT(copy()));
+    action->setObjectName("copy");
     set_shortcut(action, QsciCommand::SelectionCopy);
     action->setEnabled(has_selection);
 
@@ -4711,7 +4714,7 @@ QMenu *QsciScintilla::createStandardContextMenu()
         action->setEnabled(has_selection);
     }
 
-    if (!menu->isEmpty())
+    if (!read_only && !menu->isEmpty())
         menu->addSeparator();
 
     action = menu->addAction(tr("Select All"), this, SLOT(selectAll()));

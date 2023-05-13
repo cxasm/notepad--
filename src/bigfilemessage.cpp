@@ -1,4 +1,5 @@
 #include "bigfilemessage.h"
+#include "nddsetting.h"
 
 BigFileMessage::BigFileMessage(QWidget *parent)
 	: QDialog(parent), m_result(-1)
@@ -41,19 +42,19 @@ void BigFileMessage::slot_okBt()
 {
 	if (ui.textMode->isChecked())
 	{
-		m_result = TXT_TYPE;//æ™®é€šæ–‡æœ¬
+		m_result = TXT_TYPE;//ÆÕÍ¨ÎÄ±¾
 	}
 	else if(ui.bigTextMode->isChecked())
 	{
-		m_result = BIG_TEXT_RO_TYPE; //å°äºŽ8Gçš„å¤§æ–‡æœ¬
+		m_result = BIG_TEXT_RO_TYPE; //Ð¡ÓÚ8GµÄ´óÎÄ±¾
 	}
 	else if (ui.superBigTextMode->isChecked())
 	{
-		m_result = SUPER_BIG_TEXT_RO_TYPE;//8Gä»¥ä¸Šçš„å¤§æ–‡æœ¬
+		m_result = SUPER_BIG_TEXT_RO_TYPE;//8GÒÔÉÏµÄ´óÎÄ±¾
 	}
 	else if (ui.hexMode->isChecked())
 	{
-		m_result = HEX_TYPE;//äºŒè¿›åˆ¶
+		m_result = HEX_TYPE;//¶þ½øÖÆ
 	}
 	done(m_result);
 }

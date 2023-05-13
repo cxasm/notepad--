@@ -21,7 +21,7 @@
 !win32:VERSION = 15.1.0
 
 TEMPLATE = lib
-CONFIG += qt warn_off thread exceptions hide_symbols staticlib
+CONFIG += qt warn_off thread exceptions hide_symbols release staticlib
 
 CONFIG(debug, debug|release) {
     mac: {

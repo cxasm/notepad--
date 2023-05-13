@@ -289,7 +289,7 @@ QFuture<EncodeThreadParameter*> EncodeConvert::commitTask(std::function<EncodeTh
 }
 
 
-//对比左右文件的大小，sha1值来判断文件是否相等
+//识别文件编码
 QFuture<EncodeThreadParameter_*> EncodeConvert::checkFileCode(QString filePath, QTreeWidgetItem* item)
 {
 	EncodeThreadParameter_* p = new EncodeThreadParameter_(filePath);
@@ -298,7 +298,8 @@ QFuture<EncodeThreadParameter_*> EncodeConvert::checkFileCode(QString filePath, 
 	//int 0相等 1 不等
 	return commitTask([](EncodeThreadParameter_* parameter)->EncodeThreadParameter_*
 		{
-			parameter->code = CmpareMode::scanFileRealCode(parameter->filepath);
+			//整个文件都要扫描完毕。还是怕太慢，最多1000行吧
+			parameter->code = CmpareMode::scanFileRealCode(parameter->filepath,1000);
 			return parameter;
 		}
 	, p);
@@ -473,6 +474,7 @@ void EncodeConvert::scanFileCode()
 		{
 			iter->selfItem->setText(2, QString("--"));
 		}
+		//20230304 编码转换这里，不能仅仅只识别已知后缀文件，要失败所有文件
 		else if ((iter->type == RC_FILE) && DocTypeListView::isSupportExt(fileSuffix(iter->relativePath)))
 		{
 			QFutureWatcher<EncodeThreadParameter_*>* futureWatcher = new QFutureWatcher<EncodeThreadParameter_*>();

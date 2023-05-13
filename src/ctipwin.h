@@ -12,6 +12,7 @@ public:
 	~CTipWin();
 	void setTipText(QString text);
 	void showMsg(int sec = 2000);
+	static void showTips(QWidget* parent, QString text, int sec, bool isMousePos = false);
 
 private slots:
 	void slot_delayClose();

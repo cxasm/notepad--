@@ -1,4 +1,4 @@
-#include "scintillaeditview.h"
+﻿#include "scintillaeditview.h"
 
 #include "common.h"
 #include "rgba_icons.h"
@@ -7,12 +7,13 @@
 #include "qtlangset.h"
 #include "findwin.h"
 #include "filemanager.h"
+#include "shortcutkeymgr.h"
+#include "markdownview.h"
 
 #include <Scintilla.h>
 #include <SciLexer.h>
 #include <QImage>
 #include <Qsci/qscilexerpython.h>
-//#include <Qsci/qscilexeravs.h>
 #include <Qsci/qscilexerasm.h>
 #include <Qsci/qscilexerbash.h>
 #include <Qsci/qscilexerbatch.h>
@@ -198,6 +199,9 @@ LanguageName ScintillaEditView::langNames[L_EXTERNAL + 1] = {
 
 ScintillaEditView::ScintillaEditView(QWidget *parent,bool isBigText)
 	: QsciScintilla(parent), m_NoteWin(nullptr), m_preFirstLineNum(0), m_curPos(0), m_hasHighlight(false), m_bookmarkPng(nullptr), m_styleColorMenu(nullptr), m_isBigText(isBigText), m_curBlockLineStartNum(0)
+#ifdef Q_OS_WIN
+    ,m_isInTailStatus(false)
+#endif
 {
 	init();
 }
@@ -210,7 +214,68 @@ ScintillaEditView::~ScintillaEditView()
 	{
 		delete m_bookmarkPng;
 }
+#ifdef Q_OS_WIN
+	deleteTailFileThread();
+#endif
 }
+
+ScintillaEditView::ScintillaEditView():QsciScintilla(nullptr),m_NoteWin(nullptr), m_preFirstLineNum(0), m_curPos(0), m_hasHighlight(false), m_bookmarkPng(nullptr), m_styleColorMenu(nullptr), m_isBigText(false), m_curBlockLineStartNum(0)
+#ifdef Q_OS_WIN
+, m_isInTailStatus(false)
+#endif
+{
+	m_pScintillaFunc = (SCINTILLA_FUNC)this->SendScintillaPtrResult(SCI_GETDIRECTFUNCTION);
+	m_pScintillaPtr = (SCINTILLA_PTR)this->SendScintillaPtrResult(SCI_GETDIRECTPOINTER);
+
+
+	if (!m_pScintillaFunc)
+	{
+		throw std::runtime_error("ScintillaEditView::init : SCI_GETDIRECTFUNCTION message failed");
+	}
+
+	if (!m_pScintillaPtr)
+	{
+		throw std::runtime_error("ScintillaEditView::init : SCI_GETDIRECTPOINTER message failed");
+	}
+}
+
+ScintillaEditView* ScintillaEditView::createEditForSearch()
+{
+	return new ScintillaEditView();
+}
+
+
+//截获ESC键盘，让界面去退出当前的子界面
+void ScintillaEditView::keyPressEvent(QKeyEvent* event)
+{
+	switch (event->key())
+	{
+	case Qt::Key_Escape:
+		if (m_NoteWin != nullptr)
+		{
+			m_NoteWin->on_quitActiveWindow();
+		}
+		break;
+	default:
+		break;
+	}
+	return QsciScintilla::keyPressEvent(event);
+}
+
+
+void ScintillaEditView::mouseReleaseEvent(QMouseEvent* ev)
+{
+	QsciScintilla::mouseReleaseEvent(ev);
+
+	if (ev->button() == Qt::LeftButton)
+	{
+		if (hasSelectedText())
+		{
+			emit delayWork();
+		}
+	}
+}
+
 
 void ScintillaEditView::setBigTextMode(bool isBigText)
 {
@@ -432,6 +497,12 @@ QString ScintillaEditView::getTagByLexerId(int lexerId)
 	case L_FLASH:
 		return("flash");
 
+	case L_MATLAB:
+		return ("matlab");
+
+	case L_MARKDOWN:
+		return("markdown");
+
 	case L_NSIS:
 		return "nsis";
 
@@ -474,9 +545,6 @@ QString ScintillaEditView::getTagByLexerId(int lexerId)
 		break;
 	case L_VERILOG:
 		return "verilog";
-
-	case L_MATLAB:
-		return "matlab";
 
 	case L_HASKELL:
 		break;
@@ -692,6 +760,12 @@ QsciLexer* ScintillaEditView::createLexer(int lexerId, QString tag, bool isOrigi
 		ret = new QsciLexerCPP();
 		ret->setLexerTag("flash");
 		break;
+	case L_MATLAB:
+		ret = new QsciLexerMatlab();
+		break;
+	case L_MARKDOWN:
+		ret = new QsciLexerMarkdown();
+		break;
 	case L_NSIS:
 		ret = new QsciLexerNsis();
 		break;
@@ -734,9 +808,6 @@ QsciLexer* ScintillaEditView::createLexer(int lexerId, QString tag, bool isOrigi
 		break;
 	case L_VERILOG:
 		ret = new QsciLexerVerilog();
-		break;
-	case L_MATLAB:
-		ret = new QsciLexerMatlab();
 		break;
 	case L_HASKELL:
 		break;
@@ -1373,6 +1444,16 @@ void ScintillaEditView::bookmarkToggle(intptr_t lineno) const {
 		bookmarkAdd(lineno);
 }
 
+void ScintillaEditView::bookmarkAdd(QSet<int>& lineSet)
+{
+	QSet<int>::const_iterator i = lineSet.constBegin();
+	while (i != lineSet.constEnd()) {
+		bookmarkAdd(*i);
+		++i;
+	}
+}
+
+
 void ScintillaEditView::bookmarkClearAll() const {
 	this->execute(SCI_MARKERDELETEALL, _SC_MARGE_SYBOLE);
 }
@@ -1720,7 +1801,7 @@ void ScintillaEditView::highlightViewWithWord(QString & word2Hilite)
 
 	QByteArray whatMark = word2Hilite.toUtf8();
 
-	SendScintilla(SCI_SETSEARCHFLAGS, SCFIND_REGEXP | SCFIND_MATCHCASE | SCFIND_WHOLEWORD | SCFIND_REGEXP_SKIPCRLFASONE);
+	SendScintilla(SCI_SETSEARCHFLAGS,  SCFIND_MATCHCASE /*| SCFIND_WHOLEWORD*/ | SCFIND_REGEXP_SKIPCRLFASONE);
 
 	for (; currentLine < lastLine; ++currentLine)
 	{
@@ -1891,6 +1972,9 @@ void ScintillaEditView::contextUserDefineMenuEvent(QMenu* menu)
 		});
 
 		menu->addSeparator();
+
+		menu->addAction(tr("Markdown View"), this, &ScintillaEditView::on_viewMarkdown);
+
 		menu->addAction(tr("Word Count"), [this]() {
 			showWordNums();
 			});
@@ -2205,12 +2289,34 @@ void ScintillaEditView::showWordNums()
 		QString word = selectedText();
 		if (!word.isEmpty())
 		{
-			QMessageBox::about(this, tr("Word Nums"), tr("Current Select Word Nums is %1 .").arg(word.size()));
+			int lineNum = word.count("\n");
+			if (!word.endsWith("\n"))
+			{
+				++lineNum;
 		}
+
+			//\s是包含了换行符的，所有要单独统计\r\n换换行符，排除一下
+			QRegExp warpRe("[\r\n]");
+			int wrapNums = word.count(warpRe);
+			QRegExp bkRe("\\s");
+			int blank = word.count(bkRe);
+			QMessageBox::about(this, tr("Word Nums"), tr("Current Select Word Nums is %1 . \nLine nums is %2 . \nSpace nums is %3, Non-space is %4 .").\
+				arg(word.size()-wrapNums).arg(lineNum).arg(blank-wrapNums).arg(word.size()-blank));
+	}
 	}
 	else
 	{
-		QMessageBox::about(this, tr("Word Nums"), tr("Current Doc Word Nums is %1 .").arg(this->text().size()));
+		int lineNum = this->lines();
+		QString text = this->text();
+
+		//\s是包含了换行符的，所有要单独统计\r\n换换行符，排除一下
+		QRegExp warpRe("[\r\n]");
+		int wrapNums = text.count(warpRe);
+		QRegExp bkRe("\\s");
+		int blank = text.count(bkRe);
+
+		QMessageBox::about(this, tr("Word Nums"), tr("Current Doc Word Nums is %1 . \nLine nums is %2 . \nSpace nums is %3, Non-space is %4 .").\
+			arg(text.size() - wrapNums).arg(lineNum).arg(blank - wrapNums).arg(text.size() - blank));
 	}
 	
 }
@@ -2568,12 +2674,22 @@ void ScintillaEditView::mouseDoubleClickEvent(QMouseEvent * e)
 		} while (0);
 	}
 
+	//20230219先双击选中，再按住ctrl，再双击别的地方选中。此时是进入多选状态。
+	//这里必须要直接返回，不能做delayWork。否则因为delaywork里面不能判断多选，而数据越界崩溃
+	if (hasSelectedText())
+	{
+	QsciScintilla::mouseDoubleClickEvent(e);
+		return;
+	}
+
+	//执行下面mouseDoubleClickEvent后，又会选中。此时如果上面已经有选中，则会多选
 	QsciScintilla::mouseDoubleClickEvent(e);
 
 	if (hasSelectedText())
 	{
 		emit delayWork();
 	}
+	
 }
 
 void ScintillaEditView::changeCase(const TextCaseType & caseToConvert, QString& strToConvert) const
@@ -3617,7 +3733,7 @@ void ScintillaEditView::updateThemes()
 	}
 }
 
-void getFoldColor(QColor& fgColor, QColor& bgColor, QColor& activeFgColor)
+static void getFoldColor(QColor& fgColor, QColor& bgColor, QColor& activeFgColor)
 {
 	//这里看起来反了，但是实际代码就是如此
 	fgColor = StyleSet::s_global_style->fold.bgColor;
@@ -4022,5 +4138,199 @@ void ScintillaEditView::setGlobalFont(int style)
 	break;
 	default:
 		break;
+	}
+}
+
+bool ScintillaEditView::isFoldIndentBased() const
+{
+	QsciLexer* lexer = this->lexer();
+
+	if (lexer != nullptr)
+	{
+		int lexerId = lexer->lexerId();
+
+		return lexerId == L_PYTHON
+			|| lexerId == L_COFFEESCRIPT
+			|| lexerId == L_HASKELL
+			|| lexerId == L_VB
+			|| lexerId == L_YAML;
+	}
+	return false;
+}
+
+const int  MAX_FOLD_COLLAPSE_LEVEL = 8;
+
+struct FoldLevelStack
+{
+	int levelCount = 0;
+	intptr_t levelStack[MAX_FOLD_COLLAPSE_LEVEL]{};
+
+	void push(intptr_t level)
+	{
+		while (levelCount != 0 && level <= levelStack[levelCount - 1])
+		{
+			--levelCount;
+		}
+		levelStack[levelCount++] = level;
+	}
+};
+
+bool ScintillaEditView::isFolded(size_t line)
+{
+	return (0 != execute(SCI_GETFOLDEXPANDED, line));
+};
+
+void ScintillaEditView::fold(size_t line, bool mode)
+{
+	auto endStyled = execute(SCI_GETENDSTYLED);
+	auto len = execute(SCI_GETTEXTLENGTH);
+
+	if (endStyled < len)
+		execute(SCI_COLOURISE, 0, -1);
+
+	intptr_t headerLine;
+	auto level = execute(SCI_GETFOLDLEVEL, line);
+
+	if (level & SC_FOLDLEVELHEADERFLAG)
+		headerLine = line;
+	else
+	{
+		headerLine = execute(SCI_GETFOLDPARENT, line);
+		if (headerLine == -1)
+			return;
+	}
+
+	if (isFolded(headerLine) != mode)
+	{
+		execute(SCI_TOGGLEFOLD, headerLine);
+
+		//SCNotification scnN;
+		//scnN.nmhdr.code = SCN_FOLDINGSTATECHANGED;
+		//scnN.nmhdr.hwndFrom = _hSelf;
+		//scnN.nmhdr.idFrom = 0;
+		//scnN.line = headerLine;
+		//scnN.foldLevelNow = isFolded(headerLine) ? 1 : 0; //folded:1, unfolded:0
+
+		//::SendMessage(_hParent, WM_NOTIFY, 0, reinterpret_cast<LPARAM>(&scnN));
+	}
+}
+
+void ScintillaEditView::collapseFoldIndentBased(int level, bool mode)
+{
+	execute(SCI_COLOURISE, 0, -1);
+
+	FoldLevelStack levelStack;
+	++level;
+
+	const intptr_t maxLine = execute(SCI_GETLINECOUNT);
+	intptr_t line = 0;
+
+	while (line < maxLine)
+	{
+		intptr_t level = execute(SCI_GETFOLDLEVEL, line);
+		if (level & SC_FOLDLEVELHEADERFLAG)
+		{
+			level &= SC_FOLDLEVELNUMBERMASK;
+			levelStack.push(level);
+			if (level == levelStack.levelCount)
+			{
+				if (isFolded(line) != mode)
+				{
+					fold(line, mode);
+				}
+				line = execute(SCI_GETLASTCHILD, line, -1);
+			}
+		}
+		++line;
+	}
+}
+
+void ScintillaEditView::collapse(int level, bool mode)
+{
+	if (isFoldIndentBased())
+	{
+		return collapseFoldIndentBased(level, mode);
+	}
+
+	execute(SCI_COLOURISE, 0, -1);
+
+	intptr_t maxLine = execute(SCI_GETLINECOUNT);
+
+	for (int line = 0; line < maxLine; ++line)
+	{
+		intptr_t lineLevel = execute(SCI_GETFOLDLEVEL, line);
+		if (lineLevel & SC_FOLDLEVELHEADERFLAG)
+		{
+			lineLevel -= SC_FOLDLEVELBASE;
+			if (level == (lineLevel & SC_FOLDLEVELNUMBERMASK))
+				if (isFolded(line) != mode)
+				{
+					fold(line, mode);
+				}
+		}
+	}
+}
+
+void ScintillaEditView::comment(int type)
+{
+	switch (type)
+	{
+	case ADD_DEL_LINE_COM:
+		doBlockComment(cm_toggle);
+		break;
+	case ADD_BK_COM:
+		doStreamComment();
+		break;
+	case DEL_BK_COM:
+		undoStreamComment();
+		break;
+	default:
+		break;
+	}
+}
+
+#ifdef Q_OS_WIN
+void ScintillaEditView::deleteTailFileThread()
+{
+	if (m_isInTailStatus)
+	{
+		m_isInTailStatus = false;
+
+		qlonglong threadAddr = this->property(Tail_Thread).toLongLong();
+
+		std::thread* pListenThread = (std::thread*)(threadAddr);
+
+		if (pListenThread->joinable())
+		{
+			pListenThread->join();
+		}
+
+		delete pListenThread;
+	}
+}
+#endif
+
+//显示markdown编辑器
+void ScintillaEditView::on_viewMarkdown()
+{
+	if (m_markdownWin.isNull())
+	{
+		m_markdownWin = new MarkdownView(this);
+		m_markdownWin->setAttribute(Qt::WA_DeleteOnClose);
+		connect(this, &ScintillaEditView::textChanged, this, &ScintillaEditView::on_updataMarkdown);
+	}
+	
+	QString text = this->text();
+	m_markdownWin->viewMarkdown(text);
+	m_markdownWin->show();
+}
+
+void ScintillaEditView::on_updataMarkdown()
+{
+	if (!m_markdownWin.isNull())
+	{
+		QString text = this->text();
+		m_markdownWin->viewMarkdown(text);
+		m_markdownWin->show();
 	}
 }

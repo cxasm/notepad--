@@ -1,7 +1,8 @@
-#pragma once
+﻿#pragma once
 
 #include <qsciscintilla.h>
 #include <Scintilla.h>
+#include <Platform.h>
 #include <QDragEnterEvent>
 #include <QDropEvent>
 
@@ -25,6 +26,7 @@ public:
 
 private:
 	void init();
+	void  setStyle(int style, int startPos, int length);
 
 private slots:
 	void slot_scrollYValueChange(int value);
@@ -32,7 +34,6 @@ private slots:
 protected:
 	void dragEnterEvent(QDragEnterEvent * event);
 	void dropEvent(QDropEvent * e);
-
 
 private:
 	static bool _SciInit;
