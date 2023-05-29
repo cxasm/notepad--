@@ -18,10 +18,10 @@
 
 您可以在这个项目提交bug或反馈问题。
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.4
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.5
 
 由于github访问经常断网，几乎没法提交代码。国内用户请访问 https://gitee.com/cxasm/notepad--
-NDD已初步推出插件编写功能，希望广大的CPP/QT开发者加入我们，插件功能均可以留上您的大名和捐赠渠道，希望
+NDD 支持插件编写功能，希望广大的CPP/QT开发者加入我们，插件功能均可以留上您的大名和捐赠渠道，希望
 开发者参与插件功能开发。
 
 **鉴于Notepad--遭到反动竞品同类软件的匿名发帖诋毁，ndd项目申明：** 
