@@ -18,7 +18,10 @@
 
 您可以在这个项目提交bug或反馈问题。
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.5
+本仓库与https://gitee.com/cxasm/notepad--是同一个软件。
+中国内使用https://gitee.com/cxasm/notepad-- 。国外使用本github库，该库会定期同步国内gitee库。
+
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.6
 
 由于github访问经常断网，几乎没法提交代码。国内用户请访问 https://gitee.com/cxasm/notepad--
 NDD 支持插件编写功能，希望广大的CPP/QT开发者加入我们，插件功能均可以留上您的大名和捐赠渠道，希望
