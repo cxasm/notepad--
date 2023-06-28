@@ -18,7 +18,7 @@
 
 您可以在这个项目提交bug或反馈问题。
 
-本仓库与https://gitee.com/cxasm/notepad--是同一个软件。
+本仓库与https://gitee.com/cxasm/notepad-- 是同一个软件。
 中国内使用https://gitee.com/cxasm/notepad-- 。国外使用本github库，该库会定期同步国内gitee库。
 
 最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v2.6
