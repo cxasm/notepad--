@@ -93,12 +93,11 @@ yay -S notepad---git
 ```
 
 ndd在深度国产uos运行效果：
-
+![ntscreenshot_20230805_134025](https://github.com/cxasm/notepad--/assets/42246867/ec0b5243-3c9d-46d0-bba6-348617236829)
 
 
 ndd在windows运行效果：
-
-![ndd在uos](https://user-images.githubusercontent.com/42246867/235033753-058ef39a-f815-4404-b5d1-de4a834dec1d.png)
+![ndd在windows](https://user-images.githubusercontent.com/42246867/235033753-058ef39a-f815-4404-b5d1-de4a834dec1d.png)
 
 ![ndd 在windows](https://user-images.githubusercontent.com/42246867/218263319-3e78b0a9-9fb1-45d1-8f1c-2e850e073425.png)
 
