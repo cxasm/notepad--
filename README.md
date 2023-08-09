@@ -92,14 +92,13 @@ QQ群 616606091 开发群，建议懂CPP/QT、愿意参与NDD项目代码贡献�
 yay -S notepad---git
 ```
 
-
 ndd在深度国产uos运行效果：
 
-![ntscreenshot_20230425_160046](https://user-images.githubusercontent.com/42246867/235033790-fcf46635-c1e7-4e36-bbb3-fb31efff812e.png)
+
 
 ndd在windows运行效果：
 
-![ntscreenshot_20230425_133253](https://user-images.githubusercontent.com/42246867/235033753-058ef39a-f815-4404-b5d1-de4a834dec1d.png)
+![ndd在uos](https://user-images.githubusercontent.com/42246867/235033753-058ef39a-f815-4404-b5d1-de4a834dec1d.png)
 
 ![ndd 在windows](https://user-images.githubusercontent.com/42246867/218263319-3e78b0a9-9fb1-45d1-8f1c-2e850e073425.png)
 
