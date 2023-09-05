@@ -1,4 +1,4 @@
-/* Scintilla source code edit control */
+﻿/* Scintilla source code edit control */
 /* @file ScintillaWidget.h
  * Definition of Scintilla widget for GTK+.
  * Only needed by GTK+ code but is harmless on other platforms.

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file XPM.h
  ** Define a classes to hold image data in the X Pixmap (XPM) and RGBA formats.
  **/

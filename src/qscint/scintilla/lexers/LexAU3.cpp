@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 // @file LexAU3.cxx
 // Lexer for AutoIt3  http://www.hiddensoft.com/autoit3
 // by Jos van der Zande, jvdzande@yahoo.com

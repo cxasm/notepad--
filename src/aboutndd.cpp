@@ -1,4 +1,4 @@
-#include "aboutndd.h"
+﻿#include "aboutndd.h"
 
 AboutNdd::AboutNdd(QWidget *parent)
 	: QWidget(parent)

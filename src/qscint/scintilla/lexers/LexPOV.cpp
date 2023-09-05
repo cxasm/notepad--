@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexPOV.cxx
  ** Lexer for POV-Ray SDL (Persistance of Vision Raytracer, Scene Description Language).
  ** Written by Philippe Lhoste but this is mostly a derivative of LexCPP...

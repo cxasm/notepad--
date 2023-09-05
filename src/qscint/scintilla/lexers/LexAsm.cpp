@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexAsm.cxx
  ** Lexer for Assembler, just for the MASM syntax
  ** Written by The Black Horus

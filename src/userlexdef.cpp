@@ -1,4 +1,4 @@
-#include "userlexdef.h"
+ï»¿#include "userlexdef.h"
 #include "rcglobal.h"
 #include <QSettings>
 
@@ -12,14 +12,14 @@ UserLexDef::~UserLexDef()
 }
 
 
-//×Ô¼º¶¨ÒåÒ»Ì×¶ÁÈ¡ºÍ±£´æÅäÖÃµÄ½Ó¿Ú
+//è‡ªå·±å®šä¹‰ä¸€å¥—è¯»å–å’Œä¿å­˜é…ç½®çš„æ¥å£
 
 bool UserLexDef::readUserSettings(QString langTagName)
 {
-	//×Ô¶¨ÒåÓïÑÔ¸ñÊ½¡£
+	//è‡ªå®šä¹‰è¯­è¨€æ ¼å¼ã€‚
 	//mz:ndd
 	//name:xxx
-	//mother:xxx none/cpp/html ¾ÍÈıÖÖ
+	//mother:xxx none/cpp/html å°±ä¸‰ç§
 	//keword:xxx
 
 	QString userLangFile = QString("notepad/userlang/%1").arg(langTagName);
@@ -28,7 +28,7 @@ bool UserLexDef::readUserSettings(QString langTagName)
 
 	if (!qs.contains(QString("mz")))
 	{
-		//±ØĞë°üº¬MzÎªNddµÄ¼ü£¬·ñÔò´íÎó
+		//å¿…é¡»åŒ…å«Mzä¸ºNddçš„é”®ï¼Œå¦åˆ™é”™è¯¯
 		return false;
 	}
 	if (qs.value("mz").toString() != QString("ndd"))
@@ -84,11 +84,11 @@ void UserLexDef::setMotherLang(UserLangMother words)
 
 bool UserLexDef::writeUserSettings(QString langTagName)
 {
-	//×Ô¶¨ÒåÓïÑÔ¸ñÊ½¡£
+	//è‡ªå®šä¹‰è¯­è¨€æ ¼å¼ã€‚
 	//mz:ndd
 	//name:xxx
-	//mother:xxx none/cpp/html ¾ÍÈıÖÖ
-	//ext:xx xx xx ÎÄ¼ş¹ØÁªºó×ºÃû
+	//mother:xxx none/cpp/html å°±ä¸‰ç§
+	//ext:xx xx xx æ–‡ä»¶å…³è”åç¼€å
 	//keyword:xxx
 
 	QString userLangFile = QString("notepad/userlang/%1").arg(langTagName);

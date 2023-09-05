@@ -1,4 +1,4 @@
-#include "plugin.h"
+﻿#include "plugin.h"
 #include <QLibrary>
 #include <QDir>
 #include <QMenu>

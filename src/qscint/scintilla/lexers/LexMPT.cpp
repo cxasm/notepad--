@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexMPT.cxx
  ** Lexer for MPT specific files. Based on LexOthers.cxx
  ** LOT = the text log file created by the MPT application while running a test program

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexHex.cxx
  ** Lexers for Motorola S-Record, Intel HEX and Tektronix extended HEX.
  **

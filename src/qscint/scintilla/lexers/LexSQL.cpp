@@ -1,4 +1,4 @@
-//-*- coding: utf-8 -*-
+﻿//-*- coding: utf-8 -*-
 // Scintilla source code edit control
 /** @file LexSQL.cxx
  ** Lexer for SQL, including PL/SQL and SQL*Plus.

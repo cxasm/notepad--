@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file EditModel.h
  ** Defines the editor state that must be visible to EditorView.
  **/

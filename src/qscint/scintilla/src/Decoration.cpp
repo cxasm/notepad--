@@ -1,4 +1,4 @@
-/** @file Decoration.cxx
+﻿/** @file Decoration.cxx
  ** Visual elements added over text.
  **/
 // Copyright 1998-2007 by Neil Hodgson <neilh@scintilla.org>

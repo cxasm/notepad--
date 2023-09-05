@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file DBCS.h
  ** Functions to handle DBCS double byte encodings like Shift-JIS.
  **/

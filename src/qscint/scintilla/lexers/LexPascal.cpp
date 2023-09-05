@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexPascal.cxx
  ** Lexer for Pascal.
  ** Written by Laurent le Tynevez

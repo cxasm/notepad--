@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexIndent.cxx
  ** Lexer for no language. Used for indentation-based folding of files.
  **/

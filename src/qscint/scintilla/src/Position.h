@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file Position.h
  ** Defines global type name Position in the Sci internal namespace.
  **/

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexTAL.cxx
  ** Lexer for TAL
  ** Based on LexPascal.cxx

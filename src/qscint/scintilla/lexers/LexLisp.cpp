@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexLisp.cxx
  ** Lexer for Lisp.
  ** Written by Alexey Yutkin.

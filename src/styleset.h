@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QColor>
 #include <QFont>
 
@@ -30,7 +30,7 @@ struct One_Stype_Info {
 	int styleId;
 	QColor fgColor;
 	QColor bgColor;
-	QFont font; //���font�����������У�1�����壬���������С����Щ���ԣ��������Ŵ�С������û�����壬�����д�С����ʹ�������С����ʾ
+	QFont font; //这个font代表两个含有，1是字体，而是字体大小。有些属性，比如括号大小，他们没有字体，但是有大小，则使用字体大小来表示
 	One_Stype_Info() :styleId(-1)
 	{
 	}
@@ -40,7 +40,7 @@ struct One_Stype_Info {
 };
 
 
-//��ǰ��ȫ�ַ�����ԣ����е���ʽ�޸ģ��������޸�����ṹ�壬Ȼ������ط��ٸ�������޸ĺ�Ľṹ�壬������ͬ������
+//当前的全局风格属性，所有的样式修改，都是先修改这个结构体，然后其余地方再根据这个修改后的结构体，来进行同步更新
 struct GLOBAL_STYLE_OPS {
 	One_Stype_Info global_style;
 	One_Stype_Info default_style;

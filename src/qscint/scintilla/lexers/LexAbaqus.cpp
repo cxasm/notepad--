@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexABAQUS.cxx
  ** Lexer for ABAQUS. Based on the lexer for APDL by Hadar Raz.
  ** By Sergio Lucato.

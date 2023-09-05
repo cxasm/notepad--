@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QLineEdit>
 #include <QLineEdit>
@@ -16,10 +16,10 @@ public:
 
 
 protected:
-	///< ÍÏ¶¯ÎÄ¼þµ½´°¿Ú ´¥·¢
+	///< æ‹–åŠ¨æ–‡ä»¶åˆ°çª—å£ è§¦å‘
 	void dragEnterEvent(QDragEnterEvent* event) override;
-	///< ÍÏ¶¯ÎÄ¼þµ½´°¿ÚÒÆ¶¯ÎÄ¼þ ´¥·¢
+	///< æ‹–åŠ¨æ–‡ä»¶åˆ°çª—å£ç§»åŠ¨æ–‡ä»¶ è§¦å‘
 	void dragMoveEvent(QDragMoveEvent* event) override;
-	///< ÍÏ¶¯ÎÄ¼þµ½´°¿ÚÊÍ·ÅÎÄ¼þ´¥·¢
+	///< æ‹–åŠ¨æ–‡ä»¶åˆ°çª—å£é‡Šæ”¾æ–‡ä»¶è§¦å‘
 	void dropEvent(QDropEvent* event) override;
 };

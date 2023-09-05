@@ -1,4 +1,4 @@
-/** @file LexD.cxx
+﻿/** @file LexD.cxx
  ** Lexer for D.
  **
  ** Copyright (c) 2006 by Waldemar Augustyn <waldemar@wdmsys.com>

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexSmalltalk.cxx
  ** Lexer for Smalltalk language.
  ** Written by Sergey Philippov, sphilippov-at-gmail-dot-com

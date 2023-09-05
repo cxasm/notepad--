@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file SplitVector.h
  ** Main data structure for holding arrays that handle insertions
  ** and deletions efficiently.

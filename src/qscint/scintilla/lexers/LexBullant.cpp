@@ -1,4 +1,4 @@
-// SciTE - Scintilla based Text Editor
+﻿// SciTE - Scintilla based Text Editor
 // LexBullant.cxx - lexer for Bullant
 
 #include <stdlib.h>

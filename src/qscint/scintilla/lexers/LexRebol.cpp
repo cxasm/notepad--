@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexRebol.cxx
  ** Lexer for REBOL.
  ** Written by Pascal Hurni, inspired from LexLua by Paul Winwood & Marcos E. Wurzius & Philippe Lhoste

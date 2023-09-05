@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexErrorList.cxx
  ** Lexer for error lists. Used for the output pane in SciTE.
  **/

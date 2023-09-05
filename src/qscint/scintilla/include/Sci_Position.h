@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file Sci_Position.h
  ** Define the Sci_Position type used in Scintilla's external interfaces.
  ** These need to be available to clients written in C so are not in a C++ namespace.

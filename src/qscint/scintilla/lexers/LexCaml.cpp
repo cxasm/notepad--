@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexCaml.cxx
  ** Lexer for Objective Caml.
  **/

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexBaan.cxx
 ** Lexer for Baan.
 ** Based heavily on LexCPP.cxx

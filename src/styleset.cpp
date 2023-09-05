@@ -1,4 +1,4 @@
-#include "styleset.h"
+ï»¿#include "styleset.h"
 #include "ccnotepad.h"
 #include <QFile>
 #include <QPalette>
@@ -70,7 +70,7 @@ void StyleSet::setCommonStyle(QColor foldfgColor_, QColor foldbgColor_, QColor m
 	foldbgColor = foldbgColor_;
 	marginsBackgroundColor = marginsBackgroundColor_;
 
-	QFile file(":/qss/lightbluestyle.qss"); //qssÎÄ¼şÂ·¾¶:/lightblue.qss
+	QFile file(":/qss/lightbluestyle.qss"); //qssæ–‡ä»¶è·¯å¾„:/lightblue.qss
 	QString styleSheet;
 	if (file.open(QIODevice::Text | QIODevice::ReadOnly))
 	{
@@ -128,7 +128,7 @@ void StyleSet::setSkin(int id)
 	}
 }
 
-//ÖØĞÂ¼ÓÔØGlobalÈ«¾Ö·ç¸ñ
+//é‡æ–°åŠ è½½Globalå…¨å±€é£æ ¼
 void StyleSet::reloadGolbalStyleFromSetFile()
 {
 	loadGolbalStyle();
@@ -140,7 +140,7 @@ void StyleSet::loadGolbalStyle()
 	QsciLexerGlobal* pGlobalLexer = dynamic_cast<QsciLexerGlobal*>(pLexer);
 	if (pGlobalLexer != nullptr)
 	{
-		//»ñÈ¡ÆäÊôĞÔÑÕÉ«£¬È»ºóÌîÈë¡£ºóĞøÔÚScintillaEditViewÖĞÖ±½ÓÉèÖÃÕâĞ©One_Stype_InfoµÄÊôĞÔÖµ
+		//è·å–å…¶å±æ€§é¢œè‰²ï¼Œç„¶åå¡«å…¥ã€‚åç»­åœ¨ScintillaEditViewä¸­ç›´æ¥è®¾ç½®è¿™äº›One_Stype_Infoçš„å±æ€§å€¼
 		One_Stype_Info* pAddr = &s_global_style->global_style;
 
 		for (int i = 0; i <= URL_HOVERRED; ++i)
@@ -158,7 +158,7 @@ QString StyleSet::getCurrentStyle()
 	return getStyleName(m_curStyleId);
 }
 
-//ÊÇ·ñÉîÉ«·ç¸ñÏµÁĞ
+//æ˜¯å¦æ·±è‰²é£æ ¼ç³»åˆ—
 bool StyleSet::isCurrentDeepStyle()
 {
 	switch (m_curStyleId)
@@ -217,7 +217,7 @@ void StyleSet::setDefaultStyle()
 	marginsBackgroundColor = QColor(0xf0f0f0);
 	bookmarkBkColor = QColor(0xececec);
 
-	QFile file(":/qss/mystyle.qss"); //qssÎÄ¼şÂ·¾¶:/lightblue.qss
+	QFile file(":/qss/mystyle.qss"); //qssæ–‡ä»¶è·¯å¾„:/lightblue.qss
 	QString styleSheet;
 	if (file.open(QIODevice::Text | QIODevice::ReadOnly))
 	{
@@ -246,7 +246,7 @@ void StyleSet::setThinBlueStyle()
 	setCommonStyle(QColor(0xd7, 0xe3, 0xf4, 100), QColor(0xd7e3f4), QColor(0xd5e1f1), "#D7E3F4");
 }
 
-//Ö½»Æ
+//çº¸é»„
 void StyleSet::setThinYellowStyle()
 {
 	//m_curStyleId = THIN_YELLOW_SE;
@@ -254,7 +254,7 @@ void StyleSet::setThinYellowStyle()
 	setCommonStyle(QColor(0xf9, 0xf0, 0xe1, 100), QColor(0xf9f0e1), QColor(0xf7f0e0), "#F9F0E1");
 }
 
-//ĞûÖ½»Æ
+//å®£çº¸é»„
 void StyleSet::setRiceYellowStyle()
 {
 	//m_curStyleId = RICE_YELLOW_SE;
@@ -262,7 +262,7 @@ void StyleSet::setRiceYellowStyle()
 	setCommonStyle(QColor(0xf6, 0xf3, 0xea, 100), QColor(0xf6f3ea), QColor(0xf4f1e9), "#F6F3EA");
 }
 
-//ÒøÉ«
+//é“¶è‰²
 void StyleSet::setSilverStyle()
 {
 	//m_curStyleId = SILVER_SE;
@@ -270,7 +270,7 @@ void StyleSet::setSilverStyle()
 	setCommonStyle(QColor(0xe9, 0xe8, 0xe4, 100), QColor(0xe9e8e4), QColor(0xe7e6e2), "#E9E8E4");
 }
 
-//Ì¸×ÏÉ«#FFF0F5
+//è°ˆç´«è‰²#FFF0F5
 void StyleSet::setLavenderBlushStyle()
 {
 	//m_curStyleId = LAVENDER_SE;
@@ -293,14 +293,14 @@ void StyleSet::setBlackStyle()
 	foldfgColor = QColor(0,0, 0);
 	foldbgColor = QColor(32, 32, 40);
 	
-	//×¢Òâ°µºÚÄ£Ê½ÊÇµ¥¶ÀµÄ´°¿Ú±³¾°ÑÕÉ«¡£ÉÏÃæµÄfoldbgColor¾ö¶¨ÁË±à¼­Æ÷µÄ±³¾°ÑÕÉ«¡£
-	//°µºÚÄ£Ê½´°Ìå±³¾°²»ÍêÈ«ÊÇºÚÉ«£¬¶øÊÇ686868
+	//æ³¨æ„æš—é»‘æ¨¡å¼æ˜¯å•ç‹¬çš„çª—å£èƒŒæ™¯é¢œè‰²ã€‚ä¸Šé¢çš„foldbgColorå†³å®šäº†ç¼–è¾‘å™¨çš„èƒŒæ™¯é¢œè‰²ã€‚
+	//æš—é»‘æ¨¡å¼çª—ä½“èƒŒæ™¯ä¸å®Œå…¨æ˜¯é»‘è‰²ï¼Œè€Œæ˜¯686868
 	QColor blackPaletteColor(68,68,68);
 
 	marginsBackgroundColor = QColor(57, 58, 60);
 	bookmarkBkColor = QColor(53,54,56);
 
-	QFile file(":/qss/black.qss"); //qssÎÄ¼şÂ·¾¶:/lightblue.qss
+	QFile file(":/qss/black.qss"); //qssæ–‡ä»¶è·¯å¾„:/lightblue.qss
 	QString styleSheet;
 	if (file.open(QIODevice::Text | QIODevice::ReadOnly))
 	{
@@ -325,7 +325,7 @@ void StyleSet::setBlackStyle()
 	marginsBackgroundColor = QColor(57, 58, 60);
 	bookmarkBkColor = QColor(53, 54, 56);
 
-	QFile file(":/qss/myblack.qss"); //qssÎÄ¼şÂ·¾¶:/lightblue.qss
+	QFile file(":/qss/myblack.qss"); //qssæ–‡ä»¶è·¯å¾„:/lightblue.qss
 	QString styleSheet;
 	if (file.open(QIODevice::Text | QIODevice::ReadOnly))
 	{

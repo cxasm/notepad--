@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file DefaultLexer.h
  ** A lexer base class with default empty implementations of methods.
  ** For lexers that do not support all features so do not need real implementations.

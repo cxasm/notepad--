@@ -1,0 +1,36 @@
+编译
+CMake工具链编译说明:
+
+Ubuntu/Debian
+安装编译环境 sudo apt-get install g++ make cmake
+安装qt工具和库 sudo apt-get install qtbase5-dev qt5-qmake qtbase5-dev-tools libqt5printsupport5 libqt5xmlpatterns5-dev
+配置 cmake -B build -DCMAKE_BUILD_TYPE=Release
+编译 cd build && make -j
+打包 cpack
+ArchLinux
+安装编译环境 sudo pacman -S gcc cmake make ninja
+安装 qt 工具和库 sudo pacman -S qt5-tools qt5-base qt5-xmlpatterns
+配置 cmake -S . -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -W no-dev
+编译 ninja -C build && ninja -C build install
+打包: 使用 AUR/notepad---git yay -S notepad---git
+安装：
+预编译包添加 ArchLinuxCN/notepad---git 镜像 yay -S archlinuxcn/notepad---git
+预编译包 Debuginfod/notepad---git-debug 包 yay -S archlinuxcn/notepad---git-debug
+openSUSE Tumbleweed
+安装编译环境和Qt工具库 sudo zypper in -t pattern devel_C_C++ devel_basis devel_qt5
+配置 cmake -B build -DCMAKE_BUILD_TYPE=Release
+编译 cd build && make -j
+打包使用 OBS (Open Build Service)
+Qt工程编译说明：
+
+1）使用qtcreator 或 vs 先打开qscint/src/qscintilla.pro 。先编译出这个qscintlla的依赖库。
+
+2）再打开RealCompare.pro 加载后编译。
+
+3）由于编译的平台较多，涉及windows/linux/mac，有任何编译问题，还请加qq群 959439826 。欢迎广大网友实现新功能后提交代码给我们。
+
+代码上线不久，删除了商业的对比功能和注册功能（这部分有商业原因，请理解），除此以外，所有功能全部保留。
+
+4）Arch Linux 及其衍生版可以通过 AUR 仓库安装：notepad---git
+
+yay -S notepad---git

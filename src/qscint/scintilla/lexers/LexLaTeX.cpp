@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexLaTeX.cxx
  ** Lexer for LaTeX2e.
   **/

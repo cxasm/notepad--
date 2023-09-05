@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexProgress.cxx
  **  Lexer for Progress 4GL.
  ** Based on LexCPP.cxx of Neil Hodgson <neilh@scintilla.org>

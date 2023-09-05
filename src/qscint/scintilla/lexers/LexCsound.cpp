@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexCsound.cxx
  ** Lexer for Csound (Orchestra & Score)
  ** Written by Georg Ritter - <ritterfuture A T gmail D O T com>

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexGAP.cxx
  ** Lexer for the GAP language. (The GAP System for Computational Discrete Algebra)
  ** http://www.gap-system.org

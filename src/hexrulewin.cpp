@@ -1,4 +1,4 @@
-#include "hexrulewin.h"
+﻿#include "hexrulewin.h"
 
 HexRuleWin::HexRuleWin(int mode, int highlight, QWidget *parent): QWidget(parent), m_mode(mode), m_isHighlightBackgroud(highlight)
 {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright 2006-2018 Mitchell mitchell.att.foicica.com. See License.txt.
  *
  * Lua-powered dynamic language lexer for Scintilla.

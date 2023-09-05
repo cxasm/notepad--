@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexClw.cxx
  ** Lexer for Clarion.
  ** 2004/12/17 Updated Lexer

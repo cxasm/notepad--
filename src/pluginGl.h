@@ -1,16 +1,16 @@
-#pragma once
+ï»¿#pragma once
 #include <QString>
 #include <QMenu>
 
 struct ndd_proc_data
 {
-	QString m_strPlugName; //²å¼şÃû³Æ ±ØÑ¡¡£²å¼şÀïÃæĞèÌîĞ´
-	QString m_strFilePath; //lib ²å¼şµÄÈ«¾ÖÂ·¾¶¡£±ØÑ¡¡£²å¼şÄÚ²¿²»ÓÃÌîĞ´,Ö÷³ÌĞò´«µİÏÂÀ´
-	QString m_strComment; //²å¼şËµÃ÷£»²å¼şÀïÃæĞèÌîĞ´
-	QString m_version; //°æ±¾ºÅÂë¡£¿ÉÑ¡£»²å¼şÀïÃæĞèÌîĞ´
-	QString m_auther;//×÷ÕßÃû³Æ¡£¿ÉÑ¡£»²å¼şÀïÃæĞèÌîĞ´
-	int m_menuType;//²Ëµ¥ÀàĞÍ¡£0£º²»Ê¹ÓÃ¶ş¼¶²Ëµ¥ 1£º´´½¨¶ş¼¶²Ëµ¥£»²å¼şÀïÃæĞèÌîĞ´
-	QMenu* m_rootMenu;//Èç¹ûm_menuType = 1£¬¸ø³ö¶ş¼¶¸ù²Ëµ¥µÄµØÖ·¡£ÆäËûÖµnullptr ²å¼şÄÚ²¿²»ÓÃÌîĞ´£¬Ö÷³ÌĞò´«µİÏÂÀ´
+	QString m_strPlugName; //æ’ä»¶åç§° å¿…é€‰ã€‚æ’ä»¶é‡Œé¢éœ€å¡«å†™
+	QString m_strFilePath; //lib æ’ä»¶çš„å…¨å±€è·¯å¾„ã€‚å¿…é€‰ã€‚æ’ä»¶å†…éƒ¨ä¸ç”¨å¡«å†™,ä¸»ç¨‹åºä¼ é€’ä¸‹æ¥
+	QString m_strComment; //æ’ä»¶è¯´æ˜ï¼›æ’ä»¶é‡Œé¢éœ€å¡«å†™
+	QString m_version; //ç‰ˆæœ¬å·ç ã€‚å¯é€‰ï¼›æ’ä»¶é‡Œé¢éœ€å¡«å†™
+	QString m_auther;//ä½œè€…åç§°ã€‚å¯é€‰ï¼›æ’ä»¶é‡Œé¢éœ€å¡«å†™
+	int m_menuType;//èœå•ç±»å‹ã€‚0ï¼šä¸ä½¿ç”¨äºŒçº§èœå• 1ï¼šåˆ›å»ºäºŒçº§èœå•ï¼›æ’ä»¶é‡Œé¢éœ€å¡«å†™
+	QMenu* m_rootMenu;//å¦‚æœm_menuType = 1ï¼Œç»™å‡ºäºŒçº§æ ¹èœå•çš„åœ°å€ã€‚å…¶ä»–å€¼nullptr æ’ä»¶å†…éƒ¨ä¸ç”¨å¡«å†™ï¼Œä¸»ç¨‹åºä¼ é€’ä¸‹æ¥
 
 	ndd_proc_data(): m_rootMenu(nullptr), m_menuType(0)
 	{

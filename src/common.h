@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <QAction>
 #include <qscilexer.h>
 

@@ -1,4 +1,4 @@
-// This file is part of Notepad-- project
+﻿// This file is part of Notepad-- project
 // Copyright (C)2023 zuowei.yin <cxasm@qq.com>
 
 // This program is free software: you can redistribute it and/or modify

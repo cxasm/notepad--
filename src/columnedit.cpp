@@ -1,4 +1,4 @@
-#include "columnedit.h"
+ï»¿#include "columnedit.h"
 #include "scintillaeditview.h"
 
 ColumnEdit::ColumnEdit(QWidget *parent)
@@ -54,7 +54,7 @@ void ColumnEdit::slot_bigChar(bool isCheck)
 	ui.capital->setEnabled(isCheck);
 }
 
-//×Ô¶¯µ÷Õûµ±Ç°´°¿ÚµÄ×´Ì¬
+//è‡ªåŠ¨è°ƒæ•´å½“å‰çª—å£çš„çŠ¶æ€
 QWidget* ColumnEdit::autoAdjustCurrentEditWin()
 {
 	QWidget* pw = m_editTabWidget->currentWidget();
@@ -93,7 +93,7 @@ void ColumnEdit::slot_ok()
 	QString prefix = ui.prefix->text();
 	bool isCapital = ui.capital->isChecked();
 
-	//ÊÇ²åÈëÎÄ±¾Ä£Ê½
+	//æ˜¯æ’å…¥æ–‡æœ¬æ¨¡å¼
 	if (ui.textGroupBox->isChecked())
 	{
 
@@ -138,7 +138,7 @@ void ColumnEdit::slot_ok()
 		}
 		else
 		{
-			//ÕâÀïÒª¼Ó¸öÌáÊ¾
+			//è¿™é‡Œè¦åŠ ä¸ªæç¤º
 			QApplication::beep();
 			return;
 		}
@@ -209,7 +209,7 @@ void ColumnEdit::slot_ok()
 		lineText.chrg.cpMin = static_cast<Sci_Position>(lineBegin);
 		lineText.chrg.cpMax = static_cast<Sci_Position>(lineEnd);
 		lineText.lpstrText = lineData.data();
-		//»ñÈ¡Ô­Ê¼ĞĞµÄÄÚÈİ
+		//è·å–åŸå§‹è¡Œçš„å†…å®¹
 		pEdit->SendScintilla(SCI_GETTEXTRANGE, 0, &lineText);
 
 		if (lineEndCol < cursorCol)

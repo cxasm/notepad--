@@ -1,4 +1,4 @@
-#include "shortcutkeyeditwin.h"
+ï»¿#include "shortcutkeyeditwin.h"
 
 #include <QMessageBox> 
 
@@ -27,7 +27,7 @@ QKeySequence ShortcutKeyEditWin::getNewKeySeq()
 	return m_newKeys;
 }
 
-//È·ÈÏÐÞ¸Ä£¬ÏÈ¼ì²éÒ»ÏÂ¡£×î¶àËÄ¸ö¼ü
+//ç¡®è®¤ä¿®æ”¹ï¼Œå…ˆæ£€æŸ¥ä¸€ä¸‹ã€‚æœ€å¤šå››ä¸ªé”®
 void  ShortcutKeyEditWin::slot_ok()
 {
 	QKeySequence keys = ui.keySequenceEdit->keySequence();
@@ -41,7 +41,7 @@ void  ShortcutKeyEditWin::slot_ok()
 	done(1);
 }
 
-//É¾³ýÎª¿Õ
+//åˆ é™¤ä¸ºç©º
 void  ShortcutKeyEditWin::on_delete()
 {
 	done(2);

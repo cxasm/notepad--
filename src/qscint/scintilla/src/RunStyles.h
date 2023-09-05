@@ -1,4 +1,4 @@
-/** @file RunStyles.h
+﻿/** @file RunStyles.h
  ** Data structure used to store sparse styles.
  **/
 // Copyright 1998-2007 by Neil Hodgson <neilh@scintilla.org>

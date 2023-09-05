@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexTADS3.cxx
  ** Lexer for TADS3.
  **/

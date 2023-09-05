@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexA68k.cxx
  ** Lexer for Assembler, just for the MASM syntax
  ** Written by Martial Demolins AKA Folco

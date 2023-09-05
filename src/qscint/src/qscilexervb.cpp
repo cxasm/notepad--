@@ -1,4 +1,4 @@
-#include "Qsci/qscilexervb.h"
+﻿#include "Qsci/qscilexervb.h"
 
 QsciLexerVB::QsciLexerVB(QObject *parent)
 	: QsciLexer(parent)

@@ -23,7 +23,7 @@ enum TAB_TYPES {
 	MARK_TYPE,
 };
 
-const int MAX_RECORD_KEY_LENGTH = 20;
+const int MAX_RECORD_KEY_LENGTH = 120;
 
 FindWin::FindWin(QWidget *parent):QMainWindow(parent), m_editTabWidget(nullptr), m_isFindFirst(true), m_findHistory(nullptr), \
 	pEditTemp(nullptr), m_curEditWin(nullptr), m_isStatic(false), m_isReverseFind(false), m_pMainPad(parent)

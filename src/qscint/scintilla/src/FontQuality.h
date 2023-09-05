@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file FontQuality.h
  ** Definitions to control font anti-aliasing.
  ** Redefine constants from Scintilla.h to avoid including Scintilla.h in PlatWin.cxx.

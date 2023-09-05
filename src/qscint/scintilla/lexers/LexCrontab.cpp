@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexCrontab.cxx
  ** Lexer to use with extended crontab files used by a powerful
  ** Windows scheduler/event monitor/automation manager nnCron.

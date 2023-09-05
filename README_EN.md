@@ -4,17 +4,17 @@
 
 ## Project Introduction
 
-Introducing Notepad-- a text editor written in C++ that works seamlessly across Windows, Linux, and Mac platforms. Our aim is to eventually surpass Notepad++, with a particular focus on the Chinese UOS operating system. Unlike Notepad++, our advantage lies in our cross-platform compatibility and support for various OSes.
+Introducing Notepad-- a text editor written in C++ that works seamlessly across Windows, Linux, and Mac platforms. Our goal is to eventually surpass Notepad++, with a special focus on the Chinese UOS operating system. Unlike Notepad++, our advantage lies in our cross-platform compatibility and support for different operating system.
 
-**The purpose of Notepad-- is to counteract some of the misguided remarks made by the author of Notepad++ and to promote a more humble and grounded perspective.** 
+**The purpose of Notepad-- is to counteract some of the misleading statements made by the author of Notepad++ and to promote a more humble and grounded perspective.** 
 
-If you come across any bugs or have any feedback, feel free to share it with us.
+If you come across any bugs or have any feedback, feel free to let us know.
 
-You can download the latest version at https://gitee.com/cxasm/notepad--/releases/tag/v2.0
+You can download the latest version from https://gitee.com/cxasm/notepad--/releases/tag/v2.0.
 
-We have recently added the plugin writing feature to Notepad-- and we hope that many CPP/QT developers will join us in this endeavor. If you develop a plugin, you can include your name and a donation channel.
+We have recently added the ability to write plugins to Notepad-- and we hope that many CPP/QT developers will join us in this endeavour. If you develop a plugin, you can include your name and a donation channel.
 
-Creating a free text editor requires support from users like you. If you'd like to contribute, please consider donating through WeChat.
+Creating a free text editor requires support from users like you. If you'd like to contribute, please consider donating via WeChat.
 
 ![Input description picture](6688.png)
 

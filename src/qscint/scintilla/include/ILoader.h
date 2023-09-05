@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file ILoader.h
  ** Interface for loading into a Scintilla document from a background thread.
  **/

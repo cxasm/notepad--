@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexKVIrc.cxx
  ** Lexer for KVIrc script.
  **/

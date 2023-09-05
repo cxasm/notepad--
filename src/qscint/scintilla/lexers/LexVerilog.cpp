@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexVerilog.cxx
  ** Lexer for Verilog.
  ** Written by Avi Yegudin, based on C++ lexer by Neil Hodgson

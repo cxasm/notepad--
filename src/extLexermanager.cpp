@@ -1,7 +1,7 @@
-#include "extlexermanager.h"
+ï»¿#include "extlexermanager.h"
 
-//×¨ÃÅÓÃÀ´¹ÜÀíÓÃ»§×Ô¶¨ÒåµÄExt ºÍ ´Ê·¨Lexer¹ØÁªµÄÀà¡£
-//¸ø³öÒ»¸öÎÄ¼şµÄextºó×º£¬¿ìËÙ¸æÖª¸ÃÊ¹ÓÃÊ²Ã´lexer½øĞĞÓï·¨¸ßÁÁ
+//ä¸“é—¨ç”¨æ¥ç®¡ç†ç”¨æˆ·è‡ªå®šä¹‰çš„Ext å’Œ è¯æ³•Lexerå…³è”çš„ç±»ã€‚
+//ç»™å‡ºä¸€ä¸ªæ–‡ä»¶çš„extåç¼€ï¼Œå¿«é€Ÿå‘ŠçŸ¥è¯¥ä½¿ç”¨ä»€ä¹ˆlexerè¿›è¡Œè¯­æ³•é«˜äº®
 
 ExtLexerManager* ExtLexerManager::s_instance = nullptr;
 
@@ -42,9 +42,9 @@ void ExtLexerManager::remove(QString ext)
 }
 
 
-//ext:ÎÄ¼şµÄºó×ºÃû langTagName:ÓïÑÔµÄtagÃû³Æ 
-//lexerId Óï·¨µÄid£¬Èç¹ûÊÇÓÃ»§×Ô¶¨Òå£¬Ôò±ØÈ»ÊÇL_USER_TXT,L_USER_CPP,L_USER_HTML,L_USER_JS,L_USER_XML, L_USER_INI ÖĞµÄÒ»¸ö¡£
-//langTagName:Ö»ÓĞÔÚÓÃ»§¶¨ÒåÓïÑÔÏÂ£¬²ÅĞèÒªtagName¡£ÒòÎª·ÇÓÃ»§¶¨ÒåµÄlexer£¬ÆätagnameÊÇ¹Ì¶¨µÄ¡£
+//ext:æ–‡ä»¶çš„åç¼€å langTagName:è¯­è¨€çš„tagåç§° 
+//lexerId è¯­æ³•çš„idï¼Œå¦‚æœæ˜¯ç”¨æˆ·è‡ªå®šä¹‰ï¼Œåˆ™å¿…ç„¶æ˜¯L_USER_TXT,L_USER_CPP,L_USER_HTML,L_USER_JS,L_USER_XML, L_USER_INI ä¸­çš„ä¸€ä¸ªã€‚
+//langTagName:åªæœ‰åœ¨ç”¨æˆ·å®šä¹‰è¯­è¨€ä¸‹ï¼Œæ‰éœ€è¦tagNameã€‚å› ä¸ºéç”¨æˆ·å®šä¹‰çš„lexerï¼Œå…¶tagnameæ˜¯å›ºå®šçš„ã€‚
 void ExtLexerManager::addNewExtType(QString ext, LangType lexerId, QString langTagName)
 {
 	LexerInfo value(lexerId, langTagName);
@@ -61,7 +61,7 @@ bool ExtLexerManager::getLexerTypeByExt(QString ext, LexerInfo& lexer)
 	return false;
 }
 
-//ÁĞ³ötagÓïÑÔÏÂÃæµÄËùÓĞ¹ØÁªµÄÎÄ¼şºó×ºÁĞ±í
+//åˆ—å‡ºtagè¯­è¨€ä¸‹é¢çš„æ‰€æœ‰å…³è”çš„æ–‡ä»¶åç¼€åˆ—è¡¨
 void ExtLexerManager::getExtlistByLangTag(QString tag, QStringList& extList)
 {
 	for (QMap<QString, LexerInfo>::iterator it = m_extToLexerIdMap.begin(); it != m_extToLexerIdMap.end(); ++it)
@@ -75,7 +75,7 @@ void ExtLexerManager::getExtlistByLangTag(QString tag, QStringList& extList)
 	}
 }
 
-//ÁĞ³ötagÓïÑÔÏÂÃæµÄËùÓĞ¹ØÁªµÄÎÄ¼şºó×ºÁĞ±í
+//åˆ—å‡ºtagè¯­è¨€ä¸‹é¢çš„æ‰€æœ‰å…³è”çš„æ–‡ä»¶åç¼€åˆ—è¡¨
 void ExtLexerManager::getExtlistByLangTag(QMap<QString,QStringList>& extLangMap)
 {
 	for (QMap<QString, LexerInfo>::iterator it = m_extToLexerIdMap.begin(); it != m_extToLexerIdMap.end(); ++it)

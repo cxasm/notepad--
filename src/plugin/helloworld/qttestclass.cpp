@@ -1,4 +1,4 @@
-#include "qttestclass.h"
+﻿#include "qttestclass.h"
 #include <qsciscintilla.h>
 
 QtTestClass::QtTestClass(QWidget *parent, QsciScintilla* pEdit)

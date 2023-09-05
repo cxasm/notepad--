@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file ScintillaBase.h
  ** Defines an enhanced subclass of Editor with calltips, autocomplete and context menu.
  **/

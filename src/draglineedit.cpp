@@ -1,4 +1,4 @@
-#include "draglineedit.h"
+О╩©#include "draglineedit.h"
 
 DragLineEdit::DragLineEdit(QWidget *parent)
 	: QLineEdit(parent)
@@ -12,9 +12,9 @@ DragLineEdit::~DragLineEdit()
 
 void DragLineEdit::dragEnterEvent(QDragEnterEvent* event)
 {
-	if (event->mimeData()->hasFormat("text/uri-list")) //ж╩дэ╢Р©╙нд╠╬нд╪Ч
+	if (event->mimeData()->hasFormat("text/uri-list")) //Е▐╙Х┐╫Ф┴⌠Е╪─Ф√┤Ф°╛Ф√┤Д╩╤
 	{
-		event->accept(); //©ирттзуБ╦Ж╢╟©з╡©╪Чиомо╥е╤тоС
+		event->accept(); //Е▐╞Д╩╔Е°╗Х©≥Д╦╙Г╙≈Е▐ёИ┐╗Д╩╤Д╦┼Ф▀√Ф■╬Е╞╧Х╠║
 	}
 	else
 	{

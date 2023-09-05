@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file UniqueString.h
  ** Define UniqueString, a unique_ptr based string type for storage in containers
  ** and an allocator for UniqueString.

@@ -1,4 +1,4 @@
-#include "hexcmprangewin.h"
+ï»¿#include "hexcmprangewin.h"
 
 #include <QLineEdit>
 #include <QMessageBox>
@@ -23,7 +23,7 @@ void HexCmpRangeWin::slot_ok()
 	close();
 }
 
-//Í¨¹ı×ó±ßµÄÖµÍ¬²½ÓÒ±ß¡£ÓÒ±ß²»Í¬²½×ó±ß£¬¼ÓËÙÓÃ»§ÊäÈë
+//é€šè¿‡å·¦è¾¹çš„å€¼åŒæ­¥å³è¾¹ã€‚å³è¾¹ä¸åŒæ­¥å·¦è¾¹ï¼ŒåŠ é€Ÿç”¨æˆ·è¾“å…¥
 void HexCmpRangeWin::slot_asyncStartPos(const QString& text)
 {
 	ui.rightStartPos->setText(text);
@@ -35,7 +35,7 @@ void HexCmpRangeWin::slot_asyncLenPos(const QString& text)
 }
 
 
-//Èç¹ûÈ¡Ïû£¬Ôò²»·µ»ØÈÎºÎÓĞĞ§·¶Î§Öµ;´íÎóÖµÒ²ÊÇ
+//å¦‚æœå–æ¶ˆï¼Œåˆ™ä¸è¿”å›ä»»ä½•æœ‰æ•ˆèŒƒå›´å€¼;é”™è¯¯å€¼ä¹Ÿæ˜¯
 const int MAX_CMP_LENS = 1024 * 1024 * 10;
 
 void HexCmpRangeWin::getRange(bool & isCancel, qint64 & leftStartPos, int & leftCmpLen, qint64 & rightStartPos, int & rightCmpLen)

@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file LexVB.cxx
  ** Lexer for Visual Basic and VBScript.
  **/

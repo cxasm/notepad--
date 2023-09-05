@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file KeyMap.h
  ** Defines a mapping between keystrokes and commands.
  **/

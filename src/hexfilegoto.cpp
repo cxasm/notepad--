@@ -1,4 +1,4 @@
-#include "hexfilegoto.h"
+﻿#include "hexfilegoto.h"
 
 HexFileGoto::HexFileGoto(QWidget *parent)
 	: QWidget(parent)
@@ -13,7 +13,7 @@ HexFileGoto::~HexFileGoto()
 {
 }
 
-//��ʾΪ
+//显示为
 void HexFileGoto::slot_showDecInfo(const QString &text)
 {
 	bool ok;

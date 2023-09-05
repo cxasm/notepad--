@@ -1,4 +1,4 @@
-/** @file LexRust.cxx
+﻿/** @file LexRust.cxx
  ** Lexer for Rust.
  **
  ** Copyright (c) 2013 by SiegeLord <slabode@aim.com>

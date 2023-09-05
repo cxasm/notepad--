@@ -1,4 +1,4 @@
-// Scintilla source code edit control
+﻿// Scintilla source code edit control
 /** @file ILexer.h
  ** Interface between Scintilla and lexers.
  **/
