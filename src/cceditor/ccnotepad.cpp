@@ -5347,7 +5347,7 @@ void hide_file(const QString& szFile)
 //isBakWrite 是否写保护swp文件，默认true。只有新文件时不需要，因为新文件不存在覆盖写的问题
 //isStatic 是否静默：不弹出对话框，在外部批量查找替换文件夹时使用，避免弹窗中断。默认false
 //isClearSwpFile:是否回收swp交换文件，在外部批量查找替换文件夹时使用，替换后直接删除swp文件。默认false
-bool  CCNotePad::saveFile(QString fileName, ScintillaEditView* pEdit, bool isBakWrite, bool isStatic,bool /*isClearSwpFile*/)
+bool  CCNotePad::saveFile(QString fileName, ScintillaEditView* pEdit, bool isBakWrite, bool isStatic, bool isClearSwpFile)
 {
 	QFile srcfile(fileName);
 	
