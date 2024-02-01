@@ -89,9 +89,9 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <widget class="QMenu" name="menuRecene_File">
+    <widget class="QMenu" name="menuRecent_File">
      <property name="title">
-      <string>Recene File</string>
+      <string>Recent File</string>
      </property>
     </widget>
     <addaction name="actionNewFile"/>
@@ -102,7 +102,7 @@
     <addaction name="actionClose_All"/>
     <addaction name="separator"/>
     <addaction name="actionClear_History"/>
-    <addaction name="menuRecene_File"/>
+    <addaction name="menuRecent_File"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="layoutDirection">
