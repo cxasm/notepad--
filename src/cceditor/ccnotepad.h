@@ -245,7 +245,7 @@ private slots:
 	void slot_convertWinLineEnd(bool);
 	void slot_convertUnixLineEnd(bool);
 	void slot_convertMacLineEnd(bool);
-	void slot_openReceneFile();
+	void slot_openRecentFile();
 	void slot_gotoline();
 	void slot_show_spaces(bool check);
 	void slot_show_line_end(bool check);
@@ -346,7 +346,7 @@ private slots:
 	void slot_showToolBar(bool);
 	void slot_dynamicLoadToolMenu();
 	void slot_batchFind();
-	void on_loadReceneFile();
+	void on_loadRecentFile();
 	void slot_pluginMgr();
 #ifdef NO_PLUGIN
 	void onPlugWork(bool check);
@@ -375,9 +375,9 @@ private:
 
 	void setTxtLexer(ScintillaEditView * pEdit);
 	void saveTabEdit(int tabIndex);
-	void saveReceneOpenFile();
+	void saveRecentOpenFile();
 	void updateSaveAllToolBarStatus();
-	void initReceneOpenFileMenu();
+	void initRecentOpenFileMenu();
 	
 	int findFileIsOpenAtPad(QString filePath);
 	bool isNewFileNameExist(QString& fileName);
@@ -409,8 +409,8 @@ private:
 	int initFindWindow(FindTabIndex type= FIND_TAB);
 
 	void setToFileRightMenu();
-	void initReceneCmp();
-	void saveReceneCmp();
+	void initRecentCmp();
+	void saveRecentCmp();
 
 	QString getShortName(const QString& name);
 
@@ -499,7 +499,7 @@ private:
 	QPointer<QDockWidget> m_dockFileListWin;
 	FileListView* m_fileListView;
 
-	QList<QString> m_receneOpenFileList;
+	QList<QString> m_recentOpenFileList;
 
 	QActionGroup *m_pEncodeActGroup;
 	QActionGroup *m_pLineEndActGroup;
@@ -539,12 +539,12 @@ private:
 
 	//最近打开的对比文件和目录列表。做一个环形区
 //保存在数据库中
-	int m_receneDirStartPos;
-	int m_receneFileStartPos;
-	QList<QAction*> m_receneDirList;
-	QList<QAction*> m_receneFileList;
+	int m_recentDirStartPos;
+	int m_recentFileStartPos;
+	QList<QAction*> m_recentDirList;
+	QList<QAction*> m_recentFileList;
 
-	QMap<QString, QAction*> m_receneRecrod;
+	QMap<QString, QAction*> m_recentRecrod;
 
 	QAction* m_openInNewWinAct;
 	QAction* m_showFileDirAct;
