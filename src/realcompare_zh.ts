@@ -361,7 +361,7 @@
     <message>
         <location filename="cceditor/ccnotepad.ui" line="94"/>
         <location filename="ui_ccnotepad.h" line="1628"/>
-        <source>Recene File</source>
+        <source>Recent File</source>
         <translation type="unfinished">最近文件</translation>
     </message>
     <message>
