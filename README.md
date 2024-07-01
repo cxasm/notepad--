@@ -34,6 +34,12 @@ NDD 支持插件编写功能，希望广大的CPP/QT开发者加入我们，插�
 
 **Notepad--不涉及任何政治，更不会随意发布政治言论。** 
 
+对此Notepad--澄清如下：
+https://github.com/cxasm/notepad--/wiki/Ndd-%E5%AF%B9%E8%AF%8B%E6%AF%81%E8%80%85%E4%BB%AC%E6%81%B6%E6%84%8F%E6%AD%AA%E6%9B%B2%E4%BA%8B%E5%AE%9E%E7%9A%84%E8%AF%B4%E6%98%8E
+
+https://gitee.com/cxasm/notepad--/wikis/Ndd-%E5%AF%B9%E8%AF%8B%E6%AF%81%E8%80%85%E4%BB%AC%E6%81%B6%E6%84%8F%E6%AD%AA%E6%9B%B2%E4%BA%8B%E5%AE%9E%E7%9A%84%E8%AF%B4%E6%98%8E?sort_id=11173331
+
+
 **最后强烈建议全体海内外同胞，务必禁用发表错误言论的软件，您可以选择用其它同类软件进行替代，比如vscode,notepad3,sublime都行。大家用实际行动拒绝错误言论软件, 不去评论它，不去关注它，不给它带来任何流量，则发布错误言论的人，终将自讨没趣而闭嘴。** 
 
 ## 联络方式
