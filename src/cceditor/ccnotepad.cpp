@@ -1179,7 +1179,7 @@ CCNotePad::CCNotePad(bool isMainWindows, QWidget *parent)
 	m_saveFile->setEnabled(false);
 	m_saveAllFile->setEnabled(false);
 
-	initReceneOpenFileMenu();
+	initRecentOpenFileMenu();
 
 	//最后加入退出菜单
 	ui.menuFile->addSeparator();
@@ -1216,7 +1216,7 @@ CCNotePad::~CCNotePad()
 	//只有主窗口，才有保存最近打开列表的权力
 	if (m_isMainWindows)
 	{
-		saveReceneOpenFile();
+		saveRecentOpenFile();
 		saveNotePadSqlOptions();
 		savePadUseTimes();
 	}
@@ -1296,9 +1296,9 @@ void CCNotePad::quickshow()
 	m_saveFile->setEnabled(false);
 	m_saveAllFile->setEnabled(false);
 
-	//initReceneOpenFileMenu();
+	//initRecentOpenFileMenu();
 	//延迟加载最近菜单列表
-	connect(ui.menuRecene_File, &QMenu::aboutToShow, this, &CCNotePad::on_loadReceneFile);
+	connect(ui.menuRecent_File, &QMenu::aboutToShow, this, &CCNotePad::on_loadRecentFile);
 
 	//最后加入退出菜单
 	ui.menuFile->addSeparator();
@@ -3372,7 +3372,7 @@ void CCNotePad::slot_lexerActTrig(QAction *action)
 }
 
 //保存最近打开文件到数据库。文件只有在关闭时，才写入最近列表。不关闭的下次自动恢复打开
-void CCNotePad::saveReceneOpenFile()
+void CCNotePad::saveRecentOpenFile()
 {
 	int clearOpenfilelist = NddSetting::getKeyValueFromDelayNumSets(CLEAR_OPENFILE_ON_CLOSE);
 	//开启了关闭时清空打开历史列表
@@ -3392,7 +3392,7 @@ void CCNotePad::saveReceneOpenFile()
 
 		int count = 0;
 
-		for (QList<QString>::iterator it = m_receneOpenFileList.begin(); it != m_receneOpenFileList.end(); ++it)
+		for (QList<QString>::iterator it = m_recentOpenFileList.begin(); it != m_recentOpenFileList.end(); ++it)
 		{
 			fileText.append(*it);
 
@@ -3413,18 +3413,18 @@ void CCNotePad::saveReceneOpenFile()
 
 
 //从最近列表中加载最近打开历史文件，到菜单中
-void CCNotePad::on_loadReceneFile()
+void CCNotePad::on_loadRecentFile()
 {
 	if (!m_isRecentFileLoaded)
 	{
 		m_isRecentFileLoaded = true;
 
-		initReceneOpenFileMenu();
+		initRecentOpenFileMenu();
 }
 }
 
 //从数据库读取最近对比的文件列表
-void CCNotePad::initReceneOpenFileMenu()
+void CCNotePad::initRecentOpenFileMenu()
 {
 	QString rFile(RECENT_OPEN_FILE);
 
@@ -3436,11 +3436,11 @@ void CCNotePad::initReceneOpenFileMenu()
 
 		for (QString var : fileList)
 		{
-			if (!var.isEmpty() && (-1 == m_receneOpenFileList.indexOf(var)))
+			if (!var.isEmpty() && (-1 == m_recentOpenFileList.indexOf(var)))
 			{
-				QAction* act = ui.menuRecene_File->addAction(var, this, &CCNotePad::slot_openReceneFile);
+				QAction* act = ui.menuRecent_File->addAction(var, this, &CCNotePad::slot_openRecentFile);
 				act->setObjectName(var);
-				m_receneOpenFileList.append(var);
+				m_recentOpenFileList.append(var);
 			}
 		}
 	}
@@ -3491,7 +3491,7 @@ bool CCNotePad::isNewFileNameExist(QString& fileName)
 }
 
 //通过菜单打开最近文档
-void CCNotePad::slot_openReceneFile()
+void CCNotePad::slot_openRecentFile()
 {
 	QAction* pA = dynamic_cast<QAction*>(sender());
 	if (pA != nullptr)
@@ -3849,57 +3849,57 @@ QAction* findItemInMenuByName(QMenu* menu, QString name)
 void CCNotePad::dealRecentFileMenuWhenColseFile(QString closeFilePath)
 {
 	//无条件加载一次，避免没有初始化
-	on_loadReceneFile();
+	on_loadRecentFile();
 
 	QAction* act = nullptr;
 
 	getRegularFilePath(closeFilePath);
 
 	//如果关闭的文件，已经在最近列表中，则移动到最前面即可
-	int index = m_receneOpenFileList.indexOf(closeFilePath);
+	int index = m_recentOpenFileList.indexOf(closeFilePath);
 	if (-1 != index)
 	{
-		QString filePath = m_receneOpenFileList.takeAt(index);
+		QString filePath = m_recentOpenFileList.takeAt(index);
 
-		act = findItemInMenuByName(ui.menuRecene_File, filePath);
+		act = findItemInMenuByName(ui.menuRecent_File, filePath);
 
 		if (act != nullptr)
 		{
-			ui.menuRecene_File->removeAction(act);
+			ui.menuRecent_File->removeAction(act);
 		}
 	}
 	else
 	{
-		act = new QAction(closeFilePath, ui.menuRecene_File);
+		act = new QAction(closeFilePath, ui.menuRecent_File);
 		act->setObjectName(closeFilePath);
-		connect(act, &QAction::triggered, this, &CCNotePad::slot_openReceneFile);
+		connect(act, &QAction::triggered, this, &CCNotePad::slot_openRecentFile);
 	}
 
 
 	//在菜单最近列表上面添加。如果最近列表是空的，则放在退出菜单之上
-	if (m_receneOpenFileList.isEmpty())
+	if (m_recentOpenFileList.isEmpty())
 	{
-		ui.menuRecene_File->insertAction(nullptr, act);
+		ui.menuRecent_File->insertAction(nullptr, act);
 	}
 	else
 	{
 		//放在列表最上面
-		QString curTopActionPath = m_receneOpenFileList.first();
+		QString curTopActionPath = m_recentOpenFileList.first();
 
-		QAction* topAct = findItemInMenuByName(ui.menuRecene_File, curTopActionPath);
-			ui.menuRecene_File->insertAction(topAct, act);
+		QAction* topAct = findItemInMenuByName(ui.menuRecent_File, curTopActionPath);
+			ui.menuRecent_File->insertAction(topAct, act);
 		}
 
-	m_receneOpenFileList.push_front(closeFilePath);
+	m_recentOpenFileList.push_front(closeFilePath);
 
 	//不能无限制变大，及时删除一部分
-	if (m_receneOpenFileList.size() > 15)
+	if (m_recentOpenFileList.size() > 15)
 	{
-		QString k = m_receneOpenFileList.takeLast();
-		QAction* lastAct = findItemInMenuByName(ui.menuRecene_File, k);
+		QString k = m_recentOpenFileList.takeLast();
+		QAction* lastAct = findItemInMenuByName(ui.menuRecent_File, k);
 		if (lastAct != nullptr)
 		{
-			ui.menuRecene_File->removeAction(lastAct);
+			ui.menuRecent_File->removeAction(lastAct);
 			lastAct->deleteLater();
 		}
 
@@ -9648,8 +9648,8 @@ void CCNotePad::slot_formatJson()
 //清空历史打开记录
 void CCNotePad::slot_clearHistoryOpenList()
 {
-	ui.menuRecene_File->clear();
-	m_receneOpenFileList.clear();
+	ui.menuRecent_File->clear();
+	m_recentOpenFileList.clear();
 
 	NddSetting::updataKeyValueFromDelaySets(RECENT_OPEN_FILE, "");
 }
