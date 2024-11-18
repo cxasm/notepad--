@@ -2,6 +2,8 @@ name: 编译 debian 包
 
 on:
   workflow_dispatch:
+permissions:
+  contents: read
 
 jobs:
   Ubuntu:
@@ -12,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
       - name: 安装编译环境
         run:
-          apt-get install g++ make cmake
+          sudo apt-get install g++ make cmake
       - name: 安装QT
         run:
           sudo apt-get install qtbase5-dev qt5-qmake qtbase5-dev-tools libqt5printsupport5 libqt5xmlpatterns5-dev
