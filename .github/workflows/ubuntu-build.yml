@@ -23,7 +23,7 @@ jobs:
           cmake -B build -DCMAKE_BUILD_TYPE=Release
       - name: 编译
         run:
-          cd build && make -j8
+          cd build && make -j4
       - name: 打包
         run:
           cpack
