@@ -1,0 +1,35 @@
+name: 编译 debian 包
+
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 仓库检出
+        uses: actions/checkout@v4
+      - name: 安装编译环境
+        run:
+          sudo apt-get install g++ make cmake
+      - name: 安装QT
+        run:
+          sudo apt-get install qtbase5-dev qt5-qmake qtbase5-dev-tools libqt5printsupport5 libqt5xmlpatterns5-dev
+      - name: 配置
+        run:
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+      - name: 编译
+        run:
+          cd build && make -j8
+      - name: 打包
+        run:
+          cd build && cpack
+      - name: 上传
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: notepad--.deb
+          path: build/*.deb
+      
