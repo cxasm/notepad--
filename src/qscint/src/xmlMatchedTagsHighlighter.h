@@ -20,6 +20,7 @@
 //#include <windows.h>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 class QsciScintilla;
 
