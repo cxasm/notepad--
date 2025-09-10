@@ -6,7 +6,7 @@
 
 Notepad--是一个轻量级文本编辑器软件,可以支持Win/Linux/Mac平台。
 
-其开发目标是进行文本编辑类软件的国产可替代，重点在国产Uos系统、Mac 系统、各类linux系统上发展。
+其开发目标是进行文本编辑类软件的国产可替代，重点在国产信创Uos系统、Mac 系统、各类linux系统上发展。
 
 对比其它竞品Notepad类软件而言，ndd 的优势是可以跨平台，支持linux mac操作系统。
 
@@ -20,7 +20,7 @@ Notepad--是一个轻量级文本编辑器软件,可以支持Win/Linux/Mac平台
 中国内使用https://gitee.com/cxasm/notepad-- 。国外使用本github库，该库会定期同步国内gitee库。
 由于作者在中国经常网络无法访问github，所以该库可能不会及时更新，还请见谅。
 
-最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v3.3
+最新版本下载地址：https://gitee.com/cxasm/notepad--/releases/tag/v3.5
 
 **鉴于Notepad--遭到竞品软件的匿名发帖诋毁，ndd项目申明：** 
 
@@ -44,8 +44,7 @@ ndd 在macOs运行效果：
 
 ![ndd 在 mac Os](https://user-images.githubusercontent.com/42246867/221394341-743f71a9-11bd-4dc8-aa0d-c24316493dcf.png)
 
-![ndd 在mac OS 代码对比](https://user-images.githubusercontent.com/42246867/221394356-89cf463c-8dcf-4697-aedd-33700b947653.png)
-
 subtwo在redhat运行效果：
 
 ![subtwo 在redhat 运行效果](https://user-images.githubusercontent.com/42246867/235033326-b2fffca5-625c-4c96-a661-1072f8a8b3ee.png)
+
