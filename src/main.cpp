@@ -15,6 +15,7 @@
 
 #ifdef Q_OS_UNIX
 #include <QStyleFactory>
+#include <QTimer>
 #include <signal.h>
 #include <unistd.h>
 #include <QDebug>
@@ -385,10 +386,22 @@ drop_old:
 	int id = NddSetting::getKeyValueFromNumSets(SKIN_KEY);
 	StyleSet::setSkin(id);
 
+	//界面深色模式：在创建主窗口前应用，避免首帧闪浅色
+	StyleSet::setUiDark(NddSetting::getKeyValueFromNumSets(UI_SKIN_KEY) != 0);
+
 	CCNotePad *pMainNotepad = new CCNotePad(true);
 	pMainNotepad->setAttribute(Qt::WA_DeleteOnClose);
 	pMainNotepad->setShareMem(&shared);
 	pMainNotepad->quickshow();
+
+	//深色模式下，等词法分析器颜色全部应用完成后，重新应用编辑器配色
+	//（保证启动时也是白字深底，与运行时切换效果一致）
+	QTimer::singleShot(2000, pMainNotepad, [pMainNotepad]() {
+		if (StyleSet::isUiDark())
+		{
+			pMainNotepad->updateThemes();
+		}
+	});
 
 	pMainNotepad->syncCurSkinToMenu(id);
 

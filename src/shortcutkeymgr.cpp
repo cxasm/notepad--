@@ -1,6 +1,7 @@
 ﻿#include "shortcutkeymgr.h"
 #include "shortcutkeyeditwin.h"
 #include "ccnotepad.h"
+#include "styleset.h"
 
 #include <QTableWidgetItem>
 #include <QSettings>
@@ -51,14 +52,30 @@ ShortcutKeyMgr::ShortcutKeyMgr(QWidget *parent)
 	ui.qscintTableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
 
-	QString tabQss = "QHeaderView::section{"
-		"border-top:0px solid #E5E5E5;"
-		"border-left:0px solid #E5E5E5;"
-		"border-right:0.5px solid #E5E5E5;"
-		"border-bottom: 0.5px solid #E5E5E5;"
-		"background-color:white;"
-		"padding:4px;"
-		"}";
+	QString tabQss;
+	if (StyleSet::isUiDark())
+	{
+		tabQss = "QHeaderView::section{"
+			"border-top:0px solid #242424;"
+			"border-left:0px solid #242424;"
+			"border-right:0.5px solid #242424;"
+			"border-bottom: 0.5px solid #242424;"
+			"color:#DCDCDC;"
+			"background-color:#484848;"
+			"padding:4px;"
+			"}";
+	}
+	else
+	{
+		tabQss = "QHeaderView::section{"
+			"border-top:0px solid #E5E5E5;"
+			"border-left:0px solid #E5E5E5;"
+			"border-right:0.5px solid #E5E5E5;"
+			"border-bottom: 0.5px solid #E5E5E5;"
+			"background-color:white;"
+			"padding:4px;"
+			"}";
+	}
 
 	ui.tableWidget->horizontalHeader()->setStyleSheet(tabQss);
 	ui.tableWidget->verticalHeader()->setStyleSheet(tabQss);

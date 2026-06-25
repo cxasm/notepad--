@@ -71,11 +71,13 @@ if(CMAKE_HOST_UNIX)
     include(${PROJECT_SOURCE_DIR}/cmake/deb_package_config.cmake) 
     include(CPack)
 elseif(CMAKE_HOST_WIN32)
+    # 安装到 bin 目录，与 nsis_package_config.cmake 中 $INSTDIR\bin\NotePad--.exe 保持一致
+    # （否则右键菜单/注册表的图标和命令路径指向不存在的文件，图标无法显示）
     install(TARGETS ${PROJECT_NAME}
-            DESTINATION "/")
+            DESTINATION "bin")
 
     install(DIRECTORY  ${PROJECT_SOURCE_DIR}/build/bin/
-            DESTINATION "/")
+            DESTINATION "bin")
     # 设置软件版本
     set(CPACK_PACKAGE_NAME "NotePad--")
     set(CPACK_PACKAGE_DESCRIPTION "NotePad--")

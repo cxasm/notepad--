@@ -95,21 +95,41 @@ void QsciDisplayWindow::setStyleOptions()
 	//setMarginsBackgroundColor(StyleSet::marginsBackgroundColor);
 	//setFoldMarginColors(StyleSet::marginsBackgroundColor, StyleSet::marginsBackgroundColor);
 
-	setMarginsBackgroundColor(0xf0f0f0);
-	setFoldMarginColors(0xf0f0f0, 0xf0f0f0);
+	if (StyleSet::isUiDark())
 	{
-		//setCaretLineBackgroundColor(QColor(0xe8e8ff));
-		setCaretLineBackgroundColor(QColor(0xFAF9DE));
-		setMatchedBraceForegroundColor(QColor(191, 141, 255));
-		setMatchedBraceBackgroundColor(QColor(222, 222, 222));
-		setCaretForegroundColor(QColor(0, 0, 0));
-		setFoldColor(SC_MARKNUM_FOLDEROPEN, QColor(Qt::white), QColor(128, 128, 128));
-		setFoldColor(SC_MARKNUM_FOLDER, QColor(Qt::white), QColor(128, 128, 128));
-		setFoldColor(SC_MARKNUM_FOLDERSUB, QColor(Qt::white), QColor(128, 128, 128));
-		setFoldColor(SC_MARKNUM_FOLDERTAIL, QColor(Qt::white), QColor(128, 128, 128));
-		setFoldColor(SC_MARKNUM_FOLDEREND, QColor(Qt::white), QColor(128, 128, 128));
-		setFoldColor(SC_MARKNUM_FOLDEROPENMID, QColor(Qt::white), QColor(128, 128, 128));
-		setFoldColor(SC_MARKNUM_FOLDERMIDTAIL, QColor(Qt::white), QColor(128, 128, 128));
+		//界面深色模式下，对比/显示窗口的边距、当前行、括号、折叠等改用深色
+		setMarginsBackgroundColor(0x444444);
+		setFoldMarginColors(0x444444, 0x444444);
+		setCaretLineBackgroundColor(QColor(0x2a, 0x2a, 0x2a));
+		setMatchedBraceForegroundColor(QColor(0x00, 0xBB, 0x9E));
+		setMatchedBraceBackgroundColor(QColor(0x3a, 0x3a, 0x3a));
+		setCaretForegroundColor(QColor(0xDC, 0xDC, 0xDC));
+		setFoldColor(SC_MARKNUM_FOLDEROPEN, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+		setFoldColor(SC_MARKNUM_FOLDER, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+		setFoldColor(SC_MARKNUM_FOLDERSUB, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+		setFoldColor(SC_MARKNUM_FOLDERTAIL, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+		setFoldColor(SC_MARKNUM_FOLDEREND, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+		setFoldColor(SC_MARKNUM_FOLDEROPENMID, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+		setFoldColor(SC_MARKNUM_FOLDERMIDTAIL, QColor(0xDC, 0xDC, 0xDC), QColor(0x52, 0x52, 0x52));
+	}
+	else
+	{
+		setMarginsBackgroundColor(0xf0f0f0);
+		setFoldMarginColors(0xf0f0f0, 0xf0f0f0);
+		{
+			//setCaretLineBackgroundColor(QColor(0xe8e8ff));
+			setCaretLineBackgroundColor(QColor(0xFAF9DE));
+			setMatchedBraceForegroundColor(QColor(191, 141, 255));
+			setMatchedBraceBackgroundColor(QColor(222, 222, 222));
+			setCaretForegroundColor(QColor(0, 0, 0));
+			setFoldColor(SC_MARKNUM_FOLDEROPEN, QColor(Qt::white), QColor(128, 128, 128));
+			setFoldColor(SC_MARKNUM_FOLDER, QColor(Qt::white), QColor(128, 128, 128));
+			setFoldColor(SC_MARKNUM_FOLDERSUB, QColor(Qt::white), QColor(128, 128, 128));
+			setFoldColor(SC_MARKNUM_FOLDERTAIL, QColor(Qt::white), QColor(128, 128, 128));
+			setFoldColor(SC_MARKNUM_FOLDEREND, QColor(Qt::white), QColor(128, 128, 128));
+			setFoldColor(SC_MARKNUM_FOLDEROPENMID, QColor(Qt::white), QColor(128, 128, 128));
+			setFoldColor(SC_MARKNUM_FOLDERMIDTAIL, QColor(Qt::white), QColor(128, 128, 128));
+		}
 	}
 }
 

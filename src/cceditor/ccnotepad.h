@@ -142,6 +142,12 @@ public:
 	int replaceAtBack(QStringList& keyword, QStringList& replace);
 	void updateThemes();
 
+	//界面深色模式切换后，同步刷新所有标签页图标
+	void syncUiSkinChange();
+
+	//设置Windows原生标题栏深色（仅Windows；静态，可作用于任意QWidget窗口）
+	static void setNativeDarkTitle(QWidget* w, bool dark);
+
 	void setGlobalFgColor(int style);
 	void setGlobalBgColor(int style);
 	void setGlobalFont(int style);

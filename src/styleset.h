@@ -115,5 +115,13 @@ public:
 	static void setGlobalBgColor(int style, QColor color);
 	static void setGlobalFont(int style, QFont font);
 
+	//界面深色模式（独立于编辑器语法主题）
+	static bool isUiDark();
+	static void setUiDark(bool on);
+
 	static GLOBAL_STYLE_OPS* s_global_style;
+	static bool s_isUiDark;
+
+private:
+	static void applyUiDark();
 };

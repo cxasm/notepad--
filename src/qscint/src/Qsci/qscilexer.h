@@ -317,6 +317,10 @@ public:
 
     static void setCurThemes(int themesId);
 
+    //深色界面模式下，强制所有样式返回白色前景/深色背景（用于覆盖浅色主题的深色字）
+    static void setForceWhiteStyles(bool on);
+    static bool s_forceWhiteStyles;
+
 public slots:
     //! The auto-indentation style is set to \a autoindentstyle.
     //!

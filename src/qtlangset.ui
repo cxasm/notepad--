@@ -159,6 +159,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="uiDarkCheckBox">
+        <property name="text">
+         <string>界面深色模式</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

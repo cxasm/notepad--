@@ -1,0 +1,634 @@
+*{outline:0px;color:#DCDCDC;}
+
+/* ========== 工具栏按钮 ========== */
+QToolButton{
+	border:1px solid #383838;
+	border-radius:3px;
+	background:none;
+	color:#DCDCDC;
+	padding:2px;
+}
+QToolButton:hover{
+	background-color:#525252;
+}
+QToolButton:checked,QToolButton:on{
+	background-color:#646464;
+}
+QToolButton:pressed{
+	background-color:#3a3a3a;
+}
+QToolButton:disabled{
+	color:#808080;
+	background:none;
+	border:1px solid transparent;
+}
+QToolButton::menu-indicator{
+	image:none;
+}
+
+/* 设置/取色等具名按钮 */
+QToolButton#toolButton,QToolButton#toolButton1{
+	border:1px solid #646464;
+	background-color:#383838;
+	color:#ffffff;
+	padding:1px;
+	min-height:8px;
+	border-radius:1px;
+}
+QToolButton#toolButton:hover,QToolButton#toolButton1:hover{
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+QToolBar{
+	background-color:#3f3f3f;
+	border:none;
+	padding:1px;
+}
+
+QHeaderView{
+	background-color:#383838;
+	border:none;
+	padding:0px;
+}
+
+QFrame#leftSrc,QFrame#rightSrc{
+	border:none;
+	padding:0px;
+}
+
+QTabBar QToolButton[accessibleName="Scroll Left"]{border:0px;background-color:#444444;}
+
+QTabBar QToolButton[accessibleName="Scroll Right"]{border:0px;background-color:#444444;}
+
+/* 编辑器（QScintilla）去掉浅色frame边框，背景用终端深色 */
+QsciScintilla, QsciScintillaBase{
+	border:0px solid #0C0C0C;
+	background-color:#0C0C0C;
+}
+
+/* ========== 输入控件 ========== */
+QLineEdit,QTextEdit,QPlainTextEdit,QSpinBox,QDoubleSpinBox,QComboBox,QDateEdit,QTimeEdit,QDateTimeEdit,QMessageBox{
+	border:1px solid #242424;
+	border-radius:3px;
+	padding:2px;
+	background-color:#444444;
+	selection-background-color:#000000;
+	selection-color:#DCDCDC;
+}
+
+QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus,QSpinBox:focus,QDoubleSpinBox:focus,QComboBox:focus,QDateEdit:focus,QTimeEdit:focus,QDateTimeEdit:focus,QLineEdit:hover,QTextEdit:hover,QPlainTextEdit:hover,QSpinBox:hover,QDoubleSpinBox:hover,QComboBox:hover,QDateEdit:hover,QTimeEdit:hover,QDateTimeEdit:hover{
+	border:1px solid #242424;
+}
+
+QLineEdit[echoMode="2"]{
+	lineedit-password-character:9679;
+}
+
+.QFrame{
+	border:1px solid #242424;
+	border-radius:3px;
+}
+
+.QGroupBox{
+	border:1px solid #242424;
+	border-radius:5px;
+	margin-top:3ex;
+}
+
+.QGroupBox::title{
+	subcontrol-origin:margin;
+	position:relative;
+	left:10px;
+}
+
+/* ========== 按钮 ========== */
+.QPushButton{
+	border-style:none;
+	border:1px solid #242424;
+	color:#DCDCDC;
+	padding:5px;
+	min-height:15px;
+	min-width:50px;
+	border-radius:5px;
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+.QPushButton:hover{
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #646464,stop:1 #525252);
+	border:0px;
+}
+
+.QPushButton:pressed{
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+/* ========== 单选/复选框 ========== */
+QRadioButton::indicator{
+	width:15px;
+	height:15px;
+}
+
+QRadioButton::indicator::unchecked{
+	image:url(:/qss/psblack/radiobutton_unchecked.png);
+}
+
+QRadioButton::indicator::unchecked:disabled{
+	image:url(:/qss/psblack/radiobutton_unchecked_disable.png);
+}
+
+QRadioButton::indicator::checked{
+	image:url(:/qss/psblack/radiobutton_checked.png);
+}
+
+QRadioButton::indicator::checked:disabled{
+	image:url(:/qss/psblack/radiobutton_checked_disable.png);
+}
+
+QGroupBox::indicator,QTreeWidget::indicator,QListWidget::indicator{
+	padding:0px -3px 0px 3px;
+}
+
+/*高度务必一样，否则图标不一样高导致高度无法对齐*/
+QTreeWidget::item{
+	color:#DCDCDC;
+	height:20px;
+}
+
+QCheckBox::indicator,QGroupBox::indicator,QTreeWidget::indicator,QListWidget::indicator{
+	width:13px;
+	height:13px;
+}
+
+QCheckBox::indicator:unchecked,QGroupBox::indicator:unchecked,QTreeWidget::indicator:unchecked,QListWidget::indicator:unchecked{
+	image:url(:/qss/psblack/checkbox_unchecked.png);
+}
+
+QCheckBox::indicator:unchecked:disabled,QGroupBox::indicator:unchecked:disabled,QTreeWidget::indicator:unchecked:disabled,QListWidget::indicator:disabled{
+	image:url(:/qss/psblack/checkbox_unchecked_disable.png);
+}
+
+QCheckBox::indicator:checked,QGroupBox::indicator:checked,QTreeWidget::indicator:checked,QListWidget::indicator:checked{
+	image:url(:/qss/psblack/checkbox_checked.png);
+}
+
+QCheckBox::indicator:checked:disabled,QGroupBox::indicator:checked:disabled,QTreeWidget::indicator:checked:disabled,QListWidget::indicator:checked:disabled{
+	image:url(:/qss/psblack/checkbox_checked_disable.png);
+}
+
+QCheckBox::indicator:indeterminate,QGroupBox::indicator:indeterminate,QTreeWidget::indicator:indeterminate,QListWidget::indicator:indeterminate{
+	image:url(:/qss/psblack/checkbox_parcial.png);
+}
+
+QCheckBox::indicator:indeterminate:disabled,QGroupBox::indicator:indeterminate:disabled,QTreeWidget::indicator:indeterminate:disabled,QListWidget::indicator:indeterminate:disabled{
+	image:url(:/qss/psblack/checkbox_parcial_disable.png);
+}
+
+/* ========== 数字/日期选择器箭头 ========== */
+QTimeEdit::up-button,QDateEdit::up-button,QDateTimeEdit::up-button,QDoubleSpinBox::up-button,QSpinBox::up-button{
+	image:url(:/qss/psblack/add_top.png);
+	width:10px;
+	height:10px;
+	padding:2px 5px 0px 0px;
+}
+
+QTimeEdit::down-button,QDateEdit::down-button,QDateTimeEdit::down-button,QDoubleSpinBox::down-button,QSpinBox::down-button{
+	image:url(:/qss/psblack/add_bottom.png);
+	width:10px;
+	height:10px;
+	padding:0px 5px 2px 0px;
+}
+
+QTimeEdit::up-button:pressed,QDateEdit::up-button:pressed,QDateTimeEdit::up-button:pressed,QDoubleSpinBox::up-button:pressed,QSpinBox::up-button:pressed{
+	top:-2px;
+}
+
+QTimeEdit::down-button:pressed,QDateEdit::down-button:pressed,QDateTimeEdit::down-button:pressed,QDoubleSpinBox::down-button:pressed,QSpinBox::down-button:pressed{
+	bottom:-2px;
+}
+
+QComboBox::down-arrow,QDateEdit[calendarPopup="true"]::down-arrow,QTimeEdit[calendarPopup="true"]::down-arrow,QDateTimeEdit[calendarPopup="true"]::down-arrow{
+	image:url(:/qss/psblack/add_bottom.png);
+	width:10px;
+	height:10px;
+	right:2px;
+}
+
+QComboBox::drop-down,QDateEdit::drop-down,QTimeEdit::drop-down,QDateTimeEdit::drop-down{
+	subcontrol-origin:padding;
+	subcontrol-position:top right;
+	width:15px;
+	border-left-width:0px;
+	border-left-style:solid;
+	border-top-right-radius:3px;
+	border-bottom-right-radius:3px;
+	border-left-color:#242424;
+}
+
+QComboBox::drop-down:on{
+	top:1px;
+}
+
+/* ========== 菜单栏与菜单 ========== */
+QMenuBar{
+	color:#DCDCDC;
+	background-color:#444444;
+	border-bottom:1px solid #242424;
+}
+QMenuBar::item{
+	color:#DCDCDC;
+	background-color:transparent;
+	margin:0px;
+	padding:3px 10px;
+}
+QMenuBar::item:selected,QMenuBar::item:pressed{
+	color:#DCDCDC;
+	background-color:#646464;
+}
+
+QMenu{
+	color:#DCDCDC;
+	background-color:#444444;
+	border:1px solid #242424;
+	margin:0px;
+}
+QMenu:disabled{
+	color:#808080;
+	background-color:#444444;
+	border:0px solid #242424;
+	margin:0px;
+}
+QMenu::item{
+	color:#DCDCDC;
+	padding:3px 20px;
+	min-width:80;
+	margin-left:3px;
+}
+QMenu::item:selected{
+	color:#DCDCDC;
+	border:0px solid #242424;
+	background:#646464;
+}
+QMenu::item:disabled{
+	color:#808080;
+}
+QMenu::indicator{
+	width:13px;
+	height:13px;
+}
+QMenu::separator{
+	height:1px;
+	background:#242424;
+}
+
+/* ========== 进度条/滑块/滚动条 ========== */
+QProgressBar{
+	min-height:10px;
+	background:#484848;
+	border-radius:5px;
+	text-align:center;
+	border:1px solid #484848;
+}
+
+QProgressBar:chunk{
+	border-radius:5px;
+	background-color:#242424;
+}
+
+QSlider::groove:horizontal{
+	background:#484848;
+	height:8px;
+	border-radius:4px;
+}
+
+QSlider::add-page:horizontal{
+	background:#484848;
+	height:8px;
+	border-radius:4px;
+}
+
+QSlider::sub-page:horizontal{
+	background:#242424;
+	height:8px;
+	border-radius:4px;
+}
+
+QSlider::handle:horizontal{
+	width:13px;
+	margin-top:-3px;
+	margin-bottom:-3px;
+	border-radius:6px;
+	background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,stop:0.6 #444444,stop:0.8 #242424);
+}
+
+QSlider::groove:vertical{
+	width:8px;
+	border-radius:4px;
+	background:#484848;
+}
+
+QSlider::add-page:vertical{
+	width:8px;
+	border-radius:4px;
+	background:#484848;
+}
+
+QSlider::sub-page:vertical{
+	width:8px;
+	border-radius:4px;
+	background:#242424;
+}
+
+QSlider::handle:vertical{
+	height:14px;
+	margin-left:-3px;
+	margin-right:-3px;
+	border-radius:6px;
+	background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,stop:0.6 #444444,stop:0.8 #242424);
+}
+
+QScrollBar:horizontal{
+	background:#484848;
+	padding:0px;
+	border-radius:6px;
+	max-height:12px;
+}
+
+QScrollBar::handle:horizontal{
+	background:#525252;
+	min-width:50px;
+	border-radius:6px;
+}
+
+QScrollBar::handle:horizontal:hover{
+	background:#242424;
+}
+
+QScrollBar::handle:horizontal:pressed{
+	background:#242424;
+}
+
+QScrollBar::add-page:horizontal{
+	background:none;
+}
+
+QScrollBar::sub-page:horizontal{
+	background:none;
+}
+
+QScrollBar::add-line:horizontal{
+	background:none;
+}
+
+QScrollBar::sub-line:horizontal{
+	background:none;
+}
+
+QScrollBar:vertical{
+	background:#484848;
+	padding:0px;
+	border-radius:4px;
+	max-width:12px;
+}
+
+QScrollBar::handle:vertical{
+	width:12px;
+	background:#808080;
+	min-height:50px;
+	border-radius:4px;
+}
+
+QScrollBar::handle:vertical:hover{
+	background:#242424;
+}
+
+QScrollBar::handle:vertical:pressed{
+	background:#ffffff;
+}
+
+QScrollBar::add-page:vertical{
+	background:none;
+}
+
+QScrollBar::sub-page:vertical{
+	background:none;
+}
+
+QScrollBar::add-line:vertical{
+	background:none;
+}
+
+QScrollBar::sub-line:vertical{
+	background:none;
+}
+
+QScrollArea{
+	border:0px;
+}
+
+/* ========== 树/表/列表 ========== */
+QTreeView,QListView,QTableView,QTabWidget::pane{
+	border:1px solid #242424;
+	selection-background-color:#646464;
+	selection-color:#DCDCDC;
+	alternate-background-color:#525252;
+	gridline-color:#242424;
+}
+
+QTreeView::branch:closed:has-children{
+	margin:4px;
+	border-image:url(:/qss/psblack/branch_open.png);
+}
+
+QTreeView::branch:open:has-children{
+	margin:4px;
+	border-image:url(:/qss/psblack/branch_close.png);
+}
+
+QTreeView,QListView,QTableView,QSplitter::handle,QTreeView::branch{
+	background:#444444;
+}
+
+QTableView::item:selected,QListView::item:selected,QTreeView::item:selected{
+	background:#646464;
+}
+
+QTableView::item,QListView::item,QTreeView::item{
+	padding:1px;
+	margin:0px;
+}
+
+QHeaderView::section,QTableCornerButton:section{
+	padding:3px;
+	margin:0px;
+	color:#DCDCDC;
+	border:1px solid #242424;
+	border-left-width:0px;
+	border-right-width:1px;
+	border-top-width:0px;
+	border-bottom-width:1px;
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #646464,stop:1 #525252);
+}
+
+/* ========== 标签页 ========== */
+QTabBar::tab{
+	color:#DCDCDC;
+	background-color:rgb(82,82,82);
+	margin-top:1px;
+	margin-right:1px;
+	margin-left:1px;
+	margin-bottom:2px;
+	padding:1px;
+	min-width:50px;
+}
+
+QTabBar::tab:selected{
+	border-style:solid;
+	border-color:#00BB9E;
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+	border-top:2px solid;
+	border-top-color:#FAAA3C;
+	margin-top:0px;
+	margin-right:1px;
+	margin-left:0px;
+	margin-bottom:0px;
+	padding:0px;
+}
+
+/* ========== 状态栏 / 停靠窗 / 主窗口 ========== */
+QStatusBar{
+	background:#444444;
+	color:#DCDCDC;
+}
+QStatusBar::item{
+	color:#DCDCDC;
+	border:0px solid #484848;
+	border-radius:3px;
+}
+
+QDockWidget::title{
+	background:#484848;
+	color:#DCDCDC;
+	padding-top:0px;
+}
+
+QMainWindow::separator{
+	height:1px;
+	margin:0px;
+	padding:0px;
+	background:#484848;
+}
+
+/* Notepad-- 专用：查找结果树 / 文件列表（原来在 common.qss 里写死深色） */
+QTreeView#resultTreeView,QListWidget#filelistWidget{
+	color:#DCDCDC;
+	background-color:#444444;
+	border:1px solid #242424;
+}
+
+/* ========== 其它 ========== */
+QToolBox::tab,QGroupBox#gboxDevicePanel,QGroupBox#gboxDeviceTitle,QFrame#gboxDevicePanel,QFrame#gboxDeviceTitle{
+	padding:3px;
+	border-radius:5px;
+	color:#DCDCDC;
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+QToolBox::tab:selected{
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #646464,stop:1 #525252);
+}
+
+QToolTip{
+	border:0px solid #DCDCDC;
+	padding:1px;
+	color:#DCDCDC;
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+QPrintPreviewDialog QToolButton{
+	border:0px solid #DCDCDC;
+	border-radius:0px;
+	margin:0px;
+	padding:3px;
+	background:none;
+}
+
+QColorDialog QPushButton,QFileDialog QPushButton{
+	min-width:80px;
+}
+
+/* ========== 日历控件 ========== */
+QToolButton#qt_calendar_prevmonth{
+	icon-size:0px;
+	min-width:20px;
+	image:url(:/qss/psblack/calendar_prevmonth.png);
+}
+
+QToolButton#qt_calendar_nextmonth{
+	icon-size:0px;
+	min-width:20px;
+	image:url(:/qss/psblack/calendar_nextmonth.png);
+}
+
+QToolButton#qt_calendar_prevmonth,QToolButton#qt_calendar_nextmonth,QToolButton#qt_calendar_monthbutton,QToolButton#qt_calendar_yearbutton{
+	border:0px solid #DCDCDC;
+	border-radius:3px;
+	margin:3px 3px 3px 3px;
+	padding:3px;
+	background:none;
+}
+
+QToolButton#qt_calendar_prevmonth:hover,QToolButton#qt_calendar_nextmonth:hover,QToolButton#qt_calendar_monthbutton:hover,QToolButton#qt_calendar_yearbutton:hover,QToolButton#qt_calendar_prevmonth:pressed,QToolButton#qt_calendar_nextmonth:pressed,QToolButton#qt_calendar_monthbutton:pressed,QToolButton#qt_calendar_yearbutton:pressed{
+	border:0px solid #242424;
+}
+
+QCalendarWidget QSpinBox#qt_calendar_yearedit{
+	margin:2px;
+}
+
+QCalendarWidget QToolButton::menu-indicator{
+	image:none;
+}
+
+QCalendarWidget QTableView{
+	border-width:0px;
+}
+
+QCalendarWidget QWidget#qt_calendar_navigationbar{
+	border:1px solid #242424;
+	border-width:1px 1px 0px 1px;
+	background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+QComboBox QAbstractItemView::item{
+	min-height:20px;
+	min-width:10px;
+}
+
+QTableView[model="true"]::item{
+	padding:0px;
+	margin:0px;
+}
+
+QTableView QLineEdit,QTableView QComboBox,QTableView QSpinBox,QTableView QDoubleSpinBox,QTableView QDateEdit,QTableView QTimeEdit,QTableView QDateTimeEdit{
+	border-width:0px;
+	border-radius:0px;
+}
+
+QTableView QLineEdit:focus,QTableView QComboBox:focus,QTableView QSpinBox:focus,QTableView QDoubleSpinBox:focus,QTableView QDateEdit:focus,QTableView QTimeEdit:focus,QTableView QDateTimeEdit:focus{
+	border-width:0px;
+	border-radius:0px;
+}
+
+*:disabled{
+	background:#444444;
+	border-color:#484848;
+}
+
+/*TextColor:#DCDCDC*/
+/*PanelColor:#444444*/
+/*BorderColor:#242424*/
+/*NormalColorStart:#484848*/
+/*NormalColorEnd:#383838*/
+/*DarkColorStart:#646464*/
+/*DarkColorEnd:#525252*/
+/*HighColor:#00BB9E*/

@@ -3,6 +3,7 @@
 #include <QVariant>
 
 static QString SKIN_KEY = "skinid";
+static QString UI_SKIN_KEY = "uidark"; //界面深色模式 1=深色 0=浅色
 static QString LANGS_KEY = "langs";
 static QString AUTOWARP_KEY = "warp";
 static QString INDENT_KEY = "indent";

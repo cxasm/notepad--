@@ -73,6 +73,8 @@
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #include <Windows.h>
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
 #endif
 #include <memory>
 
@@ -1234,6 +1236,9 @@ void CCNotePad::quickshow()
 	}
 
 	show();
+
+	//界面深色模式下，把Windows原生标题栏也涂成深色
+	setNativeDarkTitle(this, StyleSet::isUiDark());
 
 	QCoreApplication::processEvents();
 
@@ -4109,7 +4114,7 @@ ScintillaEditView* CCNotePad::newTxtFile(QString name, int index, QString conten
 
 	disconnect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged);
 
-	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK)? TabNoNeedSave:TabNoNeedSaveDark32), label);
+	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave), label);
 
 	QVariant editViewFilePath(label);
 	pEdit->setProperty(Edit_View_FilePath, editViewFilePath);
@@ -4335,7 +4340,7 @@ bool CCNotePad::openBigTextRoFile(QString filePath)
 	lineEnd = (RC_LINE_FORM)txtFile->lineEndType;
 
 	disconnect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged);
-	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK) ? TabNoNeedSave : TabNoNeedSaveDark32), getShortName(fileLabel));
+	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave), getShortName(fileLabel));
 
 	ui.editTabWidget->setCurrentIndex(curIndex);
 	connect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged, Qt::UniqueConnection);
@@ -4422,7 +4427,7 @@ bool CCNotePad::openSuperBigTextFile(QString filePath)
 	lineEnd = (RC_LINE_FORM)txtFile->lineEndType;
 
 	disconnect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged);
-	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK) ? TabNoNeedSave : TabNoNeedSaveDark32), getShortName(fileLabel));
+	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave), getShortName(fileLabel));
 
 	ui.editTabWidget->setCurrentIndex(curIndex);
 	connect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged, Qt::UniqueConnection);
@@ -4661,7 +4666,7 @@ void CCNotePad::setNormalTextEditInitPro(ScintillaEditView* pEdit, QString fileP
 	QFileInfo fi(filePath);
 	QString fileLabel(fi.fileName());
 
-	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(TabNoNeedSave), getShortName(fileLabel));
+	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave), getShortName(fileLabel));
 	ui.editTabWidget->setCurrentWidget(pEdit);
 	connect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged, Qt::UniqueConnection);
 
@@ -4701,7 +4706,7 @@ void CCNotePad::setNormalTextEditInitPro(ScintillaEditView* pEdit, QString fileP
 	}
 	else
 	{
-		ui.editTabWidget->setTabIcon(curIndex, QIcon(TabNoNeedSave));
+		ui.editTabWidget->setTabIcon(curIndex, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave));
 	}
 
 	QVariant editTextCode((int)code);
@@ -5025,7 +5030,7 @@ bool CCNotePad::openHexFile(QString filePath)
 	showHexFile(pEdit,hexFile);
 
 	disconnect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged);
-	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK) ? TabNoNeedSave : TabNoNeedSaveDark32), getShortName(fileLabel));
+	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave), getShortName(fileLabel));
 	
 	ui.editTabWidget->setCurrentIndex(curIndex);
 	connect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged, Qt::UniqueConnection);
@@ -5642,7 +5647,7 @@ void CCNotePad::saveTabEdit(int tabIndex)
 		}
 
 		//一旦保存后，设置tab为不需要保存状态
-		ui.editTabWidget->setTabIcon(tabIndex, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK) ? TabNoNeedSave : TabNoNeedSaveDark32));
+		ui.editTabWidget->setTabIcon(tabIndex, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave));
 		//m_saveFile->setIcon(QIcon(NoNeedSaveBarIcon));
 		m_saveFile->setEnabled(false);
 
@@ -5839,7 +5844,7 @@ void CCNotePad::slot_actionSaveAsFile_toggle(bool /*checked*/)
 
 		//保持完毕后，设置tab为蓝色，显示为不需要保持状态
 
-		ui.editTabWidget->setTabIcon(index, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK) ? TabNoNeedSave : TabNoNeedSaveDark32));
+		ui.editTabWidget->setTabIcon(index, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave));
 		//m_saveFile->setIcon(QIcon(NoNeedSaveBarIcon));
 		m_saveFile->setEnabled(false);
 
@@ -8703,7 +8708,7 @@ bool CCNotePad::restoreDirtyExistFile(QString& filePath, QString& tempFilePath)
 	}
 	
 	disconnect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged);
-	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon((StyleSet::getCurrentSytleId() != DEEP_BLACK) ? TabNoNeedSave : TabNoNeedSaveDark32), getShortName(fileLabel));
+	int curIndex = ui.editTabWidget->addTab(pEdit, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave), getShortName(fileLabel));
 	ui.editTabWidget->setCurrentIndex(curIndex);
 	connect(ui.editTabWidget, &QTabWidget::currentChanged, this, &CCNotePad::slot_tabCurrentChanged, Qt::UniqueConnection);
 
@@ -9701,6 +9706,49 @@ void CCNotePad::updateThemes()
 		m_dockSelectTreeWin->deleteLater();
 		m_dockSelectTreeWin = nullptr;
 }
+}
+
+//界面深色模式切换后，同步刷新所有标签页图标
+void CCNotePad::syncUiSkinChange()
+{
+	//同步Windows原生标题栏深浅
+	setNativeDarkTitle(this, StyleSet::isUiDark());
+
+	//重新应用编辑器颜色（深色UI下浅色语法主题自动改用深色背景+浅色文字）
+	updateThemes();
+
+	for (int i = 0; i < ui.editTabWidget->count(); ++i)
+	{
+		QWidget* w = ui.editTabWidget->widget(i);
+		bool isChange = (w != nullptr) ? w->property(Edit_Text_Change).toBool() : false;
+
+		if (isChange)
+		{
+			ui.editTabWidget->setTabIcon(i, QIcon(TabNeedSave));
+		}
+		else
+		{
+			ui.editTabWidget->setTabIcon(i, QIcon(StyleSet::isUiDark() ? TabNoNeedSaveDark32 : TabNoNeedSave));
+		}
+	}
+}
+
+//设置Windows原生标题栏深色（仅Windows；静态，可作用于任意QWidget窗口）
+void CCNotePad::setNativeDarkTitle(QWidget* w, bool dark)
+{
+#ifdef Q_OS_WIN
+	if (w == nullptr)
+	{
+		return;
+	}
+	HWND hwnd = (HWND)w->effectiveWinId();
+	if (hwnd != nullptr)
+	{
+		BOOL b = dark ? TRUE : FALSE;
+		//DWMWA_USE_IMMERSIVE_DARK_MODE = 20（Win10 1809+）
+		DwmSetWindowAttribute(hwnd, 20, &b, sizeof(b));
+	}
+#endif
 }
 
 void CCNotePad::setGlobalFgColor(int style)
