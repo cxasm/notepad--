@@ -14,6 +14,7 @@ QColor StyleSet::bookmarkBkColor(0xececec);
 
 int StyleSet::m_curStyleId = 0;
 
+bool StyleSet::s_isUiDark = false;
 
 GLOBAL_STYLE_OPS* StyleSet::s_global_style = nullptr;
 
@@ -94,6 +95,10 @@ void StyleSet::setSkin(int id)
 {
 	m_curStyleId = id;
 	QsciLexer::setCurThemes(m_curStyleId);
+
+	//同步lexer强制白色标志（深色界面+浅色主题时开启）
+	QsciLexer::setForceWhiteStyles(isUiDark() && !isCurrentDeepStyle());
+
 	StyleSet::init();
 	loadGolbalStyle();
 
@@ -211,6 +216,13 @@ void StyleSet::setCurrentStyle(int themes)
 void StyleSet::setDefaultStyle()
 {
 	m_curStyleId = DEFAULT_SE;
+
+	//界面深色模式：整个UI走深色皮肤，不再使用浅色 mystyle.qss
+	if (s_isUiDark)
+	{
+		applyUiDark();
+		return;
+	}
 
 	foldfgColor = QColor(0xe9, 0xe9, 0xe9, 100);
 	foldbgColor = QColor(0xff, 0xff, 0xff);
@@ -341,6 +353,13 @@ void StyleSet::setBlackStyle()
 }
 void StyleSet::setCommonStyle()
 {
+	//界面深色模式：整个UI走深色皮肤，跳过 common.qss 的浅色替换逻辑
+	if (s_isUiDark)
+	{
+		applyUiDark();
+		return;
+	}
+
 	QFile file(":/qss/common.qss");
 	QString styleSheet;
 	if (file.open(QIODevice::Text | QIODevice::ReadOnly))
@@ -357,6 +376,70 @@ void StyleSet::setCommonStyle()
 		palette.setColor(QPalette::Window, QColor(0xf0, 0xf0, 0xf0));
 		palette.setColor(QPalette::Base, QColor(0xff, 0xff, 0xff));
 		palette.setColor(QPalette::Button, QColor(0xf0, 0xf0, 0xf0));
+		qApp->setPalette(palette);
+		qApp->setStyleSheet(styleSheet);
+	}
+	file.close();
+}
+
+bool StyleSet::isUiDark()
+{
+	return s_isUiDark;
+}
+
+void StyleSet::setUiDark(bool on)
+{
+	if (s_isUiDark == on)
+	{
+		//幂等：值未变化则不重复重涂
+		return;
+	}
+	s_isUiDark = on;
+
+	//同步lexer强制白色标志（深色界面+浅色主题时开启，让lexer应用白色文字）
+	QsciLexer::setForceWhiteStyles(isUiDark() && !isCurrentDeepStyle());
+
+	//仅重涂UI层（QSS+palette），不重新加载lexer主题，保持与编辑器语法主题互相独立
+	if (m_curStyleId == DEFAULT_SE)
+	{
+		setDefaultStyle();
+	}
+	else
+	{
+		setCommonStyle();
+	}
+
+	//运行时切换皮肤后，强制repolish所有顶层控件，确保菜单栏等控件重新渲染
+	const QList<QWidget*> widgets = QApplication::topLevelWidgets();
+	for (QWidget* w : widgets)
+	{
+		w->style()->unpolish(w);
+		w->style()->polish(w);
+		w->update();
+	}
+}
+
+void StyleSet::applyUiDark()
+{
+	QFile file(":/qss/uidark.qss");
+	QString styleSheet;
+	if (file.open(QIODevice::Text | QIODevice::ReadOnly))
+	{
+		styleSheet = file.readAll();
+
+		QPalette palette;
+		palette.setColor(QPalette::Window, QColor(0x44, 0x44, 0x44));
+		palette.setColor(QPalette::Base, QColor(0x44, 0x44, 0x44));
+		palette.setColor(QPalette::Button, QColor(0x44, 0x44, 0x44));
+		palette.setColor(QPalette::WindowText, QColor(0xDC, 0xDC, 0xDC));
+		palette.setColor(QPalette::Text, QColor(0xDC, 0xDC, 0xDC));
+		palette.setColor(QPalette::ButtonText, QColor(0xDC, 0xDC, 0xDC));
+		palette.setColor(QPalette::AlternateBase, QColor(0x52, 0x52, 0x52));
+		palette.setColor(QPalette::Highlight, QColor(0x00, 0xBB, 0x9E));
+		palette.setColor(QPalette::HighlightedText, QColor(0xFF, 0xFF, 0xFF));
+		palette.setColor(QPalette::ToolTipBase, QColor(0x48, 0x48, 0x48));
+		palette.setColor(QPalette::ToolTipText, QColor(0xDC, 0xDC, 0xDC));
+		palette.setColor(QPalette::PlaceholderText, QColor(0x80, 0x80, 0x80));
 		qApp->setPalette(palette);
 		qApp->setStyleSheet(styleSheet);
 	}

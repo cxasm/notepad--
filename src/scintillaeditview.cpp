@@ -13,6 +13,7 @@
 #include <Scintilla.h>
 #include <SciLexer.h>
 #include <QImage>
+#include <QTimer>
 #include <Qsci/qscilexerpython.h>
 #include <Qsci/qscilexerasm.h>
 #include <Qsci/qscilexerbash.h>
@@ -3731,6 +3732,22 @@ void ScintillaEditView::updateThemes()
 		setGlobalBgColor(i);
 		setGlobalFont(i);
 	}
+
+	//深色UI下、浅色语法主题：按可读性规则重涂编辑器颜色
+	//（黑/灰文字转白色，语法高亮颜色保留；背景统一用终端深色，避免换行白块）
+	//延迟到事件循环下一轮执行，确保lexer的颜色应用完成后覆盖它
+	if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+	{
+		QTimer::singleShot(0, this, [this]() {
+			QsciLexer* lx = lexer();
+			for (int i = 0; i < 256; ++i)
+			{
+				QColor fg = (lx != nullptr) ? lx->color(i) : QColor(0xFF, 0xFF, 0xFF);
+				SendScintilla(SCI_STYLESETFORE, i, fg);
+				SendScintilla(SCI_STYLESETBACK, i, QColor(0x0C, 0x0C, 0x0C));
+			}
+		});
+	}
 }
 
 static void getFoldColor(QColor& fgColor, QColor& bgColor, QColor& activeFgColor)
@@ -3755,8 +3772,13 @@ void ScintillaEditView::setGlobalFgColor(int style)
 
 		case DEFAULT_STYLE:
 		{
-			//修改默认前景色
-			SendScintilla(SCI_STYLESETFORE, StyleSet::s_global_style->default_style.styleId, StyleSet::s_global_style->default_style.fgColor);
+			//修改默认前景色（深色UI下，浅色语法主题自动改用浅色文字，保证可读）
+			QColor fg = StyleSet::s_global_style->default_style.fgColor;
+			if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+			{
+				fg = QColor(0xFF, 0xFF, 0xFF);
+			}
+			SendScintilla(SCI_STYLESETFORE, StyleSet::s_global_style->default_style.styleId, fg);
 		}
 		break;
 
@@ -3786,11 +3808,11 @@ void ScintillaEditView::setGlobalFgColor(int style)
 		break;
 		
 	case SELECT_TEXT_COLOR:
-		SendScintilla(SCI_SETSELFORE, true, StyleSet::s_global_style->select_text_color.fgColor);
+		SendScintilla(SCI_SETSELFORE, true, (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle()) ? QColor(0xFF, 0xFF, 0xFF) : StyleSet::s_global_style->select_text_color.fgColor);
 		break;
 
 	case CARET_COLOUR:
-		SendScintilla(SCI_SETCARETFORE, StyleSet::s_global_style->caret_colour.fgColor);
+		SendScintilla(SCI_SETCARETFORE, (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle()) ? QColor(0xFF, 0xFF, 0xFF) : StyleSet::s_global_style->caret_colour.fgColor);
 		break;
 
 	case EDGE_COLOUR:
@@ -3799,8 +3821,13 @@ void ScintillaEditView::setGlobalFgColor(int style)
 
 	case LINE_NUMBER_MARGIN:
 	{
-		//修改默认前景色
-		SendScintilla(SCI_STYLESETFORE, StyleSet::s_global_style->line_number_margin.styleId, StyleSet::s_global_style->line_number_margin.fgColor);
+		//修改默认前景色（深色UI下，浅色语法主题自动用浅灰行号）
+		QColor fg = StyleSet::s_global_style->line_number_margin.fgColor;
+		if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+		{
+			fg = QColor(0x8A, 0x8A, 0x8A);
+		}
+		SendScintilla(SCI_STYLESETFORE, StyleSet::s_global_style->line_number_margin.styleId, fg);
 	}
 	break;
 
@@ -3828,9 +3855,16 @@ void ScintillaEditView::setGlobalFgColor(int style)
 		break;
 
 	case FOLD_MARGIN:
-		//前景背景一起设置，不分开
+		//前景背景一起设置，不分开（深色UI下浅色主题的折叠边距用纯黑）
 	{
-		setFoldMarginColors(StyleSet::s_global_style->fold_margin.fgColor, StyleSet::s_global_style->fold_margin.bgColor);
+		QColor fg = StyleSet::s_global_style->fold_margin.fgColor;
+		QColor bg = StyleSet::s_global_style->fold_margin.bgColor;
+		if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+		{
+			fg = QColor(0x00, 0x00, 0x00);
+			bg = QColor(0x0C, 0x0C, 0x0C);
+		}
+		setFoldMarginColors(fg, bg);
 	}
 	break;
 
@@ -3892,8 +3926,13 @@ void ScintillaEditView::setGlobalBgColor(int style)
 
 	case DEFAULT_STYLE:
 	{
-		//修改默认前景色
-		SendScintilla(SCI_STYLESETBACK, StyleSet::s_global_style->default_style.styleId, StyleSet::s_global_style->default_style.bgColor);
+		//修改默认背景色（深色UI下，浅色语法主题自动改用深色背景，保证可读）
+		QColor bg = StyleSet::s_global_style->default_style.bgColor;
+		if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+		{
+			bg = QColor(0x0C, 0x0C, 0x0C);
+		}
+		SendScintilla(SCI_STYLESETBACK, StyleSet::s_global_style->default_style.styleId, bg);
 	}
 	break;
 
@@ -3919,12 +3958,12 @@ void ScintillaEditView::setGlobalBgColor(int style)
 	break;
 
 	case CURRENT_LINE_BACKGROUND_COLOR:
-		//不能设置前景色，只能设置背景
-		SendScintilla(SCI_SETCARETLINEBACK, StyleSet::s_global_style->current_line_background_color.bgColor);
+		//不能设置前景色，只能设置背景（深色UI下浅色主题用深色高亮）
+		SendScintilla(SCI_SETCARETLINEBACK, (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle()) ? QColor(0x33, 0x33, 0x33) : StyleSet::s_global_style->current_line_background_color.bgColor);
 		break;
 
 	case SELECT_TEXT_COLOR:
-		SendScintilla(SCI_SETSELBACK, true, StyleSet::s_global_style->select_text_color.bgColor);
+		SendScintilla(SCI_SETSELBACK, true, (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle()) ? QColor(0x4A, 0x4A, 0x4A) : StyleSet::s_global_style->select_text_color.bgColor);
 		break;
 
 	case CARET_COLOUR:
@@ -3937,16 +3976,27 @@ void ScintillaEditView::setGlobalBgColor(int style)
 
 	case LINE_NUMBER_MARGIN:
 	{
-		//修改默认背景色
-		SendScintilla(SCI_STYLESETBACK, StyleSet::s_global_style->line_number_margin.styleId, StyleSet::s_global_style->line_number_margin.bgColor);
+		//修改默认背景色（深色UI下，浅色语法主题自动用深色行号背景）
+		QColor bg = StyleSet::s_global_style->line_number_margin.bgColor;
+		if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+		{
+			bg = QColor(0x0C, 0x0C, 0x0C);
+		}
+		SendScintilla(SCI_STYLESETBACK, StyleSet::s_global_style->line_number_margin.styleId, bg);
 	}
 	break;
 
 	case BOOKMARK_MARGIN:
 	{
-		if (StyleSet::s_global_style->bookmark_margin.bgColor.isValid())
+		//深色UI下浅色主题的符号边距栏（行号与文本之间的标记栏）用纯黑
+		QColor bg = StyleSet::s_global_style->bookmark_margin.bgColor;
+		if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
 		{
-			SendScintilla(SCI_SETMARGINBACKN, _SC_MARGE_SYBOLE, StyleSet::s_global_style->bookmark_margin.bgColor);
+			bg = QColor(0x0C, 0x0C, 0x0C);
+		}
+		if (bg.isValid())
+		{
+			SendScintilla(SCI_SETMARGINBACKN, _SC_MARGE_SYBOLE, bg);
 		}
 		else
 		{
@@ -3976,9 +4026,16 @@ void ScintillaEditView::setGlobalBgColor(int style)
 	break;
 
 	case FOLD_MARGIN:
-		//前景背景一起设置，不分开
+		//前景背景一起设置，不分开（深色UI下浅色主题的折叠边距用纯黑）
 	{
-		setFoldMarginColors(StyleSet::s_global_style->fold_margin.fgColor, StyleSet::s_global_style->fold_margin.bgColor);
+		QColor fg = StyleSet::s_global_style->fold_margin.fgColor;
+		QColor bg = StyleSet::s_global_style->fold_margin.bgColor;
+		if (StyleSet::isUiDark() && !StyleSet::isCurrentDeepStyle())
+		{
+			fg = QColor(0x00, 0x00, 0x00);
+			bg = QColor(0x0C, 0x0C, 0x0C);
+		}
+		setFoldMarginColors(fg, bg);
 	}
 	break;
 

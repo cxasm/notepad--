@@ -4,6 +4,7 @@
 #include <QListWidgetItem>
 #include <qscilexer.h>
 #include <QCloseEvent>
+#include <QShowEvent>
 #include "ui_qtlangset.h"
 #include "rcglobal.h"
 #include "Qsci/qsciscintilla.h"
@@ -53,6 +54,7 @@ signals:
 
 protected:
 	void closeEvent(QCloseEvent *e);
+	void showEvent(QShowEvent *e);
 
 	void syncShowStyleItemToUI(QListWidgetItem * item);
 
@@ -83,6 +85,7 @@ private slots:
 	void slot_useAlobalFontUnderline(bool);
 	void slot_useAlobalFontItalic(bool);
 	void on_themesChange(int index);
+	void on_uiDarkCheckBox_toggled(bool checked);
 
 	void on_showGlobalItem();
 

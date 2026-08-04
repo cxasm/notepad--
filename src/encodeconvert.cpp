@@ -2,6 +2,7 @@
 #include "rcglobal.h"
 #include "CmpareMode.h"
 #include "doctypelistview.h"
+#include "styleset.h"
 
 #include <QFileDialog>
 #include <QTreeWidgetItem>
@@ -663,7 +664,7 @@ void EncodeConvert::setItemIntervalBackground()
 	while (*it) {
 		if (curItemIndex % 2 == 1)
 		{
-			setItemBackground(*it, QColor(0xf8faf9));
+			setItemBackground(*it, StyleSet::isUiDark() ? QColor(0x525252) : QColor(0xf8faf9));
 		}
 		++it;
 		++curItemIndex;

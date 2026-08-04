@@ -30,6 +30,7 @@ QtLangSet::QtLangSet(QString initTag, QWidget *parent)
 	m_themesId = StyleSet::getCurrentSytleId();
 	m_lastThemesId = -1;
 	ui.mainThemesCbox->setCurrentIndex(m_themesId);
+	ui.uiDarkCheckBox->setChecked(StyleSet::isUiDark());
 }
 
 QtLangSet::~QtLangSet()
@@ -1158,6 +1159,14 @@ void QtLangSet::closeEvent(QCloseEvent * e)
 	saveCurLangSettings();
 }
 
+void QtLangSet::showEvent(QShowEvent *e)
+{
+	QMainWindow::showEvent(e);
+
+	//设置对话框自身的标题栏深浅跟随界面深色模式
+	CCNotePad::setNativeDarkTitle(this, StyleSet::isUiDark());
+}
+
 //把item的对应风格显示在界面上
 void QtLangSet::syncShowStyleItemToUI(QListWidgetItem *item)
 {
@@ -1954,6 +1963,22 @@ void QtLangSet::on_themesChange(int styleIndex)
 	m_lastThemesId = m_themesId;
 
 	ui.statusBar->showMessage(tr("themes changed finished ..."), 5000);
+}
+
+//界面深色模式开关（独立于编辑器语法主题）
+void QtLangSet::on_uiDarkCheckBox_toggled(bool checked)
+{
+	StyleSet::setUiDark(checked);
+	NddSetting::updataKeyValueFromNumSets(UI_SKIN_KEY, checked ? 1 : 0);
+
+	//设置对话框自身的标题栏也跟随深浅
+	CCNotePad::setNativeDarkTitle(this, StyleSet::isUiDark());
+
+	CCNotePad* pMainNote = dynamic_cast<CCNotePad*>(parent());
+	if (pMainNote != nullptr)
+	{
+		pMainNote->syncUiSkinChange();
+	}
 }
 
 //更新当前编辑框中主题的样式

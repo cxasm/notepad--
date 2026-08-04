@@ -79,6 +79,9 @@ void NddSetting::init()
 		//皮肤id
         addKeyValueToNumSets(SKIN_KEY, 0);
 
+		//界面深色模式，默认0浅色
+		addKeyValueToNumSets(UI_SKIN_KEY, 0);
+
 		//语言index 0:自动选择 1:中文 2 英文
 		addKeyValueToNumSets(LANGS_KEY, 0);
 
@@ -150,6 +153,12 @@ void NddSetting::init()
 			{
 				QVariant v(1);
 				checkNoExistAdd(SKIN_KEY, v);
+			}
+
+			//界面深色模式，默认0浅色
+			{
+				QVariant v(0);
+				checkNoExistAdd(UI_SKIN_KEY, v);
 			}
 
 			{

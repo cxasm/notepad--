@@ -32,6 +32,7 @@
 int QsciLexer::s_defaultFontSize = 12;
 
 int QsciLexer::m_themesId = 0;
+bool QsciLexer::s_forceWhiteStyles = false;
 
 #if defined(Q_OS_WIN)
 QFont QsciLexer::s_defaultLangFont("Courier New", QsciLexer::s_defaultFontSize);
@@ -319,13 +320,36 @@ int QsciLexer::defaultStyle() const
 // Returns the foreground colour of the text for a style.
 QColor QsciLexer::color(int style) const
 {
-    return styleData(style).color;
+    QColor c = styleData(style).color;
+    //深色界面模式下：只有浅色模式下接近黑色/灰色的文字才显示为白色，
+    //其余语法高亮颜色（关键字/字符串/注释等）调亮后保留，保证深底上清晰可读
+    if (s_forceWhiteStyles && c.isValid())
+    {
+        int mx = qMax(c.red(), qMax(c.green(), c.blue()));
+        int mn = qMin(c.red(), qMin(c.green(), c.blue()));
+        int lum = (c.red() + c.green() + c.blue()) / 3;
+        //无色相（接近灰阶）且偏暗的文字 -> 深色背景下用白色
+        if ((mx - mn) < 60 && lum < 150)
+        {
+            return QColor(0xFF, 0xFF, 0xFF);
+        }
+        //彩色文字：混入30%白色调亮，保持色相，深底上更醒目
+        return QColor(c.red() + (255 - c.red()) * 30 / 100,
+                      c.green() + (255 - c.green()) * 30 / 100,
+                      c.blue() + (255 - c.blue()) * 30 / 100);
+    }
+    return c;
 }
 
 
 // Returns the background colour of the text for a style.
 QColor QsciLexer::paper(int style) const
 {
+    //深色界面模式下强制深色背景
+    if (s_forceWhiteStyles)
+    {
+        return QColor(0x0C, 0x0C, 0x0C);
+    }
     return styleData(style).paper;
 }
 
@@ -959,4 +983,9 @@ void QsciLexer::setCommentEnd(QByteArray commentEnd)
 void QsciLexer::setCurThemes(int themesId)
 {
     m_themesId = themesId;
+}
+
+void QsciLexer::setForceWhiteStyles(bool on)
+{
+    s_forceWhiteStyles = on;
 }
