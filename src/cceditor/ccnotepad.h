@@ -29,6 +29,7 @@ class ScintillaHexEditView;
 class FindRecords;
 class FindResultWin;
 class QAction;
+class QPlainTextEdit;
 class CompareDirs;
 class CompareWin;
 struct HexFileMgr;
@@ -111,6 +112,27 @@ public:
 
 	void initTabNewOne();
 
+	//在独立的新窗口中打开文件。成功返回承载该文档的窗口，失败返回 nullptr
+	CCNotePad* openFileInNewWindow(QString filePath, int lineNum = -1);
+	//仅在本窗口内打开文件，不会派生出新窗口。供窗口自身初始化使用
+	bool openFileInCurrentWindow(QString filePath, int lineNum = -1);
+	//在本窗口内新建一个空白文档
+	void newBlankFileInCurWindow();
+	//创建一个新的空白窗口
+	CCNotePad* createNewWindow();
+
+	//当前窗口是否已经装载了文档
+	bool hasDocument() const;
+	//当前窗口是否只有一个未修改的空新建文档，可以被待打开的文件复用
+	bool canReuseEmptyDocument() const;
+	//查找是否已经存在打开了该文件的其它窗口
+	static CCNotePad* findWindowByFilePath(const QString& filePath);
+	//注册窗口实例，供多窗口管理使用
+	static void registerPadInstance(CCNotePad* pPad);
+
+	//刷新顶部路径栏的显示内容
+	void updatePathBar();
+
 	void setShareMem(QSharedMemory* v)
 	{
 		m_shareMem = v;
@@ -132,6 +154,8 @@ public:
 	int restoreLastFiles();
 
 	ScintillaEditView * getCurEditView();
+	//取当前窗口的文本编辑控件，不做过写保护判断，用于定位、跳转等只读场景
+	ScintillaEditView * getCurTextView();
 	void getCurUseLexerTags(QVector<QString>& tag);
 
 	void clearHighlightWord(QString signWord, ScintillaEditView* pEdit = nullptr);
@@ -167,10 +191,6 @@ public slots:
 	void slot_actionSaveAsFile_toggle(bool checked);
 	void slot_actionRenameFile_toggle(bool checked);
 	void slot_actionClose(bool);
-	void slot_actionCloseNonCurDoc();
-	void slot_actionCloseLeftAll();
-	void slot_actionCloseRightAll();
-
 	void slot_quit(bool);
 
 
@@ -199,10 +219,10 @@ protected:
 	void dragEnterEvent(QDragEnterEvent* event) override;
 	void dropEvent(QDropEvent* e) override;
 	void dragLeaveEvent(QDragLeaveEvent* event);
-	bool eventFilter(QObject *watched, QEvent *event)override;
+	bool eventFilter(QObject *watched, QEvent *event) override;
 #ifdef Q_OS_WIN
 	bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
-	bool nativeOpenfile(QString openFilePath);
+	bool nativeOpenfile(QString openFilePath, int lineNum = -1);
 #endif
 #ifdef uos
 void adjustWInPos(QWidget* pWin);
@@ -210,7 +230,6 @@ void adjustWInPos(QWidget* pWin);
 
 private slots:
 	void slot_editViewMofidyChange();
-	void slot_tabClose(int index);
 	void slot_LineNumIndexChange(int line, int index);
 	void slot_saveAllFile();
 	void slot_autoSaveFile(bool);
@@ -266,18 +285,14 @@ private slots:
 	void slot_compareFile();
 	void slot_compareDir();
 	void slot_binCompare();
-	void slot_tabBarClicked(int index);
-	void on_tabBarDoubleClicked(int index);
 	void slot_reOpenTextMode();
 	void slot_reOpenHexMode();
 	void slot_selectLeftFile();
 	void slot_selectRightFile();
 
-	void slot_openFileInNewWin();
 	void slot_about();
 	void slot_aboutNdd();
 	void slot_fileChange(QString filePath);
-	void slot_tabBarDoubleClicked(int index);
 
 	void slot_slectionChanged();
 	void slot_preHexPage();
@@ -384,7 +399,7 @@ private:
 	void updateCurTabSaveStatus();
 	void setSaveButtonStatus(bool needSave);
 	void setSaveAllButtonStatus(bool needSave);
-	void tabClose(int index, bool isInQuit=false);
+	bool tabClose(int index, bool isInQuit=false);
 	void setDocEolMode(ScintillaEditView * pEdit, RC_LINE_FORM endStatus);
 	bool convertDocLineEnd(RC_LINE_FORM endStatus);
 	void transDocToEncord(CODE_ID destCode);
@@ -466,7 +481,6 @@ private:
 	void init_toolsMenu();
 	void changeBlankShowStatus(int showBlank);
 	void syncBlankShowStatus();
-	void openFileInNewWin(int index);
 #ifdef NO_PLUGIN
 	void loadPluginLib();
 	void loadPluginProcs(QString strLibDir, QMenu* pMenu);
@@ -482,6 +496,10 @@ private:
 	void doComment(int type);
 	void tailfile(bool isOn, ScintillaEditView* pEdit);
 	void on_findResultlineDoubleClick(QString* pFilePath, int pos, int end);
+
+	void initPathBar();
+	void applyPathBarStyle();
+	void showPathBarContextMenu(const QPoint& pos);
 private:
 	Ui::CCNotePad ui;
 
@@ -491,7 +509,9 @@ private:
 	QLabel* m_langDescLabel;
 	QLabel* m_zoomLabel;
 
-	QMenu* m_tabRightClickMenu;
+	//顶部只读绝对路径栏
+	QPlainTextEdit* m_pathBar;
+	QString m_lastPathBarText;
 
 	QDockWidget* m_dockSelectTreeWin;
 	FindResultWin* m_pResultWin;
@@ -545,17 +565,6 @@ private:
 	QList<QAction*> m_receneFileList;
 
 	QMap<QString, QAction*> m_receneRecrod;
-
-	QAction* m_openInNewWinAct;
-	QAction* m_showFileDirAct;
-	QAction* m_showCmdAct;
-
-	QAction* m_openWithText;
-	QAction* m_openWithHex;
-
-	QAction* m_selectLeftCmp;
-	QAction* m_selectRightCmp;
-
 
 	//所有打开的notebook均保存起来。关闭时切换share里面保存的地址
 	static QList<CCNotePad*> *s_padInstances;

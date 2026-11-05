@@ -1,5 +1,7 @@
 ﻿#include "scintillaeditview.h"
 
+#include <thread>
+
 #include "common.h"
 #include "rgba_icons.h"
 #include "ccnotepad.h"

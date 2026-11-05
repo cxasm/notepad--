@@ -24,7 +24,7 @@
     <normaloff>:/Resources/edit/global/ndd.ico</normaloff>:/Resources/edit/global/ndd.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -40,6 +40,39 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <item>
+     <widget class="QWidget" name="pathBarHost" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>28</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>28</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="pathBarLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+      </layout>
+     </widget>
+    </item>
     <item>
      <widget class="QTabWidget" name="editTabWidget">
       <property name="font">
@@ -60,11 +93,14 @@
       <property name="usesScrollButtons">
        <bool>true</bool>
       </property>
-      <property name="tabsClosable">
+      <property name="documentMode">
        <bool>true</bool>
       </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
       <property name="movable">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <property name="tabBarAutoHide">
        <bool>false</bool>
