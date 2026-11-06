@@ -18,6 +18,7 @@
 #pragma once
 
 //#include <windows.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 
