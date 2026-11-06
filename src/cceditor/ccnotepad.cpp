@@ -6267,6 +6267,9 @@ void CCNotePad::closeEvent(QCloseEvent * event)
 		QByteArray curGeo = m_pFindWin->saveGeometry();
 		NddSetting::updataKeyByteArrayValue(FINDWINSIZE, curGeo);
 
+		//窗口可能只是隐藏而不销毁，不能只依赖 destroyed 信号保存查找历史
+		slot_saveSearchHistory();
+
 		m_pFindWin.data()->close();
 	}
 
