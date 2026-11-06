@@ -458,6 +458,7 @@ int CCNotePad::s_autoWarp = 0; //自动换行
 int CCNotePad::s_indent = 0; //自动缩进
 int CCNotePad::s_showblank = 0; //显示空白
 int CCNotePad::s_restoreLastFile = 1;//自动恢复上次打开的文件
+int CCNotePad::s_autoReloadOutside = 0;//外部修改文件时自动加载
 int CCNotePad::s_curStyleId = 0;
 int CCNotePad::s_curMarkColorId = SCE_UNIVERSAL_FOUND_STYLE_EXT5;
 int CCNotePad::s_hightWebAddr = 0;
@@ -2158,6 +2159,7 @@ void CCNotePad::initNotePadSqlOptions()
 }
 
 	s_restoreLastFile = NddSetting::getKeyValueFromNumSets(RESTORE_CLOSE_FILE);
+	s_autoReloadOutside = NddSetting::getKeyValueFromNumSets(AUTO_RELOAD_OUTSIDE);
 }
 //保存Sql的全局配置
 void CCNotePad::saveNotePadSqlOptions()
@@ -2171,6 +2173,8 @@ void CCNotePad::saveNotePadSqlOptions()
 	NddSetting::updataKeyValueFromNumSets(MAX_BIG_TEXT, ScintillaEditView::s_bigTextSize);
 
 	NddSetting::updataKeyValueFromNumSets(RESTORE_CLOSE_FILE, CCNotePad::s_restoreLastFile);
+
+	NddSetting::updataKeyValueFromNumSets(AUTO_RELOAD_OUTSIDE, CCNotePad::s_autoReloadOutside);
 }
 
 //设置程序为文件右键的关联项目
@@ -2211,7 +2215,12 @@ void CCNotePad::setToFileRightMenu()
 
 void CCNotePad::slot_fileChange(QString filePath)
 {
-	
+	//未开启自动加载时，外部修改不提示，也不加载，需要用户手动 Reload
+	if (s_autoReloadOutside != 1)
+	{
+		return;
+	}
+
 	QWidget *pw = nullptr;
 
 	int changeIndex = -1;
@@ -2221,15 +2230,15 @@ void CCNotePad::slot_fileChange(QString filePath)
 		pw = ui.editTabWidget->widget(i);
 		if (pw != nullptr && (pw->property(Edit_View_FilePath) == filePath))
 		{
-				//这里只设置1个标志，下次获取焦点时，才判定询问是否需要重新加载
+			//这里只设置1个标志，下次获取焦点时，才判定是否需要重新加载
 			pw->setProperty(Modify_Outside, QVariant(true));
 
 			changeIndex = i;
-				break;
-			}
+			break;
 		}
+	}
 
-	//如果就是当前文件，则直接弹窗提示
+	//如果就是当前文件，则直接处理
 	if (ui.editTabWidget->currentIndex() == changeIndex)
 	{
 		checkRoladFile(dynamic_cast<ScintillaEditView*>(pw));
@@ -2362,7 +2371,8 @@ void CCNotePad::slot_tabBarClicked(int index)
 
 		if ((TXT_TYPE == docType) && (getFileNewIndexProperty(pw) == -1))
 		{
-			m_openWithText->setEnabled(false);
+			//文本文件也允许重新加载，用于从磁盘读取最新内容
+			m_openWithText->setEnabled(true);
 			m_openWithHex->setEnabled(true);
 
 			m_selectLeftCmp->setEnabled(true);
@@ -2410,12 +2420,7 @@ void CCNotePad::slot_reOpenTextMode()
 	QWidget* pw = ui.editTabWidget->currentWidget();
 	QString filePath = getFilePathProperty(pw);
 
-	if (HEX_TYPE != getDocTypeProperty(pw))
-	{
-		ui.statusBar->showMessage(tr("The currently file %1 is already in text mode").arg(filePath),5000);
-		return;
-	}
-
+	//文本模式下也允许重新加载，关闭当前标签后从磁盘重新打开
 	slot_actionClose(true);
 	openTextFile(filePath,false);
 	
@@ -3681,7 +3686,12 @@ bool CCNotePad::checkRoladFile(ScintillaEditView* pEdit, qint64 startReadSize)
 			}
 
 		}
-		else 
+		else if ((s_autoReloadOutside == 1) && !pEdit->isModified())
+		{
+			//开启了自动加载，且文档没有未保存的修改，直接重新加载，不弹窗
+			doReloadTxtFile(pEdit, false, startReadSize);
+		}
+		else
 		{
 			QString filePath = pEdit->property(Edit_View_FilePath).toString();
 
@@ -6257,6 +6267,9 @@ void CCNotePad::closeEvent(QCloseEvent * event)
 		QByteArray curGeo = m_pFindWin->saveGeometry();
 		NddSetting::updataKeyByteArrayValue(FINDWINSIZE, curGeo);
 
+		//窗口可能只是隐藏而不销毁，不能只依赖 destroyed 信号保存查找历史
+		slot_saveSearchHistory();
+
 		m_pFindWin.data()->close();
 	}
 
@@ -6901,6 +6914,8 @@ int CCNotePad::initFindWindow(FindTabIndex type)
 
 		pFind->setFindHistory(&s_findHistroy);
 		pFind->setReplaceHistory(&s_replaceHistroy);
+		//历史有变化就立即保存，不依赖窗口关闭时才写盘
+		connect(pFind, &FindWin::sign_historyChanged, this, &CCNotePad::slot_saveSearchHistory);
 
 		pFind->setTabWidget(ui.editTabWidget);
 
@@ -7003,15 +7018,15 @@ void CCNotePad::slot_saveSearchHistory()
 	QSettings qs(QSettings::IniFormat, QSettings::UserScope, searchHistory);
 	qs.setIniCodec("UTF-8");
 
-	if (s_findHistroy.count() > 15)
+	if (s_findHistroy.count() > MAX_HISTORY_COUNT)
 	{
-		s_findHistroy = s_findHistroy.mid(0, 15);
+		s_findHistroy = s_findHistroy.mid(0, MAX_HISTORY_COUNT);
 	}
 	qs.setValue("keys", s_findHistroy);
 
-	if (s_replaceHistroy.count() > 15)
+	if (s_replaceHistroy.count() > MAX_HISTORY_COUNT)
 	{
-		s_replaceHistroy = s_replaceHistroy.mid(0, 15);
+		s_replaceHistroy = s_replaceHistroy.mid(0, MAX_HISTORY_COUNT);
 	}
 	qs.setValue("replace", s_replaceHistroy);
 

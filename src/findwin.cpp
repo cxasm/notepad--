@@ -24,6 +24,8 @@ enum TAB_TYPES {
 };
 
 const int MAX_RECORD_KEY_LENGTH = 20;
+//历史记录的最大长度，超过的查找词不记录。比自动填充的长度限制宽松，否则长一点的查找词不会被记住
+const int MAX_HISTORY_TEXT_LENGTH = 500;
 
 FindWin::FindWin(QWidget *parent):QMainWindow(parent), m_editTabWidget(nullptr), m_isFindFirst(true), m_findHistory(nullptr), \
 	pEditTemp(nullptr), m_curEditWin(nullptr), m_isStatic(false), m_isReverseFind(false), m_pMainPad(parent)
@@ -659,10 +661,19 @@ void findItemAndRemove(QComboBox* pCombox, QString& text)
 }
 #endif
 
+//下拉框的条目数超过历史上限时，从末尾删除，保证与历史列表一致
+static void trimComboItems(QComboBox* combo)
+{
+	while (combo->count() > MAX_HISTORY_COUNT)
+	{
+		combo->removeItem(combo->count() - 1);
+	}
+}
+
 void FindWin::addFindHistory(QString &text)
 {
 	//太长会导致看起来很杂乱，也不记录
-	if (text.isEmpty() || text.size() >= MAX_RECORD_KEY_LENGTH)
+	if (text.isEmpty() || text.size() >= MAX_HISTORY_TEXT_LENGTH)
 	{
 		return;
 	}
@@ -709,19 +720,24 @@ void FindWin::addFindHistory(QString &text)
 			ui.markTextBox->setCurrentIndex(0);
 		}
 
-		
-
-		if (m_findHistory->size() >= 15)
+		//超出上限时，列表和下拉框都删除最旧的
+		while (m_findHistory->size() > MAX_HISTORY_COUNT)
 		{
 			m_findHistory->takeLast();
 		}
+		trimComboItems(ui.findComboBox);
+		trimComboItems(ui.replaceTextBox);
+		trimComboItems(ui.dirFindWhat);
+		trimComboItems(ui.markTextBox);
+
+		emit sign_historyChanged();
 	}
 }
 
 void FindWin::addReplaceHistory(QString& text)
 {
 	//太长会导致看起来很杂乱，也不记录
-	if (text.isEmpty() || text.size() >= MAX_RECORD_KEY_LENGTH)
+	if (text.isEmpty() || text.size() >= MAX_HISTORY_TEXT_LENGTH)
 	{
 		return;
 	}
@@ -760,10 +776,15 @@ void FindWin::addReplaceHistory(QString& text)
 
 
 
-		if (m_replaceHistory->size() >= 15)
+		//超出上限时，列表和下拉框都删除最旧的
+		while (m_replaceHistory->size() > MAX_HISTORY_COUNT)
 		{
 			m_replaceHistory->takeLast();
 		}
+		trimComboItems(ui.replaceWithBox);
+		trimComboItems(ui.dirReplaceWhat);
+
+		emit sign_historyChanged();
 	}
 }
 
@@ -1722,6 +1743,10 @@ void FindWin::findAllInOpenDoc(int index)
 		QApplication::beep();
 		return;
 	}
+
+	//Find All 也要记录查找历史，和 Find Next 保持一致
+	QString historyText = ui.findComboBox->currentText();
+	addFindHistory(historyText);
 
 	QString whatFind = ui.findComboBox->currentText();
 	QString originWhatFine = whatFind;

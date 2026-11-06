@@ -229,6 +229,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="autoReloadOutside">
+       <property name="toolTip">
+        <string>When a file is modified by another program, reload it automatically if it has no unsaved changes</string>
+       </property>
+       <property name="text">
+        <string>Auto reload files modified by other programs</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
