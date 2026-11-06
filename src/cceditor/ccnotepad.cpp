@@ -2371,7 +2371,8 @@ void CCNotePad::slot_tabBarClicked(int index)
 
 		if ((TXT_TYPE == docType) && (getFileNewIndexProperty(pw) == -1))
 		{
-			m_openWithText->setEnabled(false);
+			//文本文件也允许重新加载，用于从磁盘读取最新内容
+			m_openWithText->setEnabled(true);
 			m_openWithHex->setEnabled(true);
 
 			m_selectLeftCmp->setEnabled(true);
@@ -2419,12 +2420,7 @@ void CCNotePad::slot_reOpenTextMode()
 	QWidget* pw = ui.editTabWidget->currentWidget();
 	QString filePath = getFilePathProperty(pw);
 
-	if (HEX_TYPE != getDocTypeProperty(pw))
-	{
-		ui.statusBar->showMessage(tr("The currently file %1 is already in text mode").arg(filePath),5000);
-		return;
-	}
-
+	//文本模式下也允许重新加载，关闭当前标签后从磁盘重新打开
 	slot_actionClose(true);
 	openTextFile(filePath,false);
 	
