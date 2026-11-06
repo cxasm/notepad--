@@ -458,6 +458,7 @@ int CCNotePad::s_autoWarp = 0; //自动换行
 int CCNotePad::s_indent = 0; //自动缩进
 int CCNotePad::s_showblank = 0; //显示空白
 int CCNotePad::s_restoreLastFile = 1;//自动恢复上次打开的文件
+int CCNotePad::s_autoReloadOutside = 0;//外部修改文件时自动加载
 int CCNotePad::s_curStyleId = 0;
 int CCNotePad::s_curMarkColorId = SCE_UNIVERSAL_FOUND_STYLE_EXT5;
 int CCNotePad::s_hightWebAddr = 0;
@@ -2158,6 +2159,7 @@ void CCNotePad::initNotePadSqlOptions()
 }
 
 	s_restoreLastFile = NddSetting::getKeyValueFromNumSets(RESTORE_CLOSE_FILE);
+	s_autoReloadOutside = NddSetting::getKeyValueFromNumSets(AUTO_RELOAD_OUTSIDE);
 }
 //保存Sql的全局配置
 void CCNotePad::saveNotePadSqlOptions()
@@ -2171,6 +2173,8 @@ void CCNotePad::saveNotePadSqlOptions()
 	NddSetting::updataKeyValueFromNumSets(MAX_BIG_TEXT, ScintillaEditView::s_bigTextSize);
 
 	NddSetting::updataKeyValueFromNumSets(RESTORE_CLOSE_FILE, CCNotePad::s_restoreLastFile);
+
+	NddSetting::updataKeyValueFromNumSets(AUTO_RELOAD_OUTSIDE, CCNotePad::s_autoReloadOutside);
 }
 
 //设置程序为文件右键的关联项目
@@ -2211,7 +2215,12 @@ void CCNotePad::setToFileRightMenu()
 
 void CCNotePad::slot_fileChange(QString filePath)
 {
-	
+	//未开启自动加载时，外部修改不提示，也不加载，需要用户手动 Reload
+	if (s_autoReloadOutside != 1)
+	{
+		return;
+	}
+
 	QWidget *pw = nullptr;
 
 	int changeIndex = -1;
@@ -2221,15 +2230,15 @@ void CCNotePad::slot_fileChange(QString filePath)
 		pw = ui.editTabWidget->widget(i);
 		if (pw != nullptr && (pw->property(Edit_View_FilePath) == filePath))
 		{
-				//这里只设置1个标志，下次获取焦点时，才判定询问是否需要重新加载
+			//这里只设置1个标志，下次获取焦点时，才判定是否需要重新加载
 			pw->setProperty(Modify_Outside, QVariant(true));
 
 			changeIndex = i;
-				break;
-			}
+			break;
 		}
+	}
 
-	//如果就是当前文件，则直接弹窗提示
+	//如果就是当前文件，则直接处理
 	if (ui.editTabWidget->currentIndex() == changeIndex)
 	{
 		checkRoladFile(dynamic_cast<ScintillaEditView*>(pw));
@@ -3681,7 +3690,12 @@ bool CCNotePad::checkRoladFile(ScintillaEditView* pEdit, qint64 startReadSize)
 			}
 
 		}
-		else 
+		else if ((s_autoReloadOutside == 1) && !pEdit->isModified())
+		{
+			//开启了自动加载，且文档没有未保存的修改，直接重新加载，不弹窗
+			doReloadTxtFile(pEdit, false, startReadSize);
+		}
+		else
 		{
 			QString filePath = pEdit->property(Edit_View_FilePath).toString();
 

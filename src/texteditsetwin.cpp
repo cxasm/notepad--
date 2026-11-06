@@ -22,6 +22,8 @@ TextEditSetWin::TextEditSetWin(QWidget *parent)
 
 	ui.restoreFile->setChecked((CCNotePad::s_restoreLastFile == 1));
 
+	ui.autoReloadOutside->setChecked((CCNotePad::s_autoReloadOutside == 1));
+
 	int clearOpenfilelist = NddSetting::getKeyValueFromDelayNumSets(CLEAR_OPENFILE_ON_CLOSE);
 
 	ui.openfileRecord->setChecked((clearOpenfilelist ==1));
@@ -83,6 +85,9 @@ void TextEditSetWin::save()
 	{
 		ScintillaEditView::s_bigTextSize = ui.BigTextSizeLimit->value();
 }
+
+	int autoReload = ui.autoReloadOutside->isChecked() ? 1 : 0;
+	CCNotePad::s_autoReloadOutside = autoReload;
 
 	int restoreFile = ui.restoreFile->isChecked() ? 1 : 0;
 

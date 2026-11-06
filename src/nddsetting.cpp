@@ -98,6 +98,9 @@ void NddSetting::init()
 
 		addKeyValueToNumSets(RESTORE_CLOSE_FILE, 1);
 
+		//外部修改文件时是否自动加载，默认不加载
+		addKeyValueToNumSets(AUTO_RELOAD_OUTSIDE, 0);
+
 		//0 24 1 36 2 48
 		addKeyValueToNumSets(ICON_SIZE, 1);
 
@@ -191,6 +194,11 @@ void NddSetting::init()
 			{
 				QVariant v(1);
 				checkNoExistAdd(RESTORE_CLOSE_FILE, v);
+			}
+
+			{
+				QVariant v(0);
+				checkNoExistAdd(AUTO_RELOAD_OUTSIDE, v);
 			}
 
 			{

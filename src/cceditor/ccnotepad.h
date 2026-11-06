@@ -634,6 +634,7 @@ public:
 	
 		static QString s_lastOpenDirPath;
 	static int s_restoreLastFile; //自动恢复上次打开的文件
+	static int s_autoReloadOutside; //外部修改文件时自动加载（1开启，0关闭）
 	static int s_curStyleId;
 	static int s_curMarkColorId;
 	static int s_hightWebAddr;//高亮网页地址

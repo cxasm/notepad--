@@ -11,6 +11,7 @@ static QString MAX_BIG_TEXT = "maxtsize";
 static QString SOFT_STATUS = "rstatus";
 static QString SOFT_KEY = "rkey";
 static QString RESTORE_CLOSE_FILE = "restore"; //恢复关闭时打开的文件
+static QString AUTO_RELOAD_OUTSIDE = "autoreloadoutside"; //外部修改文件时自动加载（0关闭 1开启）
 static QString PRO_DIR = "prodir";//放置配置文件的路径
 //static QString RESTORE_SIZE = "rsize";//保存关闭时的大小
 static QString WIN_POS = "pos";//保存关闭是的大小
