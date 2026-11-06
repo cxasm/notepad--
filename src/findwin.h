@@ -6,6 +6,10 @@
 
 
 #include "ui_findwin.h"
+
+//查找/替换历史的最大保存条数
+const int MAX_HISTORY_COUNT = 50;
+
 #ifndef DEF_FIND_TAB_INDEX
 #define DEF_FIND_TAB_INDEX
 enum FindTabIndex {
@@ -93,6 +97,8 @@ signals:
 	void sign_findAllInOpenDoc(QVector<FindRecords*>* record, int hits, QString findText);
 	void sign_replaceSaveFile(QString filePath, ScintillaEditView * pEdit);
 	void sign_clearResult();
+	//查找或替换历史发生变化，需要保存
+	void sign_historyChanged();
 	//void sign_markAllInCurDoc(FindRecords* record);
 
 private:

@@ -661,6 +661,15 @@ void findItemAndRemove(QComboBox* pCombox, QString& text)
 }
 #endif
 
+//下拉框的条目数超过历史上限时，从末尾删除，保证与历史列表一致
+static void trimComboItems(QComboBox* combo)
+{
+	while (combo->count() > MAX_HISTORY_COUNT)
+	{
+		combo->removeItem(combo->count() - 1);
+	}
+}
+
 void FindWin::addFindHistory(QString &text)
 {
 	//太长会导致看起来很杂乱，也不记录
@@ -711,12 +720,17 @@ void FindWin::addFindHistory(QString &text)
 			ui.markTextBox->setCurrentIndex(0);
 		}
 
-		
-
-		if (m_findHistory->size() >= 15)
+		//超出上限时，列表和下拉框都删除最旧的
+		while (m_findHistory->size() > MAX_HISTORY_COUNT)
 		{
 			m_findHistory->takeLast();
 		}
+		trimComboItems(ui.findComboBox);
+		trimComboItems(ui.replaceTextBox);
+		trimComboItems(ui.dirFindWhat);
+		trimComboItems(ui.markTextBox);
+
+		emit sign_historyChanged();
 	}
 }
 
@@ -762,10 +776,15 @@ void FindWin::addReplaceHistory(QString& text)
 
 
 
-		if (m_replaceHistory->size() >= 15)
+		//超出上限时，列表和下拉框都删除最旧的
+		while (m_replaceHistory->size() > MAX_HISTORY_COUNT)
 		{
 			m_replaceHistory->takeLast();
 		}
+		trimComboItems(ui.replaceWithBox);
+		trimComboItems(ui.dirReplaceWhat);
+
+		emit sign_historyChanged();
 	}
 }
 

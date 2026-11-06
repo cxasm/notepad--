@@ -6914,6 +6914,8 @@ int CCNotePad::initFindWindow(FindTabIndex type)
 
 		pFind->setFindHistory(&s_findHistroy);
 		pFind->setReplaceHistory(&s_replaceHistroy);
+		//历史有变化就立即保存，不依赖窗口关闭时才写盘
+		connect(pFind, &FindWin::sign_historyChanged, this, &CCNotePad::slot_saveSearchHistory);
 
 		pFind->setTabWidget(ui.editTabWidget);
 
@@ -7016,15 +7018,15 @@ void CCNotePad::slot_saveSearchHistory()
 	QSettings qs(QSettings::IniFormat, QSettings::UserScope, searchHistory);
 	qs.setIniCodec("UTF-8");
 
-	if (s_findHistroy.count() > 15)
+	if (s_findHistroy.count() > MAX_HISTORY_COUNT)
 	{
-		s_findHistroy = s_findHistroy.mid(0, 15);
+		s_findHistroy = s_findHistroy.mid(0, MAX_HISTORY_COUNT);
 	}
 	qs.setValue("keys", s_findHistroy);
 
-	if (s_replaceHistroy.count() > 15)
+	if (s_replaceHistroy.count() > MAX_HISTORY_COUNT)
 	{
-		s_replaceHistroy = s_replaceHistroy.mid(0, 15);
+		s_replaceHistroy = s_replaceHistroy.mid(0, MAX_HISTORY_COUNT);
 	}
 	qs.setValue("replace", s_replaceHistroy);
 
